@@ -1,0 +1,27 @@
+{
+  "name": "rocket",
+  "version": "1.0.0",
+  "description": "The most feature-filled API/interface for controlling your Launchpad",
+  "main": "./src/index.js",
+  "bugs": {
+    "url": "https://github.com/evelynhathaway/launchpad-rocket/issues"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "midi": "^0.9.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ableton",
+    "novation",
+    "launchpad",
+    "mkii",
+    "mk2",
+    "mark ii",
+    "mark 2"
+  ],
+  "author": "Evelyn Hathaway",
+  "license": "MIT"
+}
