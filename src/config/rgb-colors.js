@@ -1,21 +1,7 @@
 /*
 	Color Names
 
-TODO
-	If you're fooling around here trying to override these or add your own, you can do this without editing this file (yay!) in your implementation's file. Here's an example:
-
-	// Make your object of colors
-	const myColorNames = {
-		"fabulous": 57, // one of the default colors for the MK2 and Pro (0-127), find these in the programmers reference guide from Novation (the actual colors look different and much nicer)
-		"a cool rgb color": {
-			"red": 10,
-			"green": 20,
-			"blue": 30
-		} // You can use RGB colors too!
-	};
-
-	// Tell it to use your colors first and fallback to `defaultColorNames`
-	rocket.Color.names = myColorNames;
+	If you're fooling around here trying to override these or add your own, you can do this without editing this file (yay!) in your implementation's file. Check out the Color page on the GitHub wiki.
 */
 
 const data = {
