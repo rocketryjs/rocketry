@@ -55,7 +55,7 @@ launchpad.close();
 ```
 
 ## Further Reading
-[Table of contents for ./docs/ or wiki] TODO
+[Check out the wiki!](https://github.com/evelynhathaway/launchpad-rocket/wiki)
 
 ## Supported Devices
 - Launchpad MK2
@@ -70,4 +70,4 @@ If you find any bugs or would like to suggest features, [make an issue](Issue te
 If you have a Launchpad that's not supported, have ideas for new features, or just want to fix it up a bit; pull requests are highly appreciated.
 
 ## License
-Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/launchpad-rocket) TODO
+Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/launchpad-rocket/blob/master/LICENSE)
