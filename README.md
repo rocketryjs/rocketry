@@ -1,4 +1,4 @@
-<div align="center"><img alt="Rocket" src="./img/github-cover.png"></div>
+<div align="center"><img alt="Rocket" src="./img/cover/github-cover.png"></div>
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/download/) - recent version required for some ES6 features
@@ -39,9 +39,7 @@ $ npm install
 const rocket = require("rocket");
 
 // Make a new Launchpad instance from the first Launchpad it finds
-const launchpad = (
-	new rocket.Launchpad()
-);
+const launchpad = new rocket.Launchpad();
 
 // Create a Button instance on the Launchpad with at (0, 0)
 const button = new rocket.Button(0, 0, launchpad);
