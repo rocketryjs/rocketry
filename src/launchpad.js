@@ -10,34 +10,41 @@ const support = require("./support.js");
 
 
 class Launchpad {
-	constructor(port) {
+	constructor(...ports) {
 		// Create MIDI I/O
 		this.input = _core.newInput();
 		this.output = _core.newOutput();
 		this.port = {};
 
-		switch (typeof port) {
-			case "number": {
-				this.port.in, this.port.out = port;
-				break;
-			}
-			case "object": {
-				if (Array.isArray(port)) {
-					this.port.in = port[0];
-					this.port.out = port[1];
-				} else {
-					this.port = port;
+		if (ports.length === 2 && typeof ports[0] === "number" && typeof ports[1] === "number") {
+			this.port.in = ports[0];
+			this.port.out = ports[1];
+		} else {
+			const port = ports[0];
+
+			switch (typeof port) {
+				case "number": {
+					this.port.in, this.port.out = port;
+					break;
 				}
-				break;
-			}
-			case "undefined": {
-				// Find first device in MIDI out and MIDI in with a correct name
-				this.port.in = _core.getFirstLaunchpad(this.input);
-				this.port.out = _core.getFirstLaunchpad(this.output);
-				break;
-			}
-			default: {
-				throw new TypeError("Invalid port type.");
+				case "object": {
+					if (Array.isArray(port)) {
+						this.port.in = port[0];
+						this.port.out = port[1];
+					} else {
+						this.port = port;
+					}
+					break;
+				}
+				case "undefined": {
+					// Find first device in MIDI out and MIDI in with a correct name
+					this.port.in = _core.getFirstLaunchpad(this.input);
+					this.port.out = _core.getFirstLaunchpad(this.output);
+					break;
+				}
+				default: {
+					throw new TypeError("Invalid port type.");
+				}
 			}
 		}
 
@@ -46,6 +53,9 @@ class Launchpad {
 
 		// Open connection with device
 		this.open();
+
+		// Method chaining
+		return this;
 	}
 
 	open() {
@@ -158,14 +168,19 @@ class Launchpad {
 		} else if (typeof color === "number") {
 			// Basic
 		}
+
+		// Method chaining
+		return this;
 	}
 	darkAll() {
 		// TODO
-
+		// Method chaining
+		return this;
 	}
 	changeLayout(layout) {
 		// TODO
-
+		// Method chaining
+		return this;
 	}
 	textScroll(color, loop, text) {
 		// TODO
@@ -175,6 +190,9 @@ class Launchpad {
 		} else if (typeof color === "number") {
 			// Basic
 		}
+
+		// Method chaining
+		return this;
 	}
 
 	static isLaunchpad(object) {

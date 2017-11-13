@@ -72,7 +72,7 @@ const data = {
 			"message": [34, "layout"],
 			"type": "sysex"
 		},
-		"initialise fader": {
+		"initialize fader": {
 			"message": [43, "number", "type", "color", "value"],
 			"type": "sysex"
 		},

@@ -1,10 +1,3 @@
-/*
-	Device Support
-
-	If you create your own support for a Novation MIDI controlller, you can use a similar syntaxt to below in your own code, just make sure it runs before your first `new rocket.Launchpad()` And since you've added support or make a helpful change, you could also contribute it to the project. ;)
-*/
-
-
 // Add supported device configurations
 const addSupportedDevice = function(name, data) {
 	if (!this.devices) {
@@ -28,16 +21,26 @@ const removeSupportedDevice = function(name) {
 };
 
 // Extend / replace supported device configurations
-// TODO: test replacement by extendSupportedDevice("Launchpad MK2", "Launchpad MK2", {"test": poop})
 const extendSupportedDevice = function(child, parent, data) {
 	if (!this.devices) {
 		this.devices = {};
 	}
 
-	// Clumsy way TODO: remove when done
+	// Clumsy way TODO: remove when done testing TODO also test extend self
 	// data = Object.assign(this._core.supportedDevices[parent], data);
 
-	// Prototyping way
+	// Prototyping config children TODO test
+	(function setChildPrototype(object) {
+		for (const key in object) {
+			if (typeof object[key] === "object") {
+				// Set prototype
+				Object.setPrototypeOf(object[key], this.devices[parent][key]);
+				// Recursive
+				setChildPrototype(object);
+			}
+		}
+	})(data);
+	// Prototyping config
 	Object.setPrototypeOf(data, this.devices[parent]);
 
 	this.devices[child] = data;
