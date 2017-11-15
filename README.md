@@ -1,22 +1,26 @@
 <div align="center"><img alt="Rocket" src="./img/cover/github-cover.png"></div>
 
+[![npm version](https://img.shields.io/npm/v/launchpad-rocket.svg)](https://www.npmjs.com/package/launchpad-rocket)
+[![dependencies: lodash | midi](https://img.shields.io/badge/dependencies-lodash%20%7C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
+[![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)]()
+[![wiki](https://img.shields.io/badge/wiki-GitHub-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/wiki)
+
+
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/download/) - recent version required for some ES6 features
 - [justinlatimer/node-midi](https://github.com/justinlatimer/node-midi) - also requires node-gyp, Python, etc.
 
-## Installation
 
+## Installation
 ###### From npm
 ```
 $ npm install launchpad-rocket
 ```
-
 ###### As a dependency
 ```
 $ npm init
 $ npm install launchpad-rocket --save
 ```
-
 ###### From source
 ```
 $ git clone https://github.com/evelynhathaway/launchpad-rocket
@@ -24,7 +28,9 @@ $ cd launchpad-rocket/
 $ npm install
 ```
 
+
 ---
+
 
 ## Getting Started
 1. Plug in your Launchpad
@@ -32,11 +38,12 @@ $ npm install
 3. Install Rocket
 4. Create a new `.js` file
 5. `require()` the package
+6. Browse the [wiki](https://github.com/evelynhathaway/launchpad-rocket/wiki)
 
 ### Example
 ```js
 // Require Rocket
-const rocket = require("rocket");
+const rocket = require("launchpad-rocket");
 
 // Make a new Launchpad instance from the first Launchpad it finds
 const launchpad = new rocket.Launchpad();
@@ -54,8 +61,6 @@ button.on("press", function() {
 launchpad.close();
 ```
 
-## Further Reading
-[Check out the wiki!](https://github.com/evelynhathaway/launchpad-rocket/wiki)
 
 ## Supported Devices
 - Launchpad MK2
@@ -64,10 +69,12 @@ Currently only the Launchpad MK2 is supported, but adding support for a device v
 
 There are other APIs available on GitHub as well.
 
+
 ## Contributing
 If you find any bugs or would like to suggest features, [make an issue](Issue template TODO) for it being as descriptive as possible and I'll do my best to address it.
 
 If you have a Launchpad that's not supported, have ideas for new features, or just want to fix it up a bit; pull requests are highly appreciated.
+
 
 ## License
 Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/launchpad-rocket/blob/master/LICENSE)

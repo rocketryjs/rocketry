@@ -1,5 +1,5 @@
 {
-  "name": "rocket",
+  "name": "launchpad-rocket",
   "version": "1.0.0",
   "description": "The most feature-filled API/interface for controlling your Launchpad",
   "main": "./src/index.js",
@@ -22,6 +22,6 @@
     "mark ii",
     "mark 2"
   ],
-  "author": "Evelyn Hathaway",
+  "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
   "license": "MIT"
 }
