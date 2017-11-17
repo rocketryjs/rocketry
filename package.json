@@ -8,8 +8,7 @@
   },
   "devDependencies": {
     "eslint": "^4.11.0",
-    "eslint-plugin-node": "^5.2.1",
-    "jsdoc": "^3.5.5"
+    "eslint-plugin-node": "^5.2.1"
   },
   "engines": {
     "node": ">=7.0.0"
