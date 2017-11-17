@@ -9,8 +9,6 @@ const _ = require("lodash");
 const _core = require("./core.js");
 // Launchpad class
 const Launchpad = require("./launchpad.js");
-// Helper functions
-const _helper = require("./helper.js");
 
 
 class Button extends EventEmitter {
@@ -30,16 +28,35 @@ class Button extends EventEmitter {
 		// Pad config
 		this._pad = this.launchpad.getConfig("buttons.pad");
 
-		// Get values
+		// Set values
+		this.values = [];
+		// Arrays of coordinate pairs, object of MIDI values or coordinate pairs
 		for (const object of args) {
-			if (typeof args[0] === "object") {
-				this._object(object);
+			if (object.x && object.y) {
+				// keys => x, y
+				this._xy(object.x, object.y);
+			} else if (Array.isArray(object)) {
+				// [x, y]
+				this._xy(object[0], object[1]);
+			} else if (object.value) {
+				// keys => header?, value
+				const header = object.header || this._pad._header;
+				this.values.push({
+					header,
+					"note": object.value
+				});
+			} else if (object.values) {
+				// keys => header?, values
+				// Iterate through Values
+				for (let i = 0; i < object.values.length; i++) {
+					const header = object.headers[i] || object.header || this._pad._header;
+					this.values.push({
+						header,
+						"note": object.values[i]
+					});
+				}
 			} else {
-				// Flatten to work with any configuration of arrays, chunk into two arrays of [x, y] spread (...) those arrays into zip to get [[x, x, x ], [y, y, y]] (please don't hurt me) https://stackoverflow.com/q/876089/2758250
-				// coords = _.zip(..._.chunk(_.flattenDeep(coords), 2));
-				// const x = coords[0];
-				// const y = coords[1];
-				this._xy(x, y);
+				throw new TypeError("Invalid Button location.");
 			}
 		}
 
@@ -54,78 +71,36 @@ class Button extends EventEmitter {
 		return this;
 	}
 
-	// Get buttons from arguments
-	_object(object) {
-		// MIDI values in object in arguments (gave one argument with an object that has MIDI values in an array) TODO
-
-		// Set values
-		if (!this.values) {
-			this.values = [];
-		}
-
-		if (object.x && object.y) {
-			// keys => x, y
-			// Make interable if not array
-			const coords = [_helper.toSoftArray(object.x), _helper.toSoftArray(object.y)];
-			this._xy(...coords);
-		} else if (object.value) {
-			// keys => header?, value
-			const header = object.header || this._pad._header;
-			this.values.push({
-				header,
-				"note": object.value
-			});
-		} else if (object.values) {
-			// keys => header?, values
-			// Iterate through Values
-			for (let i = 0; i < object.values.length; i++) {
-				const header = object.headers[i] || object.header || this._pad._header;
-				this.values.push({
-					header,
-					"note": object.values[i]
-				});
-			}
-		}
-	}
+	// Values from coordinates
 	_xy(x, y) {
-		// Coordinates in arguments, coordinate pairs in array in arguments, coordinate pairs arrays in arguments TODO
-
-		x = _.flattenDeep(x);
-		y = _.flattenDeep(y);
-
 		// Validate
-		// Error if not an array
-		if (!Array.isArray(x) || !Array.isArray(y)) {
-			throw new TypeError("The x and/or y coordinate in your button wasn't a number or array.");
-		}
-		// Missing one or more x or y
-		if (x.length !== y.length) {
-			throw new Error("Can't construct a Button with an uneven coordinate pair.");
-		}
 		// Not number or not in range of the device's pad
-		const xInRange = x.every(value => (_.inRange(value, ...this._pad.x)));
-		const yInRange = y.every(value => (_.inRange(value, ...this._pad.y)));
-		if (!xInRange || !yInRange) {
-			throw new Error("One or more coordinates either isn't a number or in the pad range for your device.");
+		if (!_.inRange(x, ...this._pad.x) || !_.inRange(y, ...this._pad.y)) {
+			throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
 		}
 
 		// Set values
-		if (!this.values) {
-			this.values = [];
-		}
-		for (let i = 0; i < x.length; i++) {
-			this.values.push({
-				"header": this._pad._header,
-				"note": parseInt(`${y[i] + this._pad._offset.y}${x[i] + this._pad._offset.x}`)
-			});
-		}
+		this.values.push({
+			"header": this._pad._header,
+			"note": parseInt(`${y + this._pad.offset.y}${x + this._pad.offset.x}`)
+		});
 	}
 
 	setColor(color) {
 		color = this.launchpad.normalizeColor(color);
 
+		let mode;
+		if (typeof color === "object") {
+			// RGB
+			mode = "light rgb";
+		} else if (typeof color === "number") {
+			// Basic
+			mode = "light";
+		}
+
 		for (const value of this.values) {
-			this.constructor._setColor(this.header, value, color, this.launchpad);
+			// Send to core, extra arguments are ignored so no need to remove the header for RGB mode
+			_core.send(mode, {"header": value.header, "led": value.note, color}, this.launchpad);
 		}
 
 		// Method chaining
@@ -191,20 +166,6 @@ class Button extends EventEmitter {
 		}
 	}
 
-	static _setColor(header, led, color, launchpad) {
-		let mode;
-
-		if (typeof color === "object") {
-			// RGB
-			mode = "light rgb";
-		} else if (typeof color === "number") {
-			// Basic
-			mode = "light";
-		}
-
-		// Send to core, extra arguments are ignored so no need to remove the header for RGB mode
-		_core.send(mode, {header, led, color}, launchpad);
-	}
 	static isButton(object) {
 		return object instanceof this;
 	}

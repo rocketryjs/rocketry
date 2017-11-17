@@ -19,8 +19,9 @@ const rgb = {
 // 	}, launchpad)
 // 		.setColor(rgb)
 // );
+launchpad.output.sendMessage([ 240, 0, 32, 41, 2, 24, 10, 11, 40, 40, 40, 247 ])
 // const button = (
-// 	new rocket.Button(0, 0, 1, 2, launchpad)
+// 	new rocket.Button([0, 0], [1, 2], launchpad)
 // 		.setColor(rgb)
 // );
 
