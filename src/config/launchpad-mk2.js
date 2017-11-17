@@ -76,7 +76,7 @@ const data = {
 			"message": [43, "number", "type", "color", "value"],
 			"type": "sysex"
 		},
-		"text scroll": {
+		"scroll text": {
 			"message": [20, "color", "loop", "text"],
 			"type": "sysex"
 		}

@@ -124,37 +124,100 @@ class Launchpad {
 		}
 	}
 
+	// Interaction
+	setColor(color) {
+		color = this.normalizeColor(color);
+
+		if (Array.isArray(color)) {
+			// RGB
+			throw new TypeError("Light all can't be used with an RGB color via MIDI.");
+		} else if (typeof color === "number") {
+			// Basic
+			_core.send("light all", {color}, this);
+		}
+
+		// Method chaining
+		return this;
+	}
+	// Aliases for setColor
+	set color(color) {
+		this.setColor(color);
+	}
+	light(color) {
+		return this.setColor(color);
+	}
+	dark() {
+		return this.setColor("off");
+	}
+	lightAll(color) {
+		return this.setColor(color);
+	}
+	darkAll() {
+		return this.lightAll("off");
+	}
+	changeLayout(layout) {
+		// TODO
+		// Method chaining
+		return this;
+	}
+	scrollText(color, text, loop = 0) {
+		color = this.normalizeColor(color);
+		text = this.normalizeText(text);
+		loop = +loop; // true, 1 => 1; false, 0, "" => 0
+
+		if (Array.isArray(color)) {
+			// RGB
+			throw new TypeError("Text scrolling can't be used with an RGB color via MIDI.");
+		} else if (typeof color === "number") {
+			// Basic
+			_core.send("scroll text", {color, loop, text}, this);
+		}
+
+		// Method chaining
+		return this;
+	}
+	// Aliases for scroll stopping
+	stopScrollText() {
+		return this.scrollText(0, 0);
+	}
+	scrollTextStop() {
+		return this.scrollText(0, 0);
+	}
+
+
+	// Normalization of arguments for MIDI
 	// Validates colors, finds colors from their names, and normalizes formats from many into a single one for each RGB and standard colors for internal use.
-	normalizeColor(...args) {
+	normalizeColor(color) {
+		const config = this.getConfig("colors");
 		// Validate and normalize colors for use in commands
-		args = _.flattenDeep(args);
-		let color;
+		let result;
 		let valid;
 
 		// Named basic or RGB color
-		if (typeof args[0] === "string" && args.length === 1) {
-			color = (typeof this.colors !== "undefined" && this.colors[args[0]]) || this.getConfig(`colors.names.${args[0]}`);
-			return this.normalizeColor(color);
+		if (typeof color === "string") {
+			// From user's color names first, then fallback on default
+			result = (typeof this.colors !== "undefined" && this.colors[color]) || config.names[color];
+			return this.normalizeColor(result);
 		}
 
 		// Values
-		if (args.length === 3 || typeof args[0] === "object") {
-			// RGB: (red, green, blue) or ([red, green, blue]) or {r, g, b} or {red, green, blue}
-			color = [];
-			color[0] = args[0].red || args[0].r || args[0];
-			color[1] = args[0].green || args[0].g || args[1];
-			color[2] = args[0].blue || args[0].b || args[2];
+		if (typeof color === "object") {
+			// RGB: {red, green, blue} or {r, g, b} or [red, green, blue]
+			result = [];
+			result[0] = color.red || color.r || color[0];
+			result[1] = color.green || color.g || color[1];
+			result[2] = color.blue || color.b || color[2];
 
-			const range = this.getConfig("colors.rgb.range");
-			valid = color.every(function(value) {
+			const range = config.rgb.range;
+			valid = result.every(value => {
 				return _.inRange(value, ...range);
 			}, this);
 		} else {
 			// Basic: user color name or defaults color name for the device or use number
-			color = args[0];
+			result = color;
 
-			const range = this.getConfig("colors.basic.range");
-			valid = _.inRange(color, ...range);
+			const range = config.basic.range;
+			valid = _.inRange(result, ...range);
 		}
 
 		// Exit
@@ -163,42 +226,12 @@ class Launchpad {
 		}
 		return color;
 	}
-
-	// Interaction
-	lightAll(color) {
-		// TODO
-		if (Array.isArray(color)) {
-			// RGB
-			throw new TypeError("Light all can't be used with an RGB color via MIDI.");
-		} else if (typeof color === "number") {
-			// Basic
+	normalizeText(text) {
+		let result = [];
+		for (let i = 0; i < text.length; i++) {
+			result.push(text.charCodeAt(i));
 		}
-
-		// Method chaining
-		return this;
-	}
-	darkAll() {
-		this.lightAll("off");
-
-		// Method chaining
-		return this;
-	}
-	changeLayout(layout) {
-		// TODO
-		// Method chaining
-		return this;
-	}
-	textScroll(color, loop, text) {
-		// TODO
-		if (Array.isArray(color)) {
-			// RGB
-			throw new TypeError("Text scrolling can't be used with an RGB color via MIDI.");
-		} else if (typeof color === "number") {
-			// Basic
-		}
-
-		// Method chaining
-		return this;
+		return result;
 	}
 
 	static isLaunchpad(object) {
