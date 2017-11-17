@@ -95,7 +95,7 @@ const send = function(command, args, launchpad) {
 	// Flatten again and check if all bytes are numbers
 	message = _.flattenDeep(message);
 	const allNumbers = message.every(value => {
-		typeof value === "number";
+		return typeof value === "number";
 	});
 	if (!allNumbers) {
 		throw new Error("This command was called with a missing or invalid argument.");
