@@ -106,9 +106,15 @@ class Button extends EventEmitter {
 		// Method chaining
 		return this;
 	}
+	// Aliases for setColor
 	set color(color) {
-		// Alias for setColor since both can be useful
 		this.setColor(color);
+	}
+	light(color) {
+		return this.setColor(color);
+	}
+	dark() {
+		return this.setColor("off");
 	}
 
 	// Extend EventEmitter methods
