@@ -86,6 +86,9 @@ class Launchpad {
 	receive(deltaTime, message) {
 		// TODO relay message to Buttons
 		// const value = message[1]; TODO use config
+
+		// Method chaining
+		return this;
 	}
 
 	get _device() {
@@ -97,7 +100,7 @@ class Launchpad {
 			// return this.device = match[1];
 			return match[1];
 		} else {
-			throw new Error(`The port name (${portName}) for your Launchpad doesn't match the supported devices. Report this to the developer if you believe this was an error`);
+			throw new Error("The port name for your Launchpad doesn't match the supported devices.");
 		}
 	}
 
@@ -121,6 +124,7 @@ class Launchpad {
 		}
 	}
 
+	// Validates colors, finds colors from their names, and normalizes formats from many into a single one for each RGB and standard colors for internal use.
 	normalizeColor(...args) {
 		// Validate and normalize colors for use in commands
 		args = _.flattenDeep(args);
@@ -155,11 +159,12 @@ class Launchpad {
 
 		// Exit
 		if (!valid) {
-			throw new Error("One or more of your color values aren't in the accepted range.");
+			throw new RangeError("One or more of your color values aren't in the accepted range.");
 		}
 		return color;
 	}
 
+	// Interaction
 	lightAll(color) {
 		// TODO
 		if (Array.isArray(color)) {
@@ -173,7 +178,8 @@ class Launchpad {
 		return this;
 	}
 	darkAll() {
-		// TODO
+		this.lightAll("off");
+
 		// Method chaining
 		return this;
 	}

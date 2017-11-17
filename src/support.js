@@ -1,3 +1,9 @@
+/*
+	Module dependencies
+*/
+const MK2 = require("./config/launchpad-mk2.js");
+
+
 // Add supported device configurations
 const addSupportedDevice = function(name, data) {
 	if (!this.devices) {
@@ -63,7 +69,7 @@ const support = {
 
 
 (support
-	.add("Launchpad MK2", require("./config/launchpad-mk2.js"))
+	.add("Launchpad MK2", MK2)
 );
 
 

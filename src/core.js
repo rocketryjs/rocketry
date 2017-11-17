@@ -9,19 +9,16 @@ const _ = require("lodash");
 const support = require("./support.js");
 
 
-const getButtonValue = function() {
-	return;
-};
-
+// Gets a MIDI input
 const newInput = function() {
 	return new midi.input();
 };
-
+// Gets a MIDI output
 const newOutput = function() {
 	return new midi.output();
 };
 
-
+// Gets the first supported Launchpad's port
 const getFirstLaunchpad = function(channel) {
 	const numOfPorts = channel.getPortCount();
 	for (let i = 0; i < numOfPorts; i++) {
@@ -31,6 +28,7 @@ const getFirstLaunchpad = function(channel) {
 	}
 };
 
+// Send commands to a Launchpad instance
 const send = function(command, args, launchpad) {
 	const config = support.devices[launchpad.device];
 	const commandConfig = config.send[command] || command; // TODO: allow for arrays to be passed
@@ -89,15 +87,15 @@ const send = function(command, args, launchpad) {
 				break;
 			}
 			default: {
-				throw new TypeError("This command has something interesting its message. `typeof` poked it with a stick and it concluded it wasn't a number or a string to be replaced with an argument.");
+				throw new TypeError("This command had something that wasn't a number or a string to be replaced with an argument.");
 			}
 		}
 	}
 
 	// Flatten again and check if all bytes are numbers
 	message = _.flattenDeep(message);
-	const allNumbers = message.every(function(value) {
-		return typeof value === "number";
+	const allNumbers = message.every(value => {
+		typeof value === "number";
 	});
 	if (!allNumbers) {
 		throw new Error("This command was called with a missing or invalid argument.");
@@ -106,20 +104,25 @@ const send = function(command, args, launchpad) {
 	// Send it already!
 	// console.log(message); // debug
 	launchpad.output.sendMessage(message);
+
+	// Return the Launchpad for send method chaining
+	return launchpad;
 };
 
-
+// Receives commands from a Launchpad instance
 const receive = function(launchpad) {
 	launchpad.input.on("message", (deltaTime, message) => {
 		launchpad.receive(deltaTime, message);
 	});
+
+	// Return the Launchpad for send method chaining
+	return launchpad;
 };
 
 
 const _core = {
 	send,
 	receive,
-	getButtonValue,
 	getFirstLaunchpad,
 	newInput,
 	newOutput

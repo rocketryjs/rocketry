@@ -56,9 +56,6 @@ button.setColor("pink");
 button.on("press", function() {
 	console.log("3... 2... 1... Blast off!");
 });
-
-// Close session with your Launchpad
-launchpad.close();
 ```
 
 
