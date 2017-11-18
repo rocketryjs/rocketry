@@ -31,7 +31,7 @@ const getFirstLaunchpad = function(channel) {
 // Send commands to a Launchpad instance
 const send = function(command, args, launchpad) {
 	const config = support.devices[launchpad.device];
-	const commandConfig = config.send[command] || command; // TODO: allow for arrays to be passed
+	const commandConfig = config.send[command] || (Array.isArray(command) && command); // Get from config or use passed array
 
 	if (!commandConfig) {
 		throw new Error("This command isn't available for your device or your config is missing your command.");
