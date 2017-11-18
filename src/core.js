@@ -1,8 +1,9 @@
 /*
 	Module dependencies
 */
-// MIDI
-const midi = require("midi");
+// MIDI (don't require with flag for CI testing)
+const midi = process.argv.some(value => (value === "--no-midi")) ? undefined : require("midi");
+console.log(process.argv, midi)
 // lodash
 const _ = require("lodash");
 // Supported devices
