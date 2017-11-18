@@ -34,10 +34,10 @@ const data = {
 		"off": "black"
 	},
 	"basic": {
-		"range": [0, 127]
+		"range": [0, 128]
 	},
 	"rgb": {
-		"range": [0, 63]
+		"range": [0, 64]
 	}
 };
 
