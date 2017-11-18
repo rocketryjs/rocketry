@@ -125,6 +125,7 @@ class Launchpad {
 	}
 
 	// Interaction
+	// Color
 	setColor(color) {
 		color = this.normalizeColor(color);
 
@@ -155,14 +156,20 @@ class Launchpad {
 	darkAll() {
 		return this.lightAll("off");
 	}
+	// Change Layout
 	changeLayout(layout) {
 		// TODO
 		// Method chaining
 		return this;
 	}
+	// Text Scrolling
 	scrollText(color, text, loop = 0) {
 		color = this.normalizeColor(color);
-		text = this.normalizeText(text);
+		if (text) {
+			text = this.normalizeText(text);
+		} else {
+			text = 0;
+		}
 		loop = +loop; // true, 1 => 1; false, 0, "" => 0
 
 		if (Array.isArray(color)) {
@@ -176,14 +183,10 @@ class Launchpad {
 		// Method chaining
 		return this;
 	}
-	// Aliases for scroll stopping
+	// Scroll stopping
 	stopScrollText() {
-		return this.scrollText(0, 0);
+		return this.scrollText(0);
 	}
-	scrollTextStop() {
-		return this.scrollText(0, 0);
-	}
-
 
 	// Normalization of arguments for MIDI
 	// Validates colors, finds colors from their names, and normalizes formats from many into a single one for each RGB and standard colors for internal use.
@@ -228,8 +231,19 @@ class Launchpad {
 	}
 	normalizeText(text) {
 		let result = [];
-		for (let i = 0; i < text.length; i++) {
-			result.push(text.charCodeAt(i));
+		if (Array.isArray(text)) {
+			for (const object of text) {
+				if (typeof object === "string") {
+					result.push(this.normalizeText(object));
+				} else {
+					result.push(object.speed);
+					result.push(this.normalizeText(object.text));
+				}
+			}
+		} else {
+			for (let i = 0; i < text.length; i++) {
+				result.push(text.charCodeAt(i));
+			}
 		}
 		return result;
 	}
