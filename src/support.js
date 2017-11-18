@@ -32,10 +32,7 @@ const extendSupportedDevice = function(child, parent, data) {
 		this.devices = {};
 	}
 
-	// Clumsy way TODO: remove when done testing TODO also test extend self
-	// data = Object.assign(this._core.supportedDevices[parent], data);
-
-	// Prototyping config children TODO test
+	// Prototyping config children
 	(function setChildPrototype(object) {
 		for (const key in object) {
 			if (typeof object[key] === "object") {
