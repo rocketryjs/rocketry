@@ -1,6 +1,15 @@
+sudo: required
 language: node_js
 node_js:
     - "node"
 cache:
     directories:
         - "node_modules"
+before_install:
+    - npm install -g node-gyp
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - g++-5
