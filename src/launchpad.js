@@ -147,14 +147,14 @@ class Launchpad {
 	light(color) {
 		return this.setColor(color);
 	}
-	dark() {
-		return this.setColor("off");
-	}
 	lightAll(color) {
 		return this.setColor(color);
 	}
+	dark() {
+		return this.setColor("off");
+	}
 	darkAll() {
-		return this.lightAll("off");
+		return this.setColor("off");
 	}
 	// Change Layout
 	changeLayout(layout) {
