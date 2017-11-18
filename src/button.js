@@ -86,6 +86,8 @@ class Button extends EventEmitter {
 		});
 	}
 
+	// Interaction
+	// Color
 	setColor(color) {
 		color = this.launchpad.normalizeColor(color);
 
@@ -115,6 +117,46 @@ class Button extends EventEmitter {
 	}
 	dark() {
 		return this.setColor("off");
+	}
+	// Flashing
+	flash(color) {
+		color = this.launchpad.normalizeColor(color);
+
+		if (Array.isArray(color)) {
+			// RGB
+			throw new TypeError("Flashing can't be used with an RGB color via MIDI.");
+		} else if (typeof color === "number") {
+			// Basic
+			for (const value of this.values) {
+				_core.send("flash", {"led": value.note, color}, this.launchpad);
+			}
+		}
+
+		// Method chaining
+		return this;
+	}
+	stopFlash() {
+		return this.flash("off");
+	}
+	// Pulsing
+	pulse(color) {
+		color = this.launchpad.normalizeColor(color);
+
+		if (Array.isArray(color)) {
+			// RGB
+			throw new TypeError("Pulsing can't be used with an RGB color via MIDI.");
+		} else if (typeof color === "number") {
+			// Basic
+			for (const value of this.values) {
+				_core.send("pulse", {"led": value.note, color}, this.launchpad);
+			}
+		}
+
+		// Method chaining
+		return this;
+	}
+	stopPulse() {
+		return this.pulse("off");
 	}
 
 	// Extend EventEmitter methods
