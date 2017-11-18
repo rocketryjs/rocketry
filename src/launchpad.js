@@ -227,7 +227,7 @@ class Launchpad {
 		if (!valid) {
 			throw new RangeError("One or more of your color values aren't in the accepted range.");
 		}
-		return color;
+		return result;
 	}
 	normalizeText(text) {
 		let result = [];
