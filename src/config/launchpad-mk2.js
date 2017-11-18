@@ -1,7 +1,7 @@
 /*
 	Launchpad MK2 Config
 
-	TODO: default file
+	TODO: default file, use classes instead?
 */
 // Use shared color values between Launchpad RGB devices
 const colors = require("./rgb-colors.js");
@@ -44,6 +44,10 @@ const data = {
 	colors,
 	"send": {
 		"light": ["header", "led", "color"],
+		"light rgb": {
+			"message": [10, "led", "color"],
+			"type": "sysex"
+		},
 		"light column": {
 			"message": [12, "column", "color"],
 			"type": "sysex"
@@ -56,6 +60,14 @@ const data = {
 			"message": [14, "color"],
 			"type": "sysex"
 		},
+		"scroll text": {
+			"message": [20, "color", "loop", "text"],
+			"type": "sysex"
+		},
+		"change layout": {
+			"message": [34, "layout"],
+			"type": "sysex"
+		},
 		"flash": {
 			"message": [35, 0, "led", "color"],
 			"type": "sysex"
@@ -64,20 +76,8 @@ const data = {
 			"message": [40, 0, "led", "color"],
 			"type": "sysex"
 		},
-		"light rgb": {
-			"message": [10, "led", "color"],
-			"type": "sysex"
-		},
-		"change layout": {
-			"message": [34, "layout"],
-			"type": "sysex"
-		},
 		"initialize fader": {
 			"message": [43, "number", "type", "color", "value"],
-			"type": "sysex"
-		},
-		"scroll text": {
-			"message": [20, "color", "loop", "text"],
 			"type": "sysex"
 		}
 	},
