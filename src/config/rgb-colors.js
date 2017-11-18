@@ -26,12 +26,12 @@ const data = {
 		"brown": 83,
 		"sepia": 105,
 		"gray": 71,
-		"grey": 71,
+		"grey": "gray",
 		"blue gray": 103,
-		"blue grey": 103,
+		"blue grey": "blue gray",
 		"white": 3,
 		"black": 0,
-		"off": 0
+		"off": "black"
 	},
 	"basic": {
 		"range": [0, 127]
