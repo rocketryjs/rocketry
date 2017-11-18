@@ -7,6 +7,8 @@ cache:
         - "node_modules"
 before_install:
     - npm install -g node-gyp
+env:
+    - CXX=g++-5
 addons:
     apt:
         sources:
