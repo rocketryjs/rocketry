@@ -49,7 +49,7 @@ class Button extends EventEmitter {
 			this._xy(object[0], object[1]);
 		} else if (typeof object.note === "number") {
 			// keys => header?, value
-			const header = object.header || this._buttons.pad._header;
+			const header = object.header || this._buttons.pad.header;
 			this.values.push({
 				header,
 				"note": object.note
@@ -58,11 +58,20 @@ class Button extends EventEmitter {
 			// keys => header?, note
 			// Iterate through notes
 			for (let i = 0; i < object.note.length; i++) {
-				const header = object.headers[i] || object.header || this._buttons.pad._header;
+				const header = object.headers[i] || object.header || this._buttons.pad.header;
 				this.values.push({
 					header,
 					"note": object.note[i]
 				});
+			}
+		} else if (object === "pad") {
+			// whole pad
+			const xRange = _.range(...this._buttons.pad.x);
+			const yRange = _.range(...this._buttons.pad.y);
+			for (const x of xRange) {
+				for (const y of yRange) {
+					this._getValues([x, y]);
+				}
 			}
 		} else if (typeof object === "string" && (object = _.at(this._buttons, object)[0])) {
 			// from config
@@ -89,7 +98,7 @@ class Button extends EventEmitter {
 
 		// Set values
 		this.values.push({
-			"header": this._buttons.pad._header,
+			"header": this._buttons.pad.header,
 			"note": parseInt(`${y + this._buttons.pad.offset.y}${x + this._buttons.pad.offset.x}`)
 		});
 	}

@@ -78,7 +78,7 @@ const data = {
 			}
 		},
 		"pad": {
-			"_header": 144,
+			"header": 144,
 			"x": [0, 8],
 			"y": [0, 8],
 			"offset": {
