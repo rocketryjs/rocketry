@@ -10,26 +10,72 @@ const colors = require("./rgb-colors.js");
 const data = {
 	"buttons": {
 		"top": {
-			"_header": 176,
-			"up": 104,
-			"down": 105,
-			"left": 106,
-			"right": 107,
-			"session": 108,
-			"user 1": 109,
-			"user 2": 110,
-			"mixer": 111
+			"up": {
+				"header": 176,
+				"note": 104
+			},
+			"down": {
+				"header": 176,
+				"note": 105
+			},
+			"left": {
+				"header": 176,
+				"note": 106
+			},
+			"right": {
+				"header": 176,
+				"note": 107
+			},
+			"session": {
+				"header": 176,
+				"note": 108
+			},
+			"user 1": {
+				"header": 176,
+				"note": 109
+			},
+			"user 2": {
+				"header": 176,
+				"note": 110
+			},
+			"mixer": {
+				"header": 176,
+				"note": 111
+			}
 		},
 		"right": {
-			"_header": 144,
-			"volume": 89,
-			"pan": 79,
-			"send a": 69,
-			"send b": 59,
-			"stop": 49,
-			"mute": 39,
-			"solo": 29,
-			"record arm": 19
+			"volume": {
+				"header": 144,
+				"note": 89
+			},
+			"pan": {
+				"header": 144,
+				"note": 79
+			},
+			"send a": {
+				"header": 144,
+				"note": 69
+			},
+			"send b": {
+				"header": 144,
+				"note": 59
+			},
+			"stop": {
+				"header": 144,
+				"note": 49
+			},
+			"mute": {
+				"header": 144,
+				"note": 39
+			},
+			"solo": {
+				"header": 144,
+				"note": 29
+			},
+			"record arm": {
+				"header": 144,
+				"note": 19
+			}
 		},
 		"pad": {
 			"_header": 144,

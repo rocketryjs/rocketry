@@ -25,57 +25,72 @@ class Button extends EventEmitter {
 			this.launchpad = Launchpad.lastInstance;
 		}
 
-		// Pad config
-		this._pad = this.launchpad.getConfig("buttons.pad");
+		// Config
+		this._buttons = this.launchpad.getConfig("buttons");
 
 		// Set values
 		this.values = [];
 		// Arrays of coordinate pairs, object of MIDI values or coordinate pairs
 		for (const object of args) {
-			if (object.x && object.y) {
-				// keys => x, y
-				this._xy(object.x, object.y);
-			} else if (Array.isArray(object)) {
-				// [x, y]
-				this._xy(object[0], object[1]);
-			} else if (object.value) {
-				// keys => header?, value
-				const header = object.header || this._pad._header;
-				this.values.push({
-					header,
-					"note": object.value
-				});
-			} else if (object.values) {
-				// keys => header?, values
-				// Iterate through Values
-				for (let i = 0; i < object.values.length; i++) {
-					const header = object.headers[i] || object.header || this._pad._header;
-					this.values.push({
-						header,
-						"note": object.values[i]
-					});
-				}
-			} else {
-				throw new TypeError("Invalid Button location.");
-			}
+			this._getValues(object);
 		}
 
 		// Method chaining
 		return this;
 	}
 
+	// Get button values
+	_getValues(object) {
+		if (object.x && object.y) {
+			// keys => x, y
+			this._xy(object.x, object.y);
+		} else if (Array.isArray(object)) {
+			// [x, y]
+			this._xy(object[0], object[1]);
+		} else if (typeof object.note === "number") {
+			// keys => header?, value
+			const header = object.header || this._buttons.pad._header;
+			this.values.push({
+				header,
+				"note": object.note
+			});
+		} else if (Array.isArray(object.note)) {
+			// keys => header?, note
+			// Iterate through notes
+			for (let i = 0; i < object.note.length; i++) {
+				const header = object.headers[i] || object.header || this._buttons.pad._header;
+				this.values.push({
+					header,
+					"note": object.note[i]
+				});
+			}
+		} else if (typeof object === "string" && (object = _.at(this._buttons, object)[0])) {
+			// from config
+			if (!object.note && !object.x) {
+				// object of buttons
+				for (const key in object) {
+					this._getValues(object[key]);
+				}
+			} else {
+				// single button
+				this._getValues(object);
+			}
+		} else {
+			throw new TypeError("Invalid button location.");
+		}
+	}
 	// Values from coordinates
 	_xy(x, y) {
 		// Validate
 		// Not number or not in range of the device's pad
-		if (!_.inRange(x, ...this._pad.x) || !_.inRange(y, ...this._pad.y)) {
+		if (!_.inRange(x, ...this._buttons.pad.x) || !_.inRange(y, ...this._buttons.pad.y)) {
 			throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
 		}
 
 		// Set values
 		this.values.push({
-			"header": this._pad._header,
-			"note": parseInt(`${y + this._pad.offset.y}${x + this._pad.offset.x}`)
+			"header": this._buttons.pad._header,
+			"note": parseInt(`${y + this._buttons.pad.offset.y}${x + this._buttons.pad.offset.x}`)
 		});
 	}
 
