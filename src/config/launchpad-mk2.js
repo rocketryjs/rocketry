@@ -82,8 +82,8 @@ const data = {
 		}
 	},
 	"receive": {
-		"press": ["header", "location", 127],
-		"release": ["header", "location", 0]
+		"press": ["header", "note", 127],
+		"release": ["header", "note", 0]
 	},
 	"sysex": {
 		"prefix": [240, 0, 32, 41, 2, 24],

@@ -28,18 +28,15 @@ const button = (
 // 	"speed": 7
 // }, "test"], true);
 
-// button.on("press", (...args) => {
-// 	console.log(args);
-// })
-
-
-launchpad.input.on("message", function(deltaTime, message) {
-	console.log(deltaTime, message)
-	if (message[2] === 0) {
-		// launchpad.output.sendMessage([message[0], message[1], 57]);
-		// launchpad.output.sendMessage([message[0], message[1], 0]);
-	} else {
-		launchpad.dark();
-		// launchpad.output.sendMessage([message[0], message[1], 0]);
-	}
+button.on("press", function() {
+	this.setColor("blue");
 });
+button.on("release", function() {
+	this.dark();
+});
+new rocket.Button([7, 7], launchpad)
+	.light("red")
+	.on("press", function() {
+		this.launchpad.dark();
+		this.light("red");
+	});

@@ -48,6 +48,9 @@ class Launchpad {
 			}
 		}
 
+		// Set array for Buttons that are listeneing to events
+		this.emitters = [];
+
 		// Set this instace as the last created one. This allows for users to ommit the instace in, say, Button creation while still allowing for it to be set.
 		this.constructor.lastInstance = this;
 
@@ -83,9 +86,57 @@ class Launchpad {
 		return this;
 	}
 
+	// Relay MIDI messages to listeners
+	_hasSimilarBytes(message, template) {
+		for (let i = 0; i < template.length; i++) {
+			if (typeof template[i] === "string") {
+				continue;
+			}
+
+			if (message[i] === template[i]) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+
+		return true;
+	}
 	receive(deltaTime, message) {
-		// TODO relay message to Buttons
-		// const value = message[1]; TODO use config
+		// Get arguments and event from config
+		const events = this.getConfig("receive");
+		let event;
+		const args = {};
+		for (const key in events) {
+			const template = events[key];
+			if (this._hasSimilarBytes(message, template)) {
+				event = key;
+				for (let i = 0; i < template.length; i++) {
+					if (typeof template[i] === "string") {
+						args[template[i]] = message[i];
+					}
+				}
+				break;
+			}
+		}
+
+		// Relay to listeners
+		for (const emitter of this.emitters) {
+			let isSimilarEmitter;
+			for (const value of emitter.values) {
+				if (_.isEqual(value, args)) {
+					isSimilarEmitter = true;
+					break;
+				}
+
+				isSimilarEmitter = false;
+			}
+
+			if (isSimilarEmitter) {
+				emitter.emit(event, ...arguments, args);
+				emitter._updateListeners();
+			}
+		}
 
 		// Method chaining
 		return this;

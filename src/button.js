@@ -60,13 +60,6 @@ class Button extends EventEmitter {
 			}
 		}
 
-		if (!this.listeners) {
-			this.listeners = {};
-			for (const event of this.launchpad.events) {
-				this.listeners[event] = [];
-			}
-		}
-
 		// Method chaining
 		return this;
 	}
@@ -160,57 +153,57 @@ class Button extends EventEmitter {
 	}
 
 	// Extend EventEmitter methods
-	addListener(eventName, listener) {
-		this._pushListener(eventName, listener);
-		return super.addListener(...arguments);
+	addListener() {
+		const result = super.addListener(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	on(eventName, listener) {
-		this._pushListener(eventName, listener);
-		return super.on(...arguments);
+	on() {
+		const result = super.on(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	once(eventName, listener) {
-		this._pushListener(eventName, listener);
-		return super.once(...arguments);
+	once() {
+		const result = super.once(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	prependListener(eventName, listener) {
-		this._pushListener(eventName, listener);
-		return super.prependListener(...arguments);
+	prependListener() {
+		const result = super.prependListener(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	prependOnceListener(eventName, listener) {
-		this._pushListener(eventName, listener);
-		return super.prependOnceListener(...arguments);
+	prependOnceListener() {
+		const result = super.prependOnceListener(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	removeListener(eventName, listener) {
-		this._pullListener(eventName, listener);
-		return super.removeListener(...arguments);
+	removeListener() {
+		const result = super.removeListener(...arguments);
+		this._updateListeners();
+		return result;
 	}
-	removeAllListeners(eventName) {
-		this._removeListeners(eventName);
-		return super.removeAllListeners(...arguments);
+	removeAllListeners() {
+		const result = super.removeAllListeners(...arguments);
+		this._updateListeners();
+		return result;
 	}
 	// Record listeners for _core
-	_pushListener(eventName, listener) {
-		if (this.launchpad.events.includes(eventName)) {
-			// TODO: add Button instance if not already in array
-			this.listeners[eventName].push(listener);
-		} else {
-			throw new Error("eventName isn't a valid event.");
+	_updateListeners() {
+		// Assume empty and should remove from instances until a listener is found
+		let isEmpty = true;
+		const emitters = this.launchpad.emitters;
+
+		for (let i = 0; i < this.launchpad.events.length; i++) {
+			if (this.listeners.length > 0) {
+				isEmpty = false;
+			}
 		}
-	}
-	_pullListener(eventName, listener) {
-		if (this.launchpad.events.includes(eventName)) {
-			// TODO: remove Button instance if all listeners are empty, soft - no error
-			_.pull(this.listeners[eventName], listener);
-		} else {
-			throw new Error("eventName isn't a valid event.");
-		}
-	}
-	_removeListeners(eventName) {
-		if (this.launchpad.events.includes(eventName)) {
-			// TODO: remove Button instance if all listeners are empty, soft - no error
-			this.listeners[eventName] = [];
-		} else {
-			throw new Error("eventName isn't a valid event.");
+
+		if (isEmpty && emitters.includes(this)) {
+			_.pull(emitters, this);
+		} else if (!isEmpty && !emitters.includes(this)) {
+			emitters.push(this);
 		}
 	}
 
