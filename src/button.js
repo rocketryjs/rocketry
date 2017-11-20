@@ -154,39 +154,53 @@ class Button extends EventEmitter {
 
 	// Extend EventEmitter methods
 	addListener() {
-		const result = super.addListener(...arguments);
+		super.addListener(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	on() {
-		const result = super.on(...arguments);
+		super.on(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	once() {
-		const result = super.once(...arguments);
+		super.once(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	prependListener() {
-		const result = super.prependListener(...arguments);
+		super.prependListener(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	prependOnceListener() {
-		const result = super.prependOnceListener(...arguments);
+		super.prependOnceListener(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	removeListener() {
-		const result = super.removeListener(...arguments);
+		super.removeListener(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	removeAllListeners() {
-		const result = super.removeAllListeners(...arguments);
+		super.removeAllListeners(...arguments);
 		this._updateListeners();
-		return result;
+
+		// Method chaining
+		return this;
 	}
 	// Record listeners for _core
 	_updateListeners() {
