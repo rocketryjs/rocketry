@@ -207,12 +207,6 @@ class Launchpad {
 	darkAll() {
 		return this.setColor("off");
 	}
-	// Change Layout
-	changeLayout(layout) {
-		// TODO
-		// Method chaining
-		return this;
-	}
 	// Text Scrolling
 	scrollText(color, text, loop = 0) {
 		color = this.normalizeColor(color);
