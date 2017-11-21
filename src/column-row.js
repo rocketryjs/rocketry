@@ -7,12 +7,13 @@ const _core = require("./core.js");
 const Launchpad = require("./launchpad.js");
 
 
-const RowColumn = class {
+const ColumnRow = class {
 	constructor(value, launchpad) {
+		// The Launchpad instance it belongs to is either passed through as an argument or the last Launchpad created
 		if (Launchpad.isLaunchpad(launchpad)) {
 			this.launchpad = launchpad;
 		} else {
-			this.launchpad = Launchpad.launchpad;
+			this.launchpad = Launchpad.lastInstance;
 		}
 
 		this.value = value;
@@ -36,7 +37,7 @@ let classes = [];
 	for (const className of classNames) {
 		const classNameLower = className.toLowerCase();
 
-		classes[className] = class extends RowColumn {
+		classes[className] = class extends ColumnRow {
 			constructor(value, launchpad) {
 				super(value, launchpad);
 
