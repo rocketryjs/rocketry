@@ -50,6 +50,8 @@ class Launchpad {
 
 		// Set array for Buttons that are listeneing to events
 		this.emitters = [];
+		// Possible events
+		this.receive = this.getConfig("receive");
 
 		// Set this instace as the last created one. This allows for users to ommit the instace in, say, Button creation while still allowing for it to be set.
 		this.constructor.lastInstance = this;
@@ -62,12 +64,16 @@ class Launchpad {
 	}
 
 	open() {
-		// Set device
-		this.device = this._device; // Smart getter TODO
+		try {
+			// Set device
+			this.device = this._device; // Smart getter TODO
 
-		// Open ports
-		this.input.openPort(this.port.in);
-		this.output.openPort(this.port.out);
+			// Open ports
+			this.input.openPort(this.port.in);
+			this.output.openPort(this.port.out);
+		} catch (error) {
+			throw new Error("Failed to open a MIDI port. Check your port and connection to your Launchpad.");
+		}
 
 		// Create object of listener arrays
 		// Start receiving for this Launchpad
@@ -104,7 +110,7 @@ class Launchpad {
 	}
 	receive(deltaTime, message) {
 		// Get arguments and event from config
-		const events = this.getConfig("receive");
+		const events = this.receive;
 		let event;
 		const args = {};
 		for (const key in events) {
@@ -134,6 +140,7 @@ class Launchpad {
 
 			if (isSimilarEmitter) {
 				emitter.emit(event, ...arguments, args);
+				// Update in case of .once() or .prependOnceListener()
 				emitter._updateListeners();
 			}
 		}
@@ -279,13 +286,16 @@ class Launchpad {
 		if (Array.isArray(text)) {
 			for (const object of text) {
 				if (typeof object === "string") {
+					// Recursive with each string
 					result.push(this.normalizeText(object));
 				} else {
+					// Add plain speed byte, recursive with each string in object
 					result.push(object.speed);
 					result.push(this.normalizeText(object.text));
 				}
 			}
 		} else {
+			// Get character codes, not all ASCII works; not all non-standard ASCII fails so there's not currently a validation process
 			for (let i = 0; i < text.length; i++) {
 				result.push(text.charCodeAt(i));
 			}

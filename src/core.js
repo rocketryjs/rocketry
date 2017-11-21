@@ -102,7 +102,6 @@ const send = function(command, args, launchpad) {
 	}
 
 	// Send it already!
-	// console.log(message); // debug
 	launchpad.output.sendMessage(message);
 
 	// Return the Launchpad for send method chaining
