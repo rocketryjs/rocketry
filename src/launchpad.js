@@ -8,7 +8,29 @@ const _core = require("./core.js");
 // Supported devices
 const support = require("./support.js");
 
+/*
+	Functions
+*/
+const hasSimilarBytes = function(message, template) {
+	for (let i = 0; i < template.length; i++) {
+		if (typeof template[i] === "string") {
+			continue;
+		}
 
+		if (message[i] === template[i]) {
+			continue;
+		} else {
+			return false;
+		}
+	}
+
+	return true;
+};
+
+
+/*
+	Launchpad Class
+*/
 class Launchpad {
 	constructor(...ports) {
 		// Create MIDI I/O
@@ -48,12 +70,7 @@ class Launchpad {
 			}
 		}
 
-		// Set array for Buttons that are listeneing to events
-		this.emitters = [];
-		// Possible events
-		this.receive = this.getConfig("receive");
-
-		// Set this instace as the last created one. This allows for users to ommit the instace in, say, Button creation while still allowing for it to be set.
+		// Set this instace as the last created one. This allows for users to ommit the instace in, Button, Column, and Row creation while still allowing for it to be set.
 		this.constructor.lastInstance = this;
 
 		// Open connection with device
@@ -66,19 +83,33 @@ class Launchpad {
 	open() {
 		try {
 			// Set device
-			this.device = this._device; // Smart getter TODO
+			this.device = (() => {
+				// Get port names
+				const inPortName = this.input.getPortName(this.port.in).match(support.deviceRegex);
+				const outPortName = this.output.getPortName(this.port.out).match(support.deviceRegex);
+
+				if ((inPortName && outPortName) && inPortName[1] === outPortName[1]) {
+					return inPortName[1];
+				} else {
+					throw new Error("A port name for your Launchpad doesn't match the supported devices or doesn't match the other port.");
+				}
+			})();
 
 			// Open ports
 			this.input.openPort(this.port.in);
 			this.output.openPort(this.port.out);
-		} catch (error) {
-			throw new Error("Failed to open a MIDI port. Check your port and connection to your Launchpad.");
-		}
 
-		// Create object of listener arrays
-		// Start receiving for this Launchpad
-		this.events = Object.keys(this.getConfig("receive"));
-		_core.receive(this);
+			// Config for possible events
+			this.events = this.getConfig("receive");
+			// Set array for Buttons (which are emitters) that are listeneing to events
+			this.emitters = [];
+			// Start receiving MIDI messages for this Launchpad and relay them to Buttons through receive()
+			this.input.on("message", (deltaTime, message) => {
+				this.receive(deltaTime, message);
+			});
+		} catch (error) {
+			throw new Error("Failed to open a MIDI port. Check your port and connection to your Launchpad.\n\n" + error);
+		}
 
 		// Method chaining
 		return this;
@@ -93,29 +124,13 @@ class Launchpad {
 	}
 
 	// Relay MIDI messages to listeners
-	_hasSimilarBytes(message, template) {
-		for (let i = 0; i < template.length; i++) {
-			if (typeof template[i] === "string") {
-				continue;
-			}
-
-			if (message[i] === template[i]) {
-				continue;
-			} else {
-				return false;
-			}
-		}
-
-		return true;
-	}
 	receive(deltaTime, message) {
-		// Get arguments and event from config
-		const events = this.receive;
+		// Get arguments and event from config template and message
 		let event;
 		const args = {};
-		for (const key in events) {
-			const template = events[key];
-			if (this._hasSimilarBytes(message, template)) {
+		for (const key in this.events) {
+			const template = this.events[key];
+			if (hasSimilarBytes(message, template)) {
 				event = key;
 				for (let i = 0; i < template.length; i++) {
 					if (typeof template[i] === "string") {
@@ -141,25 +156,12 @@ class Launchpad {
 			if (isSimilarEmitter) {
 				emitter.emit(event, ...arguments, args);
 				// Update in case of .once() or .prependOnceListener()
-				emitter._updateListeners();
+				emitter.updateListeners();
 			}
 		}
 
 		// Method chaining
 		return this;
-	}
-
-	get _device() {
-		const portName = this.input.getPortName(this.port.in);
-		const match = portName.match(support.deviceRegex);
-		if (match) {
-			// Smart getter TODO (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get#Smart_self-overwriting_lazy_getters)
-			// delete this.device;
-			// return this.device = match[1];
-			return match[1];
-		} else {
-			throw new Error("The port name for your Launchpad doesn't match the supported devices.");
-		}
 	}
 
 	getConfig(...paths) {

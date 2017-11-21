@@ -16,7 +16,7 @@ class Button extends EventEmitter {
 		// EventEmitter
 		super();
 
-		// The Launchpad instance it belongs to is either passed through as an argument or the last Launchpad created (for glorious laziness when using only one Launchpad).
+		// The Launchpad instance it belongs to is either passed through as an argument or the last Launchpad created
 		const lastArg = _.last(args);
 		if (Launchpad.isLaunchpad(lastArg)) {
 			this.launchpad = lastArg;
@@ -25,7 +25,7 @@ class Button extends EventEmitter {
 			this.launchpad = Launchpad.lastInstance;
 		}
 
-		// Config
+		// Button config
 		this._buttons = this.launchpad.getConfig("buttons");
 
 		// Set values
@@ -179,60 +179,60 @@ class Button extends EventEmitter {
 	// Extend EventEmitter methods
 	addListener() {
 		super.addListener(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	on() {
 		super.on(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	once() {
 		super.once(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	prependListener() {
 		super.prependListener(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	prependOnceListener() {
 		super.prependOnceListener(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	removeListener() {
 		super.removeListener(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
 	removeAllListeners() {
 		super.removeAllListeners(...arguments);
-		this._updateListeners();
+		this.updateListeners();
 
 		// Method chaining
 		return this;
 	}
-	// Record listeners for _core
-	_updateListeners() {
+	// Record listeners for relaying from Launchpad to Button
+	updateListeners() {
 		// Assume empty and should remove from instances until a listener is found
 		let isEmpty = true;
 		const emitters = this.launchpad.emitters;
 
-		for (let i = 0; i < this.launchpad.events.length; i++) {
+		for (let i = 0; i < Object.keys(this.launchpad.events).length; i++) {
 			if (this.listeners.length > 0) {
 				isEmpty = false;
 			}

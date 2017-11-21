@@ -42,7 +42,7 @@ const send = function(command, args, launchpad) {
 	let message = _.flattenDeep((function normalizeMessage(item) {
 		switch (typeof item) {
 			case "string":
-				// Run as if it was a number (below) (no break) TODO: https://github.com/eslint/eslint/issues/9559
+			// Run as if it was a number (below) (no break)
 			case "number": {
 				return [item];
 			}
@@ -108,20 +108,9 @@ const send = function(command, args, launchpad) {
 	return launchpad;
 };
 
-// Receives commands from a Launchpad instance
-const receive = function(launchpad) {
-	launchpad.input.on("message", (deltaTime, message) => {
-		launchpad.receive(deltaTime, message);
-	});
-
-	// Return the Launchpad for send method chaining
-	return launchpad;
-};
-
 
 const _core = {
 	send,
-	receive,
 	getFirstLaunchpad,
 	newInput,
 	newOutput
