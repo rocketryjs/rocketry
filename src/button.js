@@ -66,8 +66,8 @@ class Button extends EventEmitter {
 			}
 		} else if (object === "pad") {
 			// whole pad
-			const xRange = _.range(...this._buttons.pad.x);
-			const yRange = _.range(...this._buttons.pad.y);
+			const xRange = _.range(...this._buttons.pad.range.x);
+			const yRange = _.range(...this._buttons.pad.range.y);
 			for (const x of xRange) {
 				for (const y of yRange) {
 					this._getValues([x, y]);
@@ -92,7 +92,7 @@ class Button extends EventEmitter {
 	_xy(x, y) {
 		// Validate
 		// Not number or not in range of the device's pad
-		if (!_.inRange(x, ...this._buttons.pad.x) || !_.inRange(y, ...this._buttons.pad.y)) {
+		if (!_.inRange(x, ...this._buttons.pad.range.x) || !_.inRange(y, ...this._buttons.pad.range.y)) {
 			throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
 		}
 

@@ -167,8 +167,8 @@ const paint = function(deltaTime, message) {
 const launchpad = (
 	new rocket.Launchpad()
 );
-const xRange = _.range(...launchpad.getConfig("buttons.pad.x"));
-const yRange = _.range(...launchpad.getConfig("buttons.pad.y"));
+const xRange = _.range(...launchpad.getConfig("buttons.pad.range.x"));
+const yRange = _.range(...launchpad.getConfig("buttons.pad.range.y"));
 const totalPadButtons = xRange.length * yRange.length;
 const colorRange = _.range(...launchpad.getConfig("colors.basic.range"));
 let currentColor = "off";
