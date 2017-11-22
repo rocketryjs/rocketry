@@ -7,4 +7,4 @@ node_modules/
 #################
 ## Debug
 #################
-test/debug.js
+debug.js

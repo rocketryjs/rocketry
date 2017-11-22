@@ -6,3 +6,6 @@ cache:
         - "node_modules"
 install:
     - npm install lodash
+    - npm install chai
+    - npm install sinon
+    - npm install proxyquire
