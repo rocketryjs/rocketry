@@ -1,6 +1,8 @@
 /*
 	Module dependencies
 */
+// Node Events
+const EventEmitter = require("events");
 // lodash
 const _ = require("lodash");
 // Core
@@ -31,8 +33,11 @@ const hasSimilarBytes = function(message, template) {
 /*
 	Launchpad Class
 */
-class Launchpad {
+class Launchpad extends EventEmitter {
 	constructor(...ports) {
+		// EventEmitter
+		super();
+
 		// Create MIDI I/O
 		this.input = _core.newInput();
 		this.output = _core.newOutput();
@@ -154,11 +159,15 @@ class Launchpad {
 			}
 
 			if (isSimilarEmitter) {
+				// To buttons
 				emitter.emit(event, ...arguments, args);
 				// Update in case of .once() or .prependOnceListener()
 				emitter.updateListeners();
 			}
 		}
+
+		// To launchpad
+		this.emit(event, ...arguments, args);
 
 		// Method chaining
 		return this;
@@ -303,6 +312,50 @@ class Launchpad {
 			}
 		}
 		return result;
+	}
+
+	// Extend EventEmitter methods
+	addListener() {
+		super.addListener(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	on() {
+		super.on(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	once() {
+		super.once(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	prependListener() {
+		super.prependListener(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	prependOnceListener() {
+		super.prependOnceListener(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	removeListener() {
+		super.removeListener(...arguments);
+
+		// Method chaining
+		return this;
+	}
+	removeAllListeners() {
+		super.removeAllListeners(...arguments);
+
+		// Method chaining
+		return this;
 	}
 
 	static isLaunchpad(object) {
