@@ -54,7 +54,7 @@ describe("_core", () => {
 
 				// Message spy
 				this.sendMessage = sinon.spy();
-			}
+			}, "@noCallThru": true
 		};
 
 		_core = proxyquire("../src/core.js", {
