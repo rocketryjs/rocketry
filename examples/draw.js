@@ -10,13 +10,14 @@ const _ = require("lodash");
 	Functions
 */
 // Add/wipe drawing
-const addDrawing = function() {
+const addDrawing = function(color) {
 	drawings[currentDrawing] = [];
 
 	for (const y of yRange) {
 		drawings[currentDrawing][y] = [];
 		for (const x of xRange) {
-			drawings[currentDrawing][y][x] = {};
+			const data = {color};
+			drawings[currentDrawing][y][x] = data;
 		}
 	}
 };
@@ -31,10 +32,12 @@ const switchDrawing = function(direction) {
 		return;
 	}
 
-	if (!drawings[currentDrawing]) {
-		addDrawing();
+	if (!drawings[currentDrawing] && mode === "palette") {
+		return;
+	} else if (!drawings[currentDrawing]) {
+		addDrawing("off");
 	}
-	console.log("loading drawing " + currentDrawing);
+	console.log("loading drawing " + (currentDrawing + 1));
 	load(drawings[currentDrawing]);
 };
 
@@ -64,6 +67,17 @@ const load = function(data) {
 let tempDrawings;
 let tempCurrentDrawing;
 let tempPaletteButton;
+const stopPalette = function() {
+	if (mode === "palette") {
+		// Cleanup palette
+		pad.removeListener("press", paletteCallback);
+		pad.on("press", paint);
+		drawings = tempDrawings;
+		currentDrawing = tempCurrentDrawing;
+		load(drawings[currentDrawing]);
+		mode = "paint";
+	}
+};
 const paletteCallback = function(deltaTime, message) {
 	const y = parseInt(message[1].toString()[0]) - this._buttons.pad.offset.y;
 	const x = parseInt(message[1].toString()[1]) - this._buttons.pad.offset.x;
@@ -76,13 +90,8 @@ const paletteCallback = function(deltaTime, message) {
 	currentColor = color;
 
 	// Cleanup
-	this.removeListener("press", paletteCallback);
-	this.on("press", paint);
-	drawings = tempDrawings;
-	currentDrawing = tempCurrentDrawing;
-	load(drawings[currentDrawing]);
+	stopPalette();
 };
-
 const colorPalette = function(button) {
 	// Generate palette drawings
 	const colorPalette = [];
@@ -117,6 +126,7 @@ const colorPalette = function(button) {
 
 	console.log(`loading palette as ${pages} drawing(s)...`);
 	load(drawings[currentDrawing]);
+	mode = "palette";
 
 	pad.removeListener("press", paint);
 	pad.on("press", paletteCallback);
@@ -134,27 +144,37 @@ const paint = function(deltaTime, message) {
 			button.dark();
 			button.stopFlash();
 			button.stopPulse();
-			data = {};
+
+			data.color = "off";
+			delete data.flash;
+			delete data.pulse;
+
 			break;
 		}
 		case "flash": {
 			button.flash(currentColor);
+
 			data.flash = currentColor;
 			delete data.pulse;
+
 			break;
 		}
 		case "pulse": {
 			button.pulse(currentColor);
-			data = {
-				"pulse": currentColor
-			};
+
+			delete data.color;
+			delete data.flash;
+			data.pulse = currentColor;
+
 			break;
 		}
 		case "paint":
 			// fallthrough
 		default: {
 			button.setColor(currentColor);
+
 			data.color = currentColor;
+			delete data.flash;
 			delete data.pulse;
 		}
 	}
@@ -176,7 +196,7 @@ let mode = "paint";
 
 let currentDrawing = 0;
 let drawings = [];
-addDrawing();
+addDrawing("off");
 
 const pad = (
 	new rocket.Button("pad", launchpad)
@@ -194,6 +214,8 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.up", launchpad)
 		.setColor("orange")
 		.on("press", function() {
+			stopPalette();
+
 			if (mode === "flash") {
 				console.log("painting mode");
 				mode = "paint";
@@ -209,6 +231,8 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.down", launchpad)
 		.setColor("orange")
 		.on("press", function() {
+			stopPalette();
+
 			if (mode === "pulse") {
 				console.log("painting mode");
 				mode = "paint";
@@ -224,7 +248,6 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.left", launchpad)
 		.setColor("grey")
 		.on("press", function() {
-			console.log("getting previous drawing...");
 			switchDrawing("left");
 		})
 );
@@ -232,7 +255,6 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.right", launchpad)
 		.setColor("grey")
 		.on("press", function() {
-			console.log("getting next drawing...");
 			switchDrawing("right");
 		})
 );
@@ -243,11 +265,14 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 		.setColor(7) // Dark red
 		.on("press", function() {
 			console.log("clearing drawing");
+			// Exit palette
+			stopPalette();
+
 			if (drawings.length - 1 === currentDrawing && drawings.length > 1) {
 				drawings.pop();
 				switchDrawing("left");
 			} else {
-				addDrawing();
+				addDrawing("off");
 				pad.dark();
 			}
 		})
@@ -258,7 +283,10 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.user 1", launchpad)
 		.setColor("blue")
 		.on("press", function() {
+			stopPalette();
+
 			console.log("filling with " + currentColor);
+			addDrawing(currentColor);
 			pad.setColor(currentColor);
 		})
 );
@@ -268,6 +296,8 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 	new rocket.Button("top.user 2", launchpad)
 		.setColor("white")
 		.on("press", function() {
+			stopPalette();
+
 			if (mode === "erase") {
 				console.log("painting mode");
 				mode = "paint";
@@ -282,6 +312,13 @@ console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch 
 (
 	new rocket.Button("top.mixer", launchpad)
 		.setColor("red")
+		.on("press", function() {
+			console.log("hiding UI");
+			(
+				new rocket.Button("top", "right", launchpad)
+					.dark()
+			);
+		})
 		.on("release", function() {
 			console.log("exiting...");
 			launchpad.dark();
@@ -297,9 +334,15 @@ for (let i = 0; i <= 7; i++) {
 		new rocket.Button("right." + Object.keys(rightBar)[i], launchpad)
 			.setColor(paletteDefaults[i])
 			.on("press", function() {
-				if (currentColor === this.paletteColor) {
+				if (tempPaletteButton === this && mode === "palette") {
+					stopPalette();
+					return;
+				}
+
+				if (currentColor === this.paletteColor && mode === "paint") {
 					colorPalette(this);
 				} else {
+					stopPalette();
 					console.log("switching to " + this.paletteColor);
 					currentColor = this.paletteColor;
 				}
