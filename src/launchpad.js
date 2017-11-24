@@ -38,9 +38,6 @@ class Launchpad extends EventEmitter {
 		// EventEmitter
 		super();
 
-		// Create MIDI I/O
-		this.input = _core.newInput();
-		this.output = _core.newOutput();
 		this.port = {};
 
 		if (ports.length === 2 && typeof ports[0] === "number" && typeof ports[1] === "number") {
@@ -65,8 +62,8 @@ class Launchpad extends EventEmitter {
 				}
 				case "undefined": {
 					// Find first device in MIDI out and MIDI in with a correct name
-					this.port.in = _core.getFirstLaunchpad(this.input);
-					this.port.out = _core.getFirstLaunchpad(this.output);
+					this.port.in = _core.getFirstLaunchpad(_core.newInput());
+					this.port.out = _core.getFirstLaunchpad(_core.newOutput());
 					break;
 				}
 				default: {
@@ -87,6 +84,10 @@ class Launchpad extends EventEmitter {
 
 	open() {
 		try {
+			// Create MIDI I/O
+			this.input = _core.newInput();
+			this.output = _core.newOutput();
+
 			// Set device
 			this.device = (() => {
 				// Get port names
@@ -106,8 +107,10 @@ class Launchpad extends EventEmitter {
 
 			// Config for possible events
 			this.events = this.getConfig("receive");
+
 			// Set array for Buttons (which are emitters) that are listeneing to events
 			this.emitters = [];
+
 			// Start receiving MIDI messages for this Launchpad and relay them to Buttons through receive()
 			this.input.on("message", (deltaTime, message) => {
 				this.receive(deltaTime, message);
