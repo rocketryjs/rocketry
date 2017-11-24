@@ -11,7 +11,7 @@
 	Stubbed:
 		MIDI.input,
 		MIDI.output
-			getPortCount,
+			getPortCount
 			getPortName
 	Spied:
 		MIDI.output.sendMessage
@@ -244,7 +244,9 @@ describe("_core", () => {
 		it("should return the launchpad", () => {
 			expect(
 				_core.send("light", {"header": 144, "led": 11, "color": 57}, launchpadFake)
-			).to.equal(launchpadFake);
+			).to.equal(
+				launchpadFake
+			);
 		});
 	});
 });
