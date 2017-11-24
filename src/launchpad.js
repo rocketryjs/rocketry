@@ -48,7 +48,7 @@ class Launchpad extends EventEmitter {
 
 			switch (typeof port) {
 				case "number": {
-					this.port.in, this.port.out = port;
+					this.port.in = this.port.out = port;
 					break;
 				}
 				case "object": {
