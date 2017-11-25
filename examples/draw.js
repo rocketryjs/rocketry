@@ -203,7 +203,7 @@ const pad = (
 		.on("press", paint)
 );
 
-console.log("Paint with your Launchpad!\nup: flashing mode, extra tap to switch back to painting mode\ndown: pulsing mode, extra tap to switch back to painting mode\nleft/right: navigate drawings/color palette\nsession: clear/destroy drawing\nuser 1: fill current color\nuser 2: eraser mode\nmixer: clear pad and exit program\nright buttons: color palette, extra tap to use custom color");
+console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switch back to painting mode\n- down: pulsing mode, extra tap to switch back to painting mode\n- left/right: navigate drawings/color palette\n- session: clear/destroy drawing\n- user 1: fill current color\n- user 2: eraser mode\n- mixer: clear pad and exit program\n- right buttons: color palette, extra tap to use custom color\n\nSee the wiki for documentation.");
 
 
 /*
