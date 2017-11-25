@@ -9,36 +9,25 @@ const _ = require("lodash");
 const support = require("./support.js");
 
 // Get MIDI I/O
-let input, output;
-try {
-	input = new midi.input();
-	output = new midi.output();
-} catch (error) {
-	throw new Error("Failed to create input and output MIDI channels.\n\n" + error);
-}
+// Gets a MIDI input
+const newInput = function() {
+	return new midi.input();
+};
+// Gets a MIDI output
+const newOutput = function() {
+	return new midi.output();
+};
 
 // Gets the first supported Launchpad's ports
-const getFirstLaunchpad = function() {
-	const channels = {
-		input,
-		output
-	};
-	const port = {};
+const getFirstLaunchpad = function(port) {
 	const regex = support.deviceRegex;
-
-	// For input and output
-	for (const key in channels) {
-		const numOfPorts = channels[key].getPortCount();
-		// For all ports in input/output
-		for (let i = 0; i < numOfPorts; i++) {
-			if (channels[key].getPortName(i).match(regex)) {
-				port[key] = i;
-				break;
-			}
+	const numOfPorts = port.getPortCount();
+	// For all ports in input/output
+	for (let i = 0; i < numOfPorts; i++) {
+		if (port.getPortName(i).match(regex)) {
+			return i;
 		}
 	}
-
-	return port;
 };
 
 // Send commands to a Launchpad instance
@@ -125,8 +114,8 @@ const send = function(command, args, launchpad) {
 const _core = {
 	send,
 	getFirstLaunchpad,
-	input,
-	output
+	newInput,
+	newOutput
 };
 
 

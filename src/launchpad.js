@@ -29,6 +29,18 @@ const hasSimilarBytes = function(message, template) {
 	return true;
 };
 
+const createMidiIO = function() {
+	try {
+		const data = {};
+		data.input = _core.newInput();
+		data.output = _core.newOutput();
+
+		return data;
+	} catch (error) {
+		throw new Error("Couldn't create MIDI I/O.\n\n" + error);
+	}
+};
+
 
 /*
 	Launchpad Class
@@ -61,8 +73,11 @@ class Launchpad extends EventEmitter {
 					break;
 				}
 				case "undefined": {
+					// Create MIDI I/O
+					Object.assign(this, createMidiIO());
 					// Find first device in MIDI out and MIDI in with a correct name
-					this.port = _core.getFirstLaunchpad();
+					this.port.input = _core.getFirstLaunchpad(this.input);
+					this.port.output = _core.getFirstLaunchpad(this.output);
 					break;
 				}
 				default: {
@@ -82,11 +97,12 @@ class Launchpad extends EventEmitter {
 	}
 
 	open() {
-		try {
-			// Create MIDI I/O
-			this.input = _core.input;
-			this.output = _core.output;
+		// Create MIDI I/O
+		if (!this.input || !this.output) {
+			Object.assign(this, createMidiIO());
+		}
 
+		try {
 			// Set device
 			this.device = (() => {
 				// Get port names
@@ -108,7 +124,9 @@ class Launchpad extends EventEmitter {
 			this.events = this.getConfig("receive");
 
 			// Set array for Buttons (which are emitters) that are listeneing to events
-			this.emitters = [];
+			if (!this.emitters) {
+				this.emitters = [];
+			}
 
 			// Start receiving MIDI messages for this Launchpad and relay them to Buttons through receive()
 			this.input.on("message", (deltaTime, message) => {
@@ -122,9 +140,16 @@ class Launchpad extends EventEmitter {
 		return this;
 	}
 	close() {
-		// Close ports
-		this.input.closePort();
-		this.output.closePort();
+		try {
+			// Close ports
+			this.input.closePort();
+			this.output.closePort();
+			// Delete ports so new ones can be created in its place if reopened
+			delete this.input;
+			delete this.output;
+		} catch (error) {
+			throw new Error("Couldn't close MIDI I/O.\n\n" + error);
+		}
 
 		// Method chaining
 		return this;
