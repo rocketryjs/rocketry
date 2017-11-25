@@ -8,6 +8,7 @@ const _ = require("lodash");
 // Supported devices
 const support = require("./support.js");
 
+
 // Get MIDI I/O
 // Gets a MIDI input
 const newInput = function() {

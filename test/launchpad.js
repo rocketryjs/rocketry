@@ -123,8 +123,8 @@ describe("launchpad", () => {
 					launchpad.port
 				).to.deep.equal(
 					{
-						"in": 0,
-						"out": 1
+						"input": 0,
+						"output": 1
 					}
 				);
 			});
@@ -136,8 +136,8 @@ describe("launchpad", () => {
 					launchpad.port
 				).to.deep.equal(
 					{
-						"in": 1,
-						"out": 1
+						"input": 1,
+						"output": 1
 					}
 				);
 			});
@@ -149,8 +149,8 @@ describe("launchpad", () => {
 					launchpad.port
 				).to.deep.equal(
 					{
-						"in": 0,
-						"out": 1
+						"input": 0,
+						"output": 1
 					}
 				);
 			});
@@ -158,15 +158,15 @@ describe("launchpad", () => {
 		context("when ports are passed as an object", () => {
 			it("should use supplied ports", () => {
 				const launchpad = new Launchpad({
-					"in": 0,
-					"out": 1
+					"input": 0,
+					"output": 1
 				});
 				expect(
 					launchpad.port
 				).to.deep.equal(
 					{
-						"in": 0,
-						"out": 1
+						"input": 0,
+						"output": 1
 					}
 				);
 			});
@@ -178,8 +178,8 @@ describe("launchpad", () => {
 					launchpad.port
 				).to.deep.equal(
 					{
-						"in": 0,
-						"out": 1
+						"input": 0,
+						"output": 1
 					}
 				);
 			});
