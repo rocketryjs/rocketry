@@ -46,7 +46,7 @@ const load = function(data) {
 	for (const x of xRange) {
 		for (const y of yRange) {
 			const value = data[y][x];
-			const button = new rocket.Button([x, y], launchpad);
+			const button = new launchpad.Button([x, y]);
 
 			if (value.color) {
 				button.setColor(value.color);
@@ -136,7 +136,7 @@ const colorPalette = function(button) {
 const paint = function(deltaTime, message) {
 	const y = parseInt(message[1].toString()[0]) - this._buttons.pad.offset.y;
 	const x = parseInt(message[1].toString()[1]) - this._buttons.pad.offset.x;
-	const button = new rocket.Button([x, y], launchpad);
+	const button = new launchpad.Button([x, y]);
 	let data = drawings[currentDrawing][y][x];
 
 	switch (mode) {
@@ -199,7 +199,7 @@ let drawings = [];
 addDrawing("off");
 
 const pad = (
-	new rocket.Button("pad", launchpad)
+	new launchpad.Button("pad")
 		.on("press", paint)
 );
 
@@ -211,7 +211,7 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 */
 // Up arrow: flash
 (
-	new rocket.Button("top.up", launchpad)
+	new launchpad.Button("top.up")
 		.setColor("orange")
 		.on("press", function() {
 			stopPalette();
@@ -228,7 +228,7 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // Down arrow: pulse
 (
-	new rocket.Button("top.down", launchpad)
+	new launchpad.Button("top.down")
 		.setColor("orange")
 		.on("press", function() {
 			stopPalette();
@@ -245,14 +245,14 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // Horizonal arrows: navigate drawings
 (
-	new rocket.Button("top.left", launchpad)
+	new launchpad.Button("top.left")
 		.setColor("grey")
 		.on("press", function() {
 			switchDrawing("left");
 		})
 );
 (
-	new rocket.Button("top.right", launchpad)
+	new launchpad.Button("top.right")
 		.setColor("grey")
 		.on("press", function() {
 			switchDrawing("right");
@@ -261,7 +261,7 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // Session: clear all
 (
-	new rocket.Button("top.session", launchpad)
+	new launchpad.Button("top.session")
 		.setColor(7) // Dark red
 		.on("press", function() {
 			console.log("clearing drawing");
@@ -280,7 +280,7 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // User 1: fill tool
 (
-	new rocket.Button("top.user 1", launchpad)
+	new launchpad.Button("top.user 1")
 		.setColor("blue")
 		.on("press", function() {
 			stopPalette();
@@ -293,7 +293,7 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // User 2: eraser
 (
-	new rocket.Button("top.user 2", launchpad)
+	new launchpad.Button("top.user 2")
 		.setColor("white")
 		.on("press", function() {
 			stopPalette();
@@ -310,12 +310,12 @@ console.log("Paint with your Launchpad!\n- up: flashing mode, extra tap to switc
 
 // Mixer: exit
 (
-	new rocket.Button("top.mixer", launchpad)
+	new launchpad.Button("top.mixer")
 		.setColor("red")
 		.on("press", function() {
 			console.log("hiding UI");
 			(
-				new rocket.Button("top", "right", launchpad)
+				new launchpad.Button("top", "right")
 					.dark()
 			);
 		})
@@ -331,7 +331,7 @@ const paletteDefaults = ["red", "pink", "deep purple", "blue", "cyan", "green", 
 const rightBar = launchpad.getConfig("buttons.right");
 for (let i = 0; i <= 7; i++) {
 	(
-		new rocket.Button("right." + Object.keys(rightBar)[i], launchpad)
+		new launchpad.Button("right." + Object.keys(rightBar)[i])
 			.setColor(paletteDefaults[i])
 			.on("press", function() {
 				if (tempPaletteButton === this && mode === "palette") {
