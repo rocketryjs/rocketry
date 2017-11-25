@@ -41,20 +41,20 @@ class Launchpad extends EventEmitter {
 		this.port = {};
 
 		if (ports.length === 2 && typeof ports[0] === "number" && typeof ports[1] === "number") {
-			this.port.in = ports[0];
-			this.port.out = ports[1];
+			this.port.input = ports[0];
+			this.port.output = ports[1];
 		} else {
 			const port = ports[0];
 
 			switch (typeof port) {
 				case "number": {
-					this.port.in = this.port.out = port;
+					this.port.input = this.port.output = port;
 					break;
 				}
 				case "object": {
 					if (Array.isArray(port)) {
-						this.port.in = port[0];
-						this.port.out = port[1];
+						this.port.input = port[0];
+						this.port.output = port[1];
 					} else {
 						this.port = port;
 					}
@@ -62,8 +62,7 @@ class Launchpad extends EventEmitter {
 				}
 				case "undefined": {
 					// Find first device in MIDI out and MIDI in with a correct name
-					this.port.in = _core.getFirstLaunchpad(_core.newInput());
-					this.port.out = _core.getFirstLaunchpad(_core.newOutput());
+					this.port = _core.getFirstLaunchpad();
 					break;
 				}
 				default: {
@@ -85,14 +84,14 @@ class Launchpad extends EventEmitter {
 	open() {
 		try {
 			// Create MIDI I/O
-			this.input = _core.newInput();
-			this.output = _core.newOutput();
+			this.input = _core.input;
+			this.output = _core.output;
 
 			// Set device
 			this.device = (() => {
 				// Get port names
-				const inPortName = this.input.getPortName(this.port.in).match(support.deviceRegex);
-				const outPortName = this.output.getPortName(this.port.out).match(support.deviceRegex);
+				const inPortName = this.input.getPortName(this.port.input).match(support.deviceRegex);
+				const outPortName = this.output.getPortName(this.port.output).match(support.deviceRegex);
 
 				if ((inPortName && outPortName) && inPortName[1] === outPortName[1]) {
 					return inPortName[1];
@@ -102,8 +101,8 @@ class Launchpad extends EventEmitter {
 			})();
 
 			// Open ports
-			this.input.openPort(this.port.in);
-			this.output.openPort(this.port.out);
+			this.input.openPort(this.port.input);
+			this.output.openPort(this.port.output);
 
 			// Config for possible events
 			this.events = this.getConfig("receive");
