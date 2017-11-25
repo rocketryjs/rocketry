@@ -343,6 +343,7 @@ for (let i = 0; i <= 7; i++) {
 					colorPalette(this);
 				} else {
 					stopPalette();
+					mode = "paint";
 					console.log("switching to " + this.paletteColor);
 					currentColor = this.paletteColor;
 				}
