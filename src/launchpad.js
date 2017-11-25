@@ -9,6 +9,10 @@ const _ = require("lodash");
 const _core = require("./core.js");
 // Supported devices
 const support = require("./support.js");
+// Button class
+const Button = require("./button.js");
+// Button class
+const ColumnRow = require("./column-row.js");
 
 /*
 	Functions
@@ -86,8 +90,32 @@ class Launchpad extends EventEmitter {
 			}
 		}
 
-		// Set this instace as the last created one. This allows for users to ommit the instace in, Button, Column, and Row creation while still allowing for it to be set.
-		this.constructor.lastInstance = this;
+		// Create Button, Column, Rows classes for Launchpad
+		const launchpad = this;
+		this.Button = class extends Button {
+			constructor() {
+				super(launchpad, ...arguments);
+
+				// Method chaining
+				return this;
+			}
+		};
+		this.Column = class extends ColumnRow.Column {
+			constructor() {
+				super(launchpad, ...arguments);
+
+				// Method chaining
+				return this;
+			}
+		};
+		this.Row = class extends ColumnRow.Row {
+			constructor() {
+				super(launchpad, ...arguments);
+
+				// Method chaining
+				return this;
+			}
+		};
 
 		// Open connection with device
 		this.open();

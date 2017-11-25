@@ -3,19 +3,12 @@
 */
 // Core
 const _core = require("./core.js");
-// Launchpad class
-const Launchpad = require("./launchpad.js");
 
 
 const ColumnRow = class {
-	constructor(value, launchpad) {
-		// The Launchpad instance it belongs to is either passed through as an argument or the last Launchpad created
-		if (Launchpad.isLaunchpad(launchpad)) {
-			this.launchpad = launchpad;
-		} else {
-			this.launchpad = Launchpad.lastInstance;
-		}
-
+	constructor(launchpad, value) {
+		// The Launchpad instance it belongs to is passed through as an argument
+		this.launchpad = launchpad;
 		this.value = value;
 	}
 
@@ -38,8 +31,8 @@ let classes = [];
 		const classNameLower = className.toLowerCase();
 
 		classes[className] = class extends ColumnRow {
-			constructor(value, launchpad) {
-				super(value, launchpad);
+			constructor(launchpad, value) {
+				super(launchpad, value);
 
 				// Method chaining
 				return this;

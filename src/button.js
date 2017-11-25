@@ -7,23 +7,15 @@ const EventEmitter = require("events");
 const _ = require("lodash");
 // Core
 const _core = require("./core.js");
-// Launchpad class
-const Launchpad = require("./launchpad.js");
 
 
 class Button extends EventEmitter {
-	constructor(...args) {
+	constructor(launchpad, ...values) {
 		// EventEmitter
 		super();
 
-		// The Launchpad instance it belongs to is either passed through as an argument or the last Launchpad created
-		const lastArg = _.last(args);
-		if (Launchpad.isLaunchpad(lastArg)) {
-			this.launchpad = lastArg;
-			args.pop();
-		} else {
-			this.launchpad = Launchpad.lastInstance;
-		}
+		// The Launchpad instance it belongs to is passed through as an argument
+		this.launchpad = launchpad;
 
 		// Button config
 		this._buttons = this.launchpad.getConfig("buttons");
@@ -31,7 +23,7 @@ class Button extends EventEmitter {
 		// Set values
 		this.values = [];
 		// Arrays of coordinate pairs, object of MIDI values or coordinate pairs
-		for (const object of args) {
+		for (const object of values) {
 			this._getValues(object);
 		}
 
