@@ -50,7 +50,7 @@ const rocket = require("launchpad-rocket");
 const launchpad = new rocket.Launchpad();
 
 // Create a Button instance on the Launchpad with at (0, 0)
-const button = new rocket.Button(0, 0, launchpad);
+const button = new launchpad.Button(0, 0);
 // Set it's color to pink
 button.setColor("pink");
 // Log to console on press
