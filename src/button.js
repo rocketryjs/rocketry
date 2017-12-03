@@ -10,15 +10,12 @@ const _core = require("./core.js");
 
 
 class Button extends EventEmitter {
-	constructor(launchpad, ...values) {
+	constructor(...values) {
 		// EventEmitter
 		super();
 
-		// The Launchpad instance it belongs to is passed through as an argument
-		this.launchpad = launchpad;
-
 		// Button config
-		this._buttons = this.launchpad.getConfig("buttons");
+		this._buttons = this.constructor.launchpad.getConfig("buttons");
 
 		// Set values
 		this.values = [];
@@ -98,7 +95,7 @@ class Button extends EventEmitter {
 	// Interaction
 	// Color
 	setColor(color) {
-		color = this.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad.normalizeColor(color);
 
 		let mode;
 		if (typeof color === "object") {
@@ -111,7 +108,7 @@ class Button extends EventEmitter {
 
 		for (const value of this.values) {
 			// Send to core, extra arguments are ignored so no need to remove the header for RGB mode
-			_core.send(mode, {"header": value.header, "led": value.note, color}, this.launchpad);
+			_core.send(mode, {"header": value.header, "led": value.note, color}, this.constructor.launchpad);
 		}
 
 		// Method chaining
@@ -129,7 +126,7 @@ class Button extends EventEmitter {
 	}
 	// Flashing
 	flash(color) {
-		color = this.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad.normalizeColor(color);
 
 		if (Array.isArray(color)) {
 			// RGB
@@ -137,7 +134,7 @@ class Button extends EventEmitter {
 		} else if (typeof color === "number") {
 			// Basic
 			for (const value of this.values) {
-				_core.send("flash", {"led": value.note, color}, this.launchpad);
+				_core.send("flash", {"led": value.note, color}, this.constructor.launchpad);
 			}
 		}
 
@@ -149,7 +146,7 @@ class Button extends EventEmitter {
 	}
 	// Pulsing
 	pulse(color) {
-		color = this.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad.normalizeColor(color);
 
 		if (Array.isArray(color)) {
 			// RGB
@@ -157,7 +154,7 @@ class Button extends EventEmitter {
 		} else if (typeof color === "number") {
 			// Basic
 			for (const value of this.values) {
-				_core.send("pulse", {"led": value.note, color}, this.launchpad);
+				_core.send("pulse", {"led": value.note, color}, this.constructor.launchpad);
 			}
 		}
 
@@ -222,9 +219,9 @@ class Button extends EventEmitter {
 	updateListeners() {
 		// Assume empty and should remove from instances until a listener is found
 		let isEmpty = true;
-		const emitters = this.launchpad.emitters;
+		const emitters = this.constructor.launchpad.emitters;
 
-		for (let i = 0; i < Object.keys(this.launchpad.events).length; i++) {
+		for (let i = 0; i < Object.keys(this.constructor.launchpad.events).length; i++) {
 			if (this.listeners.length > 0) {
 				isEmpty = false;
 			}

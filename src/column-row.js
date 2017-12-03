@@ -6,9 +6,7 @@ const _core = require("./core.js");
 
 
 const ColumnRow = class {
-	constructor(launchpad, value) {
-		// The Launchpad instance it belongs to is passed through as an argument
-		this.launchpad = launchpad;
+	constructor(value) {
 		this.value = value;
 	}
 
@@ -31,22 +29,22 @@ let classes = [];
 		const classNameLower = className.toLowerCase();
 
 		classes[className] = class extends ColumnRow {
-			constructor(launchpad, value) {
-				super(launchpad, value);
+			constructor(value) {
+				super(value);
 
 				// Method chaining
 				return this;
 			}
 
 			setColor(color) {
-				color = this.launchpad.normalizeColor(color);
+				color = this.contructor.launchpad.normalizeColor(color);
 
 				if (Array.isArray(color)) {
 					// RGB
 					throw new TypeError("Columns and rows can't be set to RGB colors all at once via MIDI.");
 				} else if (typeof color === "number") {
 					// Basic
-					_core.send(`light ${classNameLower}`, {[classNameLower]: this.value, color}, this.launchpad);
+					_core.send(`light ${classNameLower}`, {[classNameLower]: this.value, color}, this.contructor.launchpad);
 				}
 
 				// Method chaining
