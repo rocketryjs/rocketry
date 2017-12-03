@@ -90,6 +90,7 @@ class Launchpad extends EventEmitter {
 			}
 		}
 
+
 		// Create Button, Column, Rows classes for Launchpad
 		this.Button = class extends Button {
 			constructor() {
@@ -116,6 +117,7 @@ class Launchpad extends EventEmitter {
 			}
 		};
 		this.Button.launchpad = this.Column.launchpad = this.Row.launchpad = this;
+
 
 		// Open connection with device
 		this.open();
