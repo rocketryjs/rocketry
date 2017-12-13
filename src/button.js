@@ -14,88 +14,14 @@ class Button extends EventEmitter {
 		// EventEmitter
 		super();
 
-		// Button config
-		this._buttons = this.constructor.launchpad.getConfig("buttons");
-
-		// Set values
-		this.values = [];
-		// Arrays of coordinate pairs, object of MIDI values or coordinate pairs
-		for (const object of values) {
-			this._getValues(object);
-		}
-
 		// Method chaining
 		return this;
-	}
-
-	// Get button values
-	_getValues(object) {
-		if (object.x && object.y) {
-			// keys => x, y
-			this._xy(object.x, object.y);
-		} else if (Array.isArray(object)) {
-			// [x, y]
-			this._xy(object[0], object[1]);
-		} else if (typeof object.note === "number") {
-			// keys => header?, value
-			const header = object.header || this._buttons.pad.header;
-			this.values.push({
-				header,
-				"note": object.note
-			});
-		} else if (Array.isArray(object.note)) {
-			// keys => header?, note
-			// Iterate through notes
-			for (let i = 0; i < object.note.length; i++) {
-				const header = object.headers[i] || object.header || this._buttons.pad.header;
-				this.values.push({
-					header,
-					"note": object.note[i]
-				});
-			}
-		} else if (object === "pad") {
-			// whole pad
-			const xRange = _.range(...this._buttons.pad.range.x);
-			const yRange = _.range(...this._buttons.pad.range.y);
-			for (const x of xRange) {
-				for (const y of yRange) {
-					this._getValues([x, y]);
-				}
-			}
-		} else if (typeof object === "string" && (object = _.at(this._buttons, object)[0])) {
-			// from config
-			if (!object.note && !object.x) {
-				// object of buttons
-				for (const key in object) {
-					this._getValues(object[key]);
-				}
-			} else {
-				// single button
-				this._getValues(object);
-			}
-		} else {
-			throw new TypeError("Invalid button location.");
-		}
-	}
-	// Values from coordinates
-	_xy(x, y) {
-		// Validate
-		// Not number or not in range of the device's pad
-		if (!_.inRange(x, ...this._buttons.pad.range.x) || !_.inRange(y, ...this._buttons.pad.range.y)) {
-			throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
-		}
-
-		// Set values
-		this.values.push({
-			"header": this._buttons.pad.header,
-			"note": parseInt(`${y + this._buttons.pad.offset.y}${x + this._buttons.pad.offset.x}`)
-		});
 	}
 
 	// Interaction
 	// Color
 	setColor(color) {
-		color = this.constructor.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad._normalizeColor(color);
 
 		let mode;
 		if (typeof color === "object") {
@@ -126,7 +52,7 @@ class Button extends EventEmitter {
 	}
 	// Flashing
 	flash(color) {
-		color = this.constructor.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad._normalizeColor(color);
 
 		if (Array.isArray(color)) {
 			// RGB
@@ -146,7 +72,7 @@ class Button extends EventEmitter {
 	}
 	// Pulsing
 	pulse(color) {
-		color = this.constructor.launchpad.normalizeColor(color);
+		color = this.constructor.launchpad._normalizeColor(color);
 
 		if (Array.isArray(color)) {
 			// RGB

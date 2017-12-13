@@ -37,7 +37,7 @@ let classes = [];
 			}
 
 			setColor(color) {
-				color = this.contructor.launchpad.normalizeColor(color);
+				color = this.contructor.launchpad._normalizeColor(color);
 
 				if (Array.isArray(color)) {
 					// RGB

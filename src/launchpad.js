@@ -91,7 +91,7 @@ class Launchpad extends EventEmitter {
 		}
 
 
-		// Create Button, Column, Rows classes for Launchpad
+		// Create Button, Column, Row classes for Launchpad
 		this.Button = class extends Button {
 			constructor() {
 				super(...arguments);
@@ -117,6 +117,10 @@ class Launchpad extends EventEmitter {
 			}
 		};
 		this.Button.launchpad = this.Column.launchpad = this.Row.launchpad = this;
+
+
+		// Button config
+		this.buttonConfig = this.getConfig("buttons"); // TODO
 
 
 		// Open connection with device
@@ -250,6 +254,63 @@ class Launchpad extends EventEmitter {
 		}
 	}
 
+	// Get buttons
+	getButton(...values) {
+		// TODO: move, fix, meta program in original methods
+		const buttonsProto = {
+			"test": function() {
+				console.log("yuay");
+			}
+		};
+		// Set values
+		const buttons = [];
+		// Arrays of coordinate pairs, object of MIDI values or coordinate pairs
+		for (const value of values) {
+			buttons.push(
+				new this.Button(
+					this._normalizeButtonValues(value)
+				)
+			);
+		}
+
+		// Return array of `Button`s with the interaction methods
+		// Flatten out the arrays TODO?
+		return _.flattenDeep(
+			// Return and mutate the `buttons` array
+			Object.assign(
+				buttons,
+				// Add the methods from `buttonsProto`
+				buttonsProto
+			)
+		);
+	}
+	// Aliases for getButton
+	getButtons() {
+		return this.getButton(...arguments);
+	}
+	// Get column
+	getColumn(value) {
+
+	}
+	// Get row
+	getRow(value) {
+
+	}
+	// Get pad
+	getPadButtons() {
+		return this.getButton("pad");
+	}
+	getPad() {
+		return this.getPadButtons();
+	}
+	// Get all buttons
+	getAllButtons() {
+		return this.getButton("all");
+	}
+	getAll() {
+		return this.getAllButtons();
+	}
+
 	// Interaction
 	// Color
 	setColor(color) {
@@ -284,9 +345,9 @@ class Launchpad extends EventEmitter {
 	}
 	// Text Scrolling
 	scrollText(color, text, loop = 0) {
-		color = this.normalizeColor(color);
+		color = this._normalizeColor(color);
 		if (text) {
-			text = this.normalizeText(text);
+			text = this._normalizeText(text);
 		} else {
 			text = 0;
 		}
@@ -309,8 +370,71 @@ class Launchpad extends EventEmitter {
 	}
 
 	// Normalization of arguments for MIDI
+	// Passes along x and y values, normalizes formats of note and header values
+	_normalizeButtonValues(object) {
+		if (object.x && object.y) {
+			// keys => x, y
+			values = this._normalizeButtonCoords(object.x, object.y);
+		} else if (Array.isArray(object)) {
+			// [x, y]
+			values = this._normalizeButtonCoords(object[0], object[1]);
+		} else if (typeof object.note === "number") {
+			// keys => header?, value
+			const header = object.header || this.buttonConfig.pad.header;
+			values.push({
+				header,
+				"note": object.note
+			});
+		} else if (Array.isArray(object.note)) {
+			// keys => header?, note
+			// Iterate through notes
+			for (let i = 0; i < object.note.length; i++) {
+				const header = object.headers[i] || object.header || this.buttonConfig.pad.header;
+				values.push({
+					header,
+					"note": object.note[i]
+				});
+			}
+		} else if (object === "pad") {
+			// whole pad
+			const xRange = _.range(...this.buttonConfig.pad.range.x);
+			const yRange = _.range(...this.buttonConfig.pad.range.y);
+			for (const x of xRange) {
+				for (const y of yRange) {
+					this._normalizeButtonCoords(x, y);
+				}
+			}
+		} else if (typeof object === "string" && (object = _.at(this.buttonConfig, object)[0])) {
+			// from config
+			if (!object.note && !object.x) {
+				// object of buttons
+				for (const key in object) {
+					this._normalizeButtonValues(object[key]);
+				}
+			} else {
+				// single button
+				this._normalizeButtonValues(object);
+			}
+		} else {
+			throw new TypeError("Invalid button location.");
+		}
+	}
+	// Validates x and y values, normalizes formats
+	_normalizeButtonCoords(x, y) {
+		// Validate
+		// Not number or not in range of the device's pad
+		if (!_.inRange(x, ...this._buttons.pad.range.x) || !_.inRange(y, ...this._buttons.pad.range.y)) {
+			throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
+		}
+
+		// Set values
+		this.values.push({
+			"header": this._buttons.pad.header,
+			"note": parseInt(`${y + this._buttons.pad.offset.y}${x + this._buttons.pad.offset.x}`)
+		});
+	}
 	// Validates colors, finds colors from their names, and normalizes formats from many into a single one for each RGB and standard colors for internal use.
-	normalizeColor(color) {
+	_normalizeColor(color) {
 		const config = this.getConfig("colors");
 		// Validate and normalize colors for use in commands
 		let result;
@@ -320,7 +444,7 @@ class Launchpad extends EventEmitter {
 		if (typeof color === "string") {
 			// From user's color names first, then fallback on default
 			result = (typeof this.colors !== "undefined" && this.colors[color]) || config.names[color];
-			return this.normalizeColor(result);
+			return this._normalizeColor(result);
 		}
 
 		// Values
@@ -349,17 +473,17 @@ class Launchpad extends EventEmitter {
 		}
 		return result;
 	}
-	normalizeText(text) {
+	_normalizeText(text) {
 		let result = [];
 		if (Array.isArray(text)) {
 			for (const object of text) {
 				if (typeof object === "string") {
 					// Recursive with each string
-					result.push(this.normalizeText(object));
+					result.push(this._normalizeText(object));
 				} else {
 					// Add plain speed byte, recursive with each string in object
 					result.push(object.speed);
-					result.push(this.normalizeText(object.text));
+					result.push(this._normalizeText(object.text));
 				}
 			}
 		} else {
