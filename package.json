@@ -16,9 +16,9 @@
   },
   "license": "MIT",
   "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "directories": {
-    "lib": "./src",
+    "lib": "./lib",
     "example": "./examples",
     "test": "./test"
   },
