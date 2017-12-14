@@ -43,10 +43,6 @@
 */
 
 
-// Allow for functions to be made in objects without shorthand, allow undefined (for describe, before, it, expect, etc.), allow for devDeps to be used for testing
-/* eslint-disable object-shorthand, no-undef, node/no-unpublished-require */
-
-
 /*
 	Module dependencies
 */
@@ -110,8 +106,8 @@ describe("launchpad", () => {
 			"@noCallThru": true
 		};
 
-		Launchpad = proxyquire("../src/launchpad.js", {
-			"./core.js": coreStub
+		Launchpad = proxyquire("../lib/device/launchpad.js", {
+			"../core.js": coreStub
 		});
 	});
 

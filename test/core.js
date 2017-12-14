@@ -1,5 +1,5 @@
 /*
-	Tests for the _core (core) module
+	Tests for the core (core) module
 
 	Tested:
 		newInput
@@ -18,10 +18,6 @@
 */
 
 
-// Allow for functions to be made in objects without shorthand, allow undefined (for describe, before, it, expect, etc.), allow for devDeps to be used for testing
-/* eslint-disable object-shorthand, no-undef, node/no-unpublished-require */
-
-
 /*
 	Module dependencies
 */
@@ -30,8 +26,8 @@ const sinon = require("sinon");
 const proxyquire = require("proxyquire");
 
 
-describe("_core", () => {
-	let _core;
+describe("core", () => {
+	let core;
 	let midiStub;
 	let launchpadFake;
 
@@ -57,7 +53,7 @@ describe("_core", () => {
 			}, "@noCallThru": true
 		};
 
-		_core = proxyquire("../src/core.js", {
+		core = proxyquire("../lib/core.js", {
 			"midi": midiStub
 		});
 
@@ -75,7 +71,7 @@ describe("_core", () => {
 	describe("newInput", () => {
 		it("should get a midi input", () => {
 			expect(
-				_core.newInput()
+				core.newInput()
 			).to.be.an.instanceof(
 				midiStub.input
 			);
@@ -84,7 +80,7 @@ describe("_core", () => {
 	describe("newOutput", () => {
 		it("should get a midi output", () => {
 			expect(
-				_core.newOutput()
+				core.newOutput()
 			).to.be.an.instanceof(
 				midiStub.output
 			);
@@ -94,7 +90,7 @@ describe("_core", () => {
 		context("when getting input", () => {
 			it("should get a midi input port matching the first supported device", () => {
 				expect(
-					_core.getFirstLaunchpad(_core.newInput())
+					core.getFirstLaunchpad(core.newInput())
 				).to.equal(
 					0
 				);
@@ -103,7 +99,7 @@ describe("_core", () => {
 		context("when getting output", () => {
 			it("should get a midi output port matching the first supported device", () => {
 				expect(
-					_core.getFirstLaunchpad(_core.newOutput())
+					core.getFirstLaunchpad(core.newOutput())
 				).to.equal(
 					1
 				);
@@ -115,28 +111,28 @@ describe("_core", () => {
 		context("when no launchpad is present", () => {
 			it("should throw error", () => {
 				expect(() => {
-					_core.send("light", {"header": 144, "led": 11, "color": 57});
+					core.send("light", {"header": 144, "led": 11, "color": 57});
 				}).to.throw();
 			});
 		});
 		context("when no command is present", () => {
 			it("should throw error", () => {
 				expect(() => {
-					_core.send(null, {"header": 144, "led": 11, "color": 57}, launchpadFake);
+					core.send(null, {"header": 144, "led": 11, "color": 57}, launchpadFake);
 				}).to.throw();
 			});
 		});
 		context("when no argument object is present", () => {
 			it("should throw error", () => {
 				expect(() => {
-					_core.send("light", null, launchpadFake);
+					core.send("light", null, launchpadFake);
 				}).to.throw();
 			});
 		});
 		context("when argument is missing", () => {
 			it("should throw error", () => {
 				expect(() => {
-					_core.send("light", {"header": 144, "color": 57}, launchpadFake);
+					core.send("light", {"header": 144, "color": 57}, launchpadFake);
 				}).to.throw();
 			});
 		});
@@ -144,7 +140,7 @@ describe("_core", () => {
 		context("when lighting", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("light", {"header": 144, "led": 11, "color": 57}, launchpadFake);
+				core.send("light", {"header": 144, "led": 11, "color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([144, 11, 57]).calledOnce
 				).to.be.true;
@@ -153,7 +149,7 @@ describe("_core", () => {
 		context("when lighting with rgb", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("light rgb", {"led": 11, "color": [10, 20, 30]}, launchpadFake);
+				core.send("light rgb", {"led": 11, "color": [10, 20, 30]}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 10, 11, 10, 20, 30, 247]).calledOnce
 				).to.be.true;
@@ -162,7 +158,7 @@ describe("_core", () => {
 		context("when lighting column", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("light column", {"column": 1, "color": 57}, launchpadFake);
+				core.send("light column", {"column": 1, "color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 12, 1, 57, 247]).calledOnce
 				).to.be.true;
@@ -171,7 +167,7 @@ describe("_core", () => {
 		context("when lighting row", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("light row", {"row": 1, "color": 57}, launchpadFake);
+				core.send("light row", {"row": 1, "color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 13, 1, 57, 247]).calledOnce
 				).to.be.true;
@@ -180,7 +176,7 @@ describe("_core", () => {
 		context("when lighting all", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("light all", {"color": 57}, launchpadFake);
+				core.send("light all", {"color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 14, 57, 247]).calledOnce
 				).to.be.true;
@@ -189,7 +185,7 @@ describe("_core", () => {
 		context("when flashing", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("flash", {"header": 144, "led": 11, "color": 57}, launchpadFake);
+				core.send("flash", {"header": 144, "led": 11, "color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 35, 0, 11, 57, 247]).calledOnce
 				).to.be.true;
@@ -198,7 +194,7 @@ describe("_core", () => {
 		context("when pulsing", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("pulse", {"header": 144, "led": 11, "color": 57}, launchpadFake);
+				core.send("pulse", {"header": 144, "led": 11, "color": 57}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 40, 0, 11, 57, 247]).calledOnce
 				).to.be.true;
@@ -207,7 +203,7 @@ describe("_core", () => {
 		context("when scrolling text with loop", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("scroll text", {"header": 144, "led": 11, "color": 57, "loop": 1, "text": [1, 84, 101, 7, 115, 116]}, launchpadFake);
+				core.send("scroll text", {"header": 144, "led": 11, "color": 57, "loop": 1, "text": [1, 84, 101, 7, 115, 116]}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 20, 57, 1, 1, 84, 101, 7, 115, 116, 247]).calledOnce
 				).to.be.true;
@@ -216,7 +212,7 @@ describe("_core", () => {
 		context("when scrolling text without loop", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send("scroll text", {"header": 144, "led": 11, "color": 57, "loop": 0, "text": [1, 84, 101, 7, 115, 116]}, launchpadFake);
+				core.send("scroll text", {"header": 144, "led": 11, "color": 57, "loop": 0, "text": [1, 84, 101, 7, 115, 116]}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, 116, 247]).calledOnce
 				).to.be.true;
@@ -225,7 +221,7 @@ describe("_core", () => {
 		context("when custom command with args", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, 116, 247], {}, launchpadFake);
+				core.send([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, 116, 247], {}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, 116, 247]).calledOnce
 				).to.be.true;
@@ -234,7 +230,7 @@ describe("_core", () => {
 		context("when custom command without args", () => {
 			it("should output an array from template", () => {
 				launchpadFake.output.sendMessage.reset();
-				_core.send([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, "test", 247], {"test": [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]}, launchpadFake);
+				core.send([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, "test", 247], {"test": [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]}, launchpadFake);
 				expect(
 					launchpadFake.output.sendMessage.withArgs([240, 0, 32, 41, 2, 24, 20, 57, 0, 1, 84, 101, 7, 115, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 247]).calledOnce
 				).to.be.true;
@@ -243,7 +239,7 @@ describe("_core", () => {
 		// Method chaining
 		it("should return the launchpad", () => {
 			expect(
-				_core.send("light", {"header": 144, "led": 11, "color": 57}, launchpadFake)
+				core.send("light", {"header": 144, "led": 11, "color": 57}, launchpadFake)
 			).to.equal(
 				launchpadFake
 			);
