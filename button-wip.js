@@ -56,58 +56,83 @@ getAll() {
 }
 
 
-// Normalization of arguments for MIDI
-// Passes along x and y values, normalizes formats of note and header values
-normalizeButtonValues(object) {
-	if (object.x && object.y) {
-		// keys => x, y
-		return this.normalizeButtonCoords(object.x, object.y);
-	} else if (Array.isArray(object)) {
-		// [x, y]
-		return this.normalizeButtonCoords(object[0], object[1]);
-	} else if (typeof object.note === "number") {
-		// keys => header?, value
-		const header = object.header || this.buttonConfig.pad.header;
-		return {
-			header,
-			"note": object.note
-		};
-	} else if (object === "pad") {
-		// whole pad
-		const xRange = _.range(...this.buttonConfig.pad.range.x);
-		const yRange = _.range(...this.buttonConfig.pad.range.y);
-		for (const x of xRange) {
-			for (const y of yRange) {
-				this.normalizeButtonCoords(x, y);
-			}
-		}
-	} else if (typeof object === "string" && (object = _.at(this.buttonConfig, object)[0])) {
-		// from config
-		if (!object.note && !object.x) {
-			// object of buttons
-			for (const key in object) {
-				this.normalizeButtonValues(object[key]);
-			}
-		} else {
-			// single button
-			this.normalizeButtonValues(object);
-		}
-	} else {
-		throw new TypeError("Invalid button location.");
+
+
+
+
+
+
+
+
+// Interaction
+// Color
+setColor(color) {
+	color = this.constructor.launchpad.constructor.normalizeColor(color);
+
+	let mode;
+	if (typeof color === "object") {
+		// RGB
+		mode = "light rgb";
+	} else if (typeof color === "number") {
+		// Basic
+		mode = "light";
 	}
+
+	for (const value of this.values) {
+		// Send to core, extra arguments are ignored so no need to remove the header for RGB mode
+		core.send(mode, {"header": value.header, "led": value.note, color}, this.constructor.launchpad);
+	}
+
+	// Method chaining
+	return this;
 }
+// Aliases for setColor
+set color(color) {
+	this.setColor(color);
+}
+light(color) {
+	return this.setColor(color);
+}
+dark() {
+	return this.setColor("off");
+}
+// Flashing
+flash(color) {
+	color = this.constructor.launchpad.constructor.normalizeColor(color);
 
-// Validates x and y values, normalizes formats
-normalizeButtonCoords(x, y) {
-	// Validate
-	// Not number or not in range of the device's pad
-	if (!_.inRange(x, ...this._buttons.pad.range.x) || !_.inRange(y, ...this._buttons.pad.range.y)) {
-		throw new RangeError("One or more coordinates either isn't a number or in the pad range for your device.");
+	if (Array.isArray(color)) {
+		// RGB
+		throw new TypeError("Flashing can't be used with an RGB color via MIDI.");
+	} else if (typeof color === "number") {
+		// Basic
+		for (const value of this.values) {
+			core.send("flash", {"led": value.note, color}, this.constructor.launchpad);
+		}
 	}
 
-	// Set values
-	this.values.push({
-		"header": this._buttons.pad.header,
-		"note": parseInt(`${y + this._buttons.pad.offset.y}${x + this._buttons.pad.offset.x}`)
-	});
+	// Method chaining
+	return this;
+}
+stopFlash() {
+	return this.flash("off");
+}
+// Pulsing
+pulse(color) {
+	color = this.constructor.launchpad.constructor.normalizeColor(color);
+
+	if (Array.isArray(color)) {
+		// RGB
+		throw new TypeError("Pulsing can't be used with an RGB color via MIDI.");
+	} else if (typeof color === "number") {
+		// Basic
+		for (const value of this.values) {
+			core.send("pulse", {"led": value.note, color}, this.constructor.launchpad);
+		}
+	}
+
+	// Method chaining
+	return this;
+}
+stopPulse() {
+	return this.pulse("off");
 }
