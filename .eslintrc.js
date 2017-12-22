@@ -88,9 +88,17 @@ module.exports = {
 				"mocha/no-skipped-tests": "warn",
 				"mocha/no-top-level-hooks": "error",
 				// Allow for dev dependencies
-				"node/no-unpublished-require": "off",
-				// Shorthand isn't helpful when making stubs
-				"object-shorthand": "off"
+				"node/no-unpublished-require": "off"
+			}
+		},
+		// Examples
+		{
+			"files": [
+				"examples/*.js"
+			],
+			"rules": {
+				// Allow console for examples
+				"no-console": "off"
 			}
 		}
 	]

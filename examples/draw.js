@@ -1,4 +1,8 @@
-/* eslint-disable no-console */
+/*
+	Module: Draw example
+	Description: Enables you to draw by pressing on the button to light, pulse, flash, erase and more
+	Compatibility: RGB capable launchpads
+*/
 /*
 	Module dependencies
 */
