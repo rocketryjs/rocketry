@@ -96,10 +96,10 @@ describe("launchpad", () => {
 
 				return data;
 			},
-			"getFirstLaunchpad": function(channel) {
-				if (channel.is === "input") {
+			"getFirstLaunchpad": function(port) {
+				if (port.is === "input") {
 					return 0;
-				} else if (channel.is === "output") {
+				} else if (port.is === "output") {
 					return 1;
 				}
 			},
