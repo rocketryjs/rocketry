@@ -2,6 +2,7 @@
 	Module: Random example
 	Description: Lights all buttons with random colors every 0.5 seconds
 	Compatibility: RGB capable launchpads
+	WARNING: Do not run if you are sensitive to flashing lights
 */
 /*
 	Module dependencies
