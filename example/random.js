@@ -26,20 +26,21 @@ const lightRandom = function() {
 	}
 };
 
-// Create an interval to do it every 500ms (you can change with `ms`)
-const ms = 500;
+// Create an interval to do it every 500ms (you can change with a command line argument with the ms to use)
+const ms = parseInt(process.argv[2]) || 500;
 const interval = setInterval(() => {
 	lightRandom();
 }, ms);
 
 
 // Cleanup before interupt
-console.log("Use `Ctrl + C` (interupt) to reset and exit.");
+console.log("Use `ctrl + c` (interrupt) to reset and exit.");
 process.on("SIGINT", () => {
+	console.log("Exiting...");
 	// Stop repeating
 	clearInterval(interval);
 	// Clear the buttons
 	launchpad.reset();
-	// CLose the IO to the launchpad
+	// Close the IO to the launchpad
 	launchpad.close();
 });

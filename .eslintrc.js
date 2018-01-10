@@ -105,7 +105,7 @@ module.exports = {
 		// Examples
 		{
 			"files": [
-				"examples/*.js"
+				"example/*.js"
 			],
 			"rules": {
 				// Allow console for examples

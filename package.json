@@ -19,7 +19,7 @@
   "main": "./lib/index.js",
   "directories": {
     "lib": "./lib",
-    "example": "./examples",
+    "example": "./example",
     "test": "./test"
   },
   "repository": {
