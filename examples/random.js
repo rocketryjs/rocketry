@@ -21,7 +21,7 @@ const launchpad = new rocket();
 const lightRandom = function() {
 	for (const button of launchpad.buttons) {
 		// All standard color values except off
-		button.light(_.random(1, 127))
+		button.light(_.random(1, 127));
 	}
 };
 
