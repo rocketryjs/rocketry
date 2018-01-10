@@ -64,7 +64,8 @@ module.exports = {
 		// Mocha tests
 		{
 			"files": [
-				"test/*.js"
+				"test/*.js",
+				"test/manual/*.js"
 			],
 			"env": {
 				"es6": true,
@@ -89,6 +90,16 @@ module.exports = {
 				"mocha/no-top-level-hooks": "error",
 				// Allow for dev dependencies
 				"node/no-unpublished-require": "off"
+			}
+		},
+		// Manual tests
+		{
+			"files": [
+				"test/manual/*.js"
+			],
+			"rules": {
+				// Allow console.log for communication with tester
+				"no-console": "off"
 			}
 		},
 		// Examples
