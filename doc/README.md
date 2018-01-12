@@ -1,4 +1,4 @@
-![Cover image](img/cover/github-cover.png)
+![Cover image](Images/cover.png)
 
 # Quick Links
 - [Installation](Installation.md)
@@ -35,7 +35,11 @@
 
 # How to View
 ## Online
-[Where you most likely are.](https://github.com/evelynhathaway/launchpad-rocket/wiki)
+GitHub: [evelynhathaway/launchpad-rocket/master/*doc*](https://github.com/evelynhathaway/launchpad-rocket/tree/master/doc)
 
 ## Offline
-Clone this using `Clone this wiki locally` on the sidebar and using a text editor or markdown preview. [Atom](https://atom.io/) comes with a markdown preview package that works pretty well with README.md files and wikis that can be activated with `Ctrl + Shift + M`.
+Clone this repo and use a text editor or markdown preview. [Atom](https://atom.io/) comes with a markdown preview package that works pretty well with README.md files and wikis that can be activated with `Ctrl + Shift + M`.
+```bash
+$ git clone https://github.com/evelynhathaway/launchpad-rocket
+$ cd launchpad-rocket/doc/
+```
