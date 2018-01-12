@@ -88,6 +88,7 @@ Currently only the Launchpad MK2 is supported, but and support for the Launchpad
 
 ## Other APIs
 While this API is maturing, I wouldn't be hurt if you took a look at some other open source APIs on GitHub. Many are also a work-in-progress, some are abandoned, an no other repository made their scope so wide in terms of high level interface and large feature set.
+
 | Repository                                                                            | Language   | Supports  |
 |---------------------------------------------------------------------------------------|------------|-----------|
 | [tjhorner/node-launchpad-mk2](https://github.com/tjhorner/node-launchpad-mk2)         | JavaScript | Pro, MK2? |
