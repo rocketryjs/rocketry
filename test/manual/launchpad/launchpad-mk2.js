@@ -23,9 +23,9 @@ const chalk = require("chalk");
 // Strip ANSI
 // const strip = require("strip-ansi");
 // lodash
-// const _ = require("lodash");
+const _ = require("lodash");
 // Rocket
-const rocket = require("../../lib/index.js");
+const rocket = require("../../../lib/index.js");
 
 
 describe("Launchpad MK2", function() {
@@ -41,6 +41,8 @@ describe("Launchpad MK2", function() {
 	// Functions
 	// Ask via inquirer
 	let ask;
+	// View event data
+	let viewEvent;
 
 
 	before(function() {
@@ -74,6 +76,23 @@ describe("Launchpad MK2", function() {
 
 			// Return boolean
 			return confirm;
+		};
+		// View event data
+		viewEvent = function(message) {
+			console.log(`Message: [${chalk.yellow(message.join(", "))}]`);
+
+			for (const key in message) {
+				if (message.hasOwnProperty(key)) {
+					let value = message[key];
+					if (Array.isArray(value)) {
+						value = `[${chalk.yellow(value.join(", "))}]`;
+					} else {
+						value = chalk.yellow(value);
+					}
+
+					console.log(`${key}: ${value}`);
+				}
+			}
 		};
 	});
 
@@ -479,8 +498,8 @@ describe("Launchpad MK2", function() {
 	// TODO: Inquire for ones that won't match
 	describe("inquireDevice()", function() {
 		it("should return a device byte array", async function() {
-			const bytes = await launchpad.inquireDevice();
-			console.log("Response:", chalk.yellow(bytes.join(", ")));
+			const message = await launchpad.inquireDevice();
+			viewEvent(message);
 
 			expect(
 				await ask("Does your device match the response to the device inquiry?")
@@ -491,8 +510,8 @@ describe("Launchpad MK2", function() {
 
 	describe("inquireVersion()", function() {
 		it("should return a version byte array", async function() {
-			const bytes = await launchpad.inquireVersion();
-			console.log("Response:", chalk.yellow(bytes.join(", ")));
+			const message = await launchpad.inquireVersion();
+			viewEvent(message);
 
 			expect(
 				await ask("Does your version match the response to the version inquiry?")

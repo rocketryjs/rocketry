@@ -64,8 +64,7 @@ module.exports = {
 		// Mocha tests
 		{
 			"files": [
-				"test/*.js",
-				"test/manual/*.js"
+				"test/**/*.js"
 			],
 			"env": {
 				"es6": true,
@@ -95,7 +94,7 @@ module.exports = {
 		// Manual tests
 		{
 			"files": [
-				"test/manual/*.js"
+				"test/manual/**/*.js"
 			],
 			"rules": {
 				// Allow console.log for communication with tester
