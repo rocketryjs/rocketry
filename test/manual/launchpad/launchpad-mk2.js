@@ -23,7 +23,7 @@ const chalk = require("chalk");
 // Strip ANSI
 // const strip = require("strip-ansi");
 // lodash
-const _ = require("lodash");
+// const _ = require("lodash");
 // Rocket
 const rocket = require("../../../lib/index.js");
 
