@@ -5,7 +5,7 @@ Show all of the standard color values (except off) randomly on each button every
 
 
 # Starting
-- [Install Rocket](.,/Installation.md)
+- [Install Rocket](../Installation.md)
 - Run in your terminal using the correct path
 ```bash
 $ node ./example/random.js
