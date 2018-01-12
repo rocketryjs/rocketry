@@ -78,7 +78,7 @@ module.exports = {
 				"mocha/handle-done-callback": "error",
 				"mocha/no-exclusive-tests": "error",
 				"mocha/no-global-tests": "warn",
-				"mocha/no-hooks-for-single-case": "warn",
+				// "mocha/no-hooks-for-single-case": "warn",
 				"mocha/no-identical-title": "error",
 				"mocha/no-mocha-arrows": "warn",
 				"mocha/no-nested-tests": "error",
