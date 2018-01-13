@@ -3,11 +3,12 @@
 ![Rocket](doc/Images/cover.png)
 
 [![npm version](https://img.shields.io/npm/v/launchpad-rocket.svg)](https://www.npmjs.com/package/launchpad-rocket)
-[![Travis](https://img.shields.io/travis/evelynhathaway/launchpad-rocket.svg)](https://travis-ci.org/evelynhathaway/launchpad-rocket)
-[![dependencies: lodash | midi](https://img.shields.io/badge/dependencies-lodash%20%7C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
-[![documentation](https://img.shields.io/badge/documentation-./doc-lightgrey.svg)](doc)
-</div>
+[![build status](https://img.shields.io/travis/evelynhathaway/launchpad-rocket.svg)](https://travis-ci.org/evelynhathaway/launchpad-rocket)
+[![dependencies: lodash, midi](https://img.shields.io/badge/dependencies-lodash%2C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
 [![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)](/LICENSE)
+[![documentation](https://img.shields.io/badge/documentation-./doc-lightgrey.svg)](doc)
+
+</div>
 
 
 ## Description
@@ -58,7 +59,7 @@ const launchpad = new rocket();
 
 // Get a button instance on the Launchpad at bottom-left button
 // There are many other ways to get buttons like column, row, quadrant, etc.
-const button = launchpad.getByGridCoords(0, 0);
+const button = launchpad.query.by.coordinates(0, 0);
 
 // Set its color to pink
 // Rocket supports standard RGB, full RGB, and bi-color values or their names
@@ -71,7 +72,7 @@ button.on("press", function() {
 });
 
 // Reset the device and close connection on release of the button named "mixer"
-launchpad.getFirstByName("mixer").on("release", function() {
+launchpad.query.by.name("mixer").on("release", function() {
 	console.log("Launch aborted!");
 
 	// You can use `this.device` instead of `launchpad` inside of this, but let's use our own reference
