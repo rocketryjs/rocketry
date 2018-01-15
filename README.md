@@ -97,11 +97,11 @@ While this API is maturing, I wouldn't be hurt if you took a look at some other 
 |---------------------------------------------------------------------------------------|------------|-----------|
 | [tjhorner/node-launchpad-mk2](https://github.com/tjhorner/node-launchpad-mk2)         | JavaScript | Pro, MK2? |
 | [jasonspriggs/LP4J](https://github.com/jasonspriggs/LP4J)                             | Java       | MK2       |
-| [OlivierCroisier/LP4J](https://github.com/OlivierCroisier/LP4J)                       | Java       | Mini, S?  |
-| [Granjow/launchpad-mini](https://github.com/Granjow/launchpad-mini)                   | JavaScript | Mini, S?  |
-| [stevenleeg/launchpadder](https://github.com/stevenleeg/launchpadder)                 | JavaScript | Mini, S?  |
-| [sydlawrence/node-midi-launchpad](https://github.com/sydlawrence/node-midi-launchpad) | JavaScript | Mini, S?  |
-| [millerpeterson/js-launchpad](https://github.com/millerpeterson/js-launchpad)         | JavaScript | Mini, S?  |
+| [OlivierCroisier/LP4J](https://github.com/OlivierCroisier/LP4J)                       | Java       | Mini, S   |
+| [Granjow/launchpad-mini](https://github.com/Granjow/launchpad-mini)                   | JavaScript | Mini, S   |
+| [stevenleeg/launchpadder](https://github.com/stevenleeg/launchpadder)                 | JavaScript | Mini, S   |
+| [sydlawrence/node-midi-launchpad](https://github.com/sydlawrence/node-midi-launchpad) | JavaScript | Mini, S   |
+| [millerpeterson/js-launchpad](https://github.com/millerpeterson/js-launchpad)         | JavaScript | Mini, S   |
 
 ## Contributing
 If you find any bugs or would like to suggest features, [make an issue](Issue template TODO) for it being as descriptive as possible and I'll do my best to address it.
