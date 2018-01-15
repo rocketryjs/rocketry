@@ -1,22 +1,46 @@
 <div align="center">
 
-![Rocket](doc/Images/cover.png)
+![Rocket](docs/images/cover.png)
 
 [![npm version](https://img.shields.io/npm/v/launchpad-rocket.svg)](https://www.npmjs.com/package/launchpad-rocket)
 [![build status](https://img.shields.io/travis/evelynhathaway/launchpad-rocket.svg)](https://travis-ci.org/evelynhathaway/launchpad-rocket)
 [![dependencies: lodash, midi](https://img.shields.io/badge/dependencies-lodash%2C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
 [![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)](/LICENSE)
-[![documentation](https://img.shields.io/badge/documentation-./doc-lightgrey.svg)](doc)
+[![documentation](https://img.shields.io/badge/documentation-./docs-lightgrey.svg)](docs)
 
 </div>
 
 
 ## Description
-<!-- TODO -->
+Rocket is an interface for the Novation Launchpad product line written in NodeJS. It's goal is to take care of the quirks of the commands exposed by the device so you can write integrations at a higher level quickly. Rocket is still in its early stages and should be considered a beta. I'm open to any suggestions on the process or project big or small.
+
+
+## Features
+### Design
+- Multi-platform
+- Automatic and manual detection of devices
+- Support for the Launchpad MK2
+- Planned support for Launchpad Mini and Launchpad Pro
+- Querying for buttons by name, coordinates, etc.
+	- Query for many buttons at once by group as well
+- Shims for commands that aren't supported by the device
+	- For instance, light the whole device with an RGB color
+- Unit tests and manual integration tests
+
+### Interaction
+- Events for press and release of buttons
+- Light, flash, or pulse buttons
+- Change the layout
+- Scroll ASCII characters across the device
+- Arrays of buttons can run commands for each button
+	- You can use less for loops
+	- Events trigger an array when any button inside fires
+	- Lighting of buttons is quicker in a group
+- Inquire for information about the device
+- [And more...](docs/interaction.md)
 
 
 ## Installation
-See [Documentation > Installation](doc/Installation.md) for more information.
 ###### From npm
 ```bash
 $ npm install launchpad-rocket
@@ -35,6 +59,7 @@ $ git clone https://github.com/evelynhathaway/launchpad-rocket
 $ cd launchpad-rocket/
 $ npm install
 ```
+See [Documentation > Installation](docs/installation.md) for more information.
 
 
 ---
@@ -43,12 +68,14 @@ $ npm install
 ## Getting Started
 1. Plug in your Launchpad
 2. Make sure your computer installed the drivers or [install them manually](https://us.novationmusic.com/support/product-downloads?product=Launchpad)
-3. [Install Rocket](doc/Installation.md)
+3. [Install Rocket](docs/installation.md)
+4. [Try the "Getting Started" example](docs/getting-started.md)
 4. Create a new `.js` file
 5. `require()` the package
-6. Browse the [documentation](doc)
+6. Browse the [documentation](docs)
 
 ### Example
+<!-- Also change /doc/getting-started.md -->
 ```js
 // Require Rocket
 const rocket = require("launchpad-rocket");
@@ -84,6 +111,9 @@ launchpad.query.by.name("mixer").on("release", function() {
 ```
 
 
+---
+
+
 ## Supported Devices
 - Launchpad MK2
 
@@ -91,7 +121,7 @@ Currently only the Launchpad MK2 is supported, but and support for the Launchpad
 
 
 ## Other APIs
-While this API is maturing, I wouldn't be hurt if you took a look at some other open source APIs on GitHub. Many are also a work-in-progress, some are abandoned, an no other repository made their scope so wide in terms of high level interface and large feature set.
+While this API is maturing, I wouldn't be hurt if you took a look at some other open source APIs on GitHub. Many are also a work-in-progress and some are abandoned. ([relevant xkcd](https://xkcd.com/927/))
 
 | Repository                                                                            | Language   | Supports  |
 |---------------------------------------------------------------------------------------|------------|-----------|
@@ -103,10 +133,11 @@ While this API is maturing, I wouldn't be hurt if you took a look at some other 
 | [sydlawrence/node-midi-launchpad](https://github.com/sydlawrence/node-midi-launchpad) | JavaScript | Mini, S   |
 | [millerpeterson/js-launchpad](https://github.com/millerpeterson/js-launchpad)         | JavaScript | Mini, S   |
 
-## Contributing
-If you find any bugs or would like to suggest features, [make an issue](Issue template TODO) for it being as descriptive as possible and I'll do my best to address it.
 
-If you have a Launchpad that's not supported, have ideas for new features, or just want to fix it up a bit; pull requests are highly appreciated.
+## Contributing
+If you find any bugs or would like to suggest features, [make an issue](https://github.com/evelynhathaway/launchpad-rocket/issues/new) for it being as descriptive as possible and I'll do my best to address it.
+
+If you have a device that's not supported, have ideas for new features, or just want to fix it up a bit; pull requests are highly appreciated.
 
 
 ## License

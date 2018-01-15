@@ -21,7 +21,7 @@
   "main": "./lib/index.js",
   "directories": {
     "lib": "./lib",
-    "doc": "./doc",
+    "doc": "./docs",
     "example": "./example",
     "test": "./test"
   },

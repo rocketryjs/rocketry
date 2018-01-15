@@ -1,3 +1,4 @@
+# Troubleshooting
 ## *By Symptom*
 <!-- TODO add images -->
 | Symptom                                                   | Link                                                                                                                                                         | Probable Reason                                                 |
@@ -88,6 +89,6 @@ Current Devices:
 
 
 ## Constructing Your Launchpad
-- Try [adding a port](Launchpad.md#ports-optional) to your Launchpad's construction in case Rocket doesn't recognize your Launchpad or it mistakenly recognizes another device
+- Try adding port numbers to your device's construction in case Rocket doesn't recognize your device or it mistakenly recognizes another
 - Check if your device is supported by [Checking Device Information](#checking-device-information)
-	- Check for updates or [add support](Device-Support.md#adding) for your device if it's unsupported
+	- Check for updates or if it's unsupported

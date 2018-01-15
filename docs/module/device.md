@@ -1,0 +1,2 @@
+# Module - `device.js`
+Here is where you will find all of the basic code for all devices as a class. Each supported device extends this class to reduce redundancy for methods and functions to open or close a device, send messages, and receiving messages  to relay to buttons. It also includes a function named `matchBytes` that is a basic parser for messages and can be used with a device's events object.

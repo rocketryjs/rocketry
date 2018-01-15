@@ -1,3 +1,4 @@
+# Installation
 ## Installing Node.JS
 [Download](https://nodejs.org/en/download/) and run the latest or last LTS version of Node.js. [`nvm`](https://nodejs.org/en/download/package-manager/#nvm) or [another package manager](https://nodejs.org/en/download/package-manager/) may be helpful.
 
@@ -31,4 +32,4 @@ $ npm install
 
 
 ## Troubleshooting
-See [Troubleshooting - Installation](Troubleshooting.md#installation)
+See [Troubleshooting - Installation](troubleshooting.md#installation)
