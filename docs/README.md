@@ -26,7 +26,7 @@
 	- [Launchpad MK2](module/launchpad-mk2.md)
 	- [Mixin](module/mixin.md)
 	- [New](module/new.md)
-	- [Sub Emitter](module/sub-emitter.md)
+	- [SubEmitter](module/sub-emitter.md)
 	- [Support](module/support.md)
 - Reference
 	- [Color](color.md)

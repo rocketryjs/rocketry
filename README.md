@@ -12,7 +12,7 @@
 
 
 ## Description
-Rocket is an interface for the Novation Launchpad product line written in NodeJS. It's goal is to take care of the quirks of the commands exposed by the device so you can write integrations at a higher level quickly. Rocket is still in its early stages and should be considered a beta. I'm open to any suggestions on the process or project big or small.
+Rocket is an interface for the Novation Launchpad product line written in Node.js. It's goal is to take care of the quirks of the commands exposed by the device so you can write integrations at a higher level quickly. Rocket is still in its early stages and should be considered a beta. I'm open to any suggestions on the process or project big or small.
 
 
 ## Features
