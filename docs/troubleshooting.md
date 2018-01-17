@@ -32,8 +32,6 @@
 	- `npm config set python /path/to/executable/python2.7 --global`
 	- `node-gyp --python /path/to/python2.7`
 - Find related issues on [`node-midi`](https://github.com/justinlatimer/node-midi/issues), [`node-gyp`](https://github.com/nodejs/node-gyp/issues), or [`node`](https://github.com/nodejs/node-v0.x-archive/issues/4047) for any errors that occur
-
-
 ###### Unix
 - Follow [these directions](https://github.com/nodejs/node-gyp#on-unix) from [`node-gyp`](https://github.com/nodejs/node-gyp)
 ###### Mac OSX
@@ -42,6 +40,16 @@
 - Follow [these directions](https://github.com/nodejs/node-gyp#on-windows) from [`node-gyp`](https://github.com/nodejs/node-gyp)
 - Install Python 2.7 and Microsoft Visual C++ using `npm install -g windows-build-tools` in an administrative terminal or elevated PowerShell
 - Make sure you have Python installed and [in your system path](https://superuser.com/questions/143119/how-to-add-python-to-the-windows-path)
+
+### `node-midi` was Compiled Against a Different Node Version
+```
+Error: The module 'node_modules\midi\build\Release\midi.node'
+was compiled against a different Node.js version using
+NODE_MODULE_VERSION 51. This version of Node.js requires
+NODE_MODULE_VERSION 59. Please try re-compiling or re-installing
+the module (for instance, using `npm rebuild` or `npm install`).
+```
+Probably caused by an upgrade of Node.js or you ran `nvm use [another version]`. Simply run `npm rebuild` or `npm install` as it says.
 
 
 ## Connecting Your Launchpad
