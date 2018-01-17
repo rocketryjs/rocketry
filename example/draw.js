@@ -1,13 +1,13 @@
 /*
 	Module: Draw example
 	Description: Enables you to draw by pressing on the button to light, pulse, flash, erase and more
-	Compatibility: RGB capable launchpads
+	Compatibility: RGB capable Launchpads
 */
 /*
 	Module dependencies
 */
-const rocket = require("../lib/index.js");
 const _ = require("lodash");
+const rocket = require("../lib/index.js");
 
 
 /*

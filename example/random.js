@@ -7,9 +7,7 @@
 /*
 	Module dependencies
 */
-// Lodash
 const _ = require("lodash");
-// Rocket
 const rocket = require("../lib/index.js");
 
 
