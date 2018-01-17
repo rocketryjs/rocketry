@@ -1,14 +1,12 @@
 /*
 	Module: Random example
 	Description: Lights all buttons with random colors every 0.5 seconds
-	Compatibility: RGB capable launchpads
+	Compatibility: RGB capable Launchpads
 	WARNING: Do not run if you are sensitive to flashing lights
 */
 /*
 	Module dependencies
 */
-// Node.js util (for timers)
-require("util");
 // Lodash
 const _ = require("lodash");
 // Rocket
@@ -35,12 +33,12 @@ const interval = setInterval(() => {
 
 // Cleanup before interupt
 console.log("Use `ctrl + c` (interrupt) to reset and exit.");
-process.on("SIGINT", () => {
+process.once("SIGINT", () => {
 	console.log("Exiting...");
 	// Stop repeating
 	clearInterval(interval);
 	// Clear the buttons
-	launchpad.reset();
+	launchpad.dark();
 	// Close the IO to the launchpad
 	launchpad.close();
 });
