@@ -1,12 +1,14 @@
 {
   "name": "launchpad-rocket",
   "version": "1.0.0",
-  "description": "The most feature-filled API/interface for controlling your Launchpad",
+  "description": "A high-level, feature-filled interface for Novation's Launchpad series.",
   "keywords": [
     "ableton",
+    "api",
     "launchpad",
     "mark 2",
     "mark ii",
+    "midi",
     "mini",
     "mk2",
     "mkii",
@@ -46,7 +48,7 @@
     "markdown-table": "^1.1.1",
     "mocha": "^4.1.0",
     "proxyquire": "^1.8.0",
-    "sinon": "^4.1.5",
+    "sinon": "^4.1.6",
     "strip-ansi": "^4.0.0"
   },
   "engines": {
