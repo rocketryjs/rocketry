@@ -119,6 +119,8 @@ launchpad.query.by.name("mixer").on("release", function() {
 
 Currently only the Launchpad MK2 is supported, but and support for the Launchpad Mini and Launchpad Pro are planned. Hopefully the module is also structured in such a way that other Novation devices could be added in the future with a minimal amount of breaking changes. If you're interested in expanding the support to your device, contact me or check out a related issue.
 
+## Why?
+[I think @TaranVH sums up my intentions the best.](https://youtu.be/kB2kIAEhjpE) *And his keyboards don't light up and control, say for instance, [the Toggl API](https://github.com/toggl/toggl_api_docs#nodejs).*
 
 ## Other APIs
 While this API is maturing, I wouldn't be hurt if you took a look at some other open source APIs on GitHub. Many are also a work-in-progress and some are abandoned. ([relevant xkcd](https://xkcd.com/927/))
