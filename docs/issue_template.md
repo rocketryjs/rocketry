@@ -25,6 +25,6 @@
 ### Versions
 <!-- I installed this... -->
 <!-- How to find: `node -v` -->
-- NodeJS:
+- Node.js:
 <!-- How to find: `npm list launchpad-rocket` or in in package.json -->
 - Rocket:

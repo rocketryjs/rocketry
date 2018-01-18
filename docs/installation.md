@@ -11,6 +11,7 @@ $ npm -v
 ```
 
 ## Installing the Module
+npm may warn you about using a Node.js version that's too low for Rocket. The suggested version of Node.js set in the `package.json` is set rather high because of the use of `async`/`await` in tests. If you don't intend to run tests, it will most likely work on `v6.x.x`, but it's not supported at this time.
 ###### From npm
 ```bash
 $ npm install launchpad-rocket
