@@ -19,17 +19,16 @@
 	- [Troubleshooting](troubleshooting.md)
 		- [Installation - Troubleshooting](troubleshooting.md#installation)
 - Modules
+	- [Index](module/index.md)
 	- [ButtonArray](module/button-array.md)
 	- [Button](module/button.md)
-	- [Core](module/core.md)
 	- [Device](module/device.md)
 	- [Launchpad MK2](module/launchpad-mk2.md)
 	- [Mixin](module/mixin.md)
-	- [New](module/new.md)
 	- [SubEmitter](module/sub-emitter.md)
-	- [Support](module/support.md)
 - Reference
 	- [Color](color.md)
+	- [Commands](commands.md)
 
 
 ---
