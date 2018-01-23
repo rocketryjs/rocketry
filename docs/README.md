@@ -25,6 +25,7 @@
 	- [Device](module/device.md)
 	- [Launchpad MK2](module/launchpad-mk2.md)
 	- [Mixin](module/mixin.md)
+	- [Send](module/send.md)
 	- [SubEmitter](module/sub-emitter.md)
 - Reference
 	- [Color](color.md)
