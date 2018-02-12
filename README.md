@@ -2,9 +2,14 @@
 
 ![Rocket](docs/images/cover.png)
 
+</div>
+
+
+<div align="center">
+
 [![npm version](https://img.shields.io/npm/v/launchpad-rocket.svg)](https://www.npmjs.com/package/launchpad-rocket)
 [![build status](https://img.shields.io/travis/evelynhathaway/launchpad-rocket.svg)](https://travis-ci.org/evelynhathaway/launchpad-rocket)
-[![dependencies: lodash, midi](https://img.shields.io/badge/dependencies-lodash%2C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
+[![dependencies: lodash, midi, bind-deep](https://img.shields.io/badge/dependencies-lodash%2C%20midi%2C%20bind-deep-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
 [![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)](/LICENSE)
 [![documentation](https://img.shields.io/badge/documentation-./docs-lightgrey.svg)](docs)
 
