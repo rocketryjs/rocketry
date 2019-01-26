@@ -5,10 +5,13 @@
 [![npm version](https://img.shields.io/npm/v/launchpad-rocket.svg)](https://www.npmjs.com/package/launchpad-rocket)
 [![Travis](https://img.shields.io/travis/evelynhathaway/launchpad-rocket.svg)](https://travis-ci.org/evelynhathaway/launchpad-rocket)
 [![dependencies: lodash | midi](https://img.shields.io/badge/dependencies-lodash%20%7C%20midi-lightgrey.svg)](https://github.com/evelynhathaway/launchpad-rocket/network/dependencies)
-[![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)]()
 [![documentation](https://img.shields.io/badge/documentation-./doc-lightgrey.svg)](doc)
 </div>
+[![license](https://img.shields.io/github/license/evelynhathaway/launchpad-rocket.svg)](/LICENSE)
 
+
+## Description
+<!-- TODO -->
 
 
 ## Installation
