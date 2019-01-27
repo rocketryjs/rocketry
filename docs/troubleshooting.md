@@ -11,7 +11,7 @@
 
 
 ## *By Error*
-<!-- TODO add update errors -->
+<!-- TODO add updated errors -->
 | Error                                                                             | Code | Module  | Link                                                                                       | Probable Reason                                                                     |
 |-----------------------------------------------------------------------------------|------|---------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | Failed to find a supported device. Check your port and connection to your device. |      | new.js  | [Connecting Your Launchpad](#connecting-your-launchpad)                                    | Not plugged in or missing drivers                                                   |
@@ -19,7 +19,7 @@
 | Invalid port type.                                                                |      | core.js |                                                                                            | Ports given to Rocket weren't a valid type                                          |
 | Invalid port type in array or object of ports.                                    |      | core.js |                                                                                            | Ports given to Rocket inside the object or array weren't numbers                    |
 | Couldn't create MIDI I/O.                                                         |      | core.js | [Checking Device Information](#checking-device-information), [Installation](#installation) | Ports given to Rocket didn't match a device or node-midi wasn't correctly installed |
-| Failed to find a matching port.                                                   |      | core.js |                                                                                            | TODO: remove                                                                        |
+| Failed to find a matching port.                                                   |      | core.js |                                                                                            |  remove                                                                        |
 
 ---
 

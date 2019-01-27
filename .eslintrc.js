@@ -28,19 +28,13 @@ module.exports = {
 			"error",
 			"always"
 		],
-		"no-var": [
-			"error"
-		],
-		"no-console": [
-			"warn"
-		],
+		"no-var": "error",
+		"no-console": "warn",
 		"object-shorthand": [
 			"warn",
 			"always"
 		],
-		"no-throw-literal": [
-			"error"
-		],
+		"no-throw-literal": "error",
 		"quote-props": [
 			"warn",
 			"as-needed",
@@ -99,6 +93,16 @@ module.exports = {
 			"rules": {
 				// Allow console.log for communication with tester
 				"no-console": "off"
+			}
+		},
+		// Test helper
+		{
+			"files": [
+				"test/manual/helper/helper.js"
+			],
+			"rules": {
+				// Allow the helper to skip incompatible tests
+				"mocha/no-skipped-tests": "off",
 			}
 		},
 		// Examples
