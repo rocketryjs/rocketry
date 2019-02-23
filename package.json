@@ -1,6 +1,6 @@
 {
-  "name": "launchpad-rocket",
-  "version": "1.0.0",
+  "name": "@rocketry/core",
+  "version": "0.0.0",
   "private": true,
   "description": "A high-level, feature-filled interface for Novation's Launchpad series.",
   "keywords": [
@@ -17,11 +17,11 @@
     "pro"
   ],
   "bugs": {
-    "url": "https://github.com/evelynhathaway/launchpad-rocket/issues"
+    "url": "https://github.com/evelynhathaway/rocketry/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/evelynhathaway/launchpad-rocket.git"
+    "url": "https://github.com/evelynhathaway/rocketry.git"
   },
   "license": "MIT",
   "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
@@ -34,7 +34,9 @@
   },
   "scripts": {
     "test": "mocha test",
-    "lint": "eslint **/*.js"
+    "lint": "eslint **/*.js",
+    "build": "tsc",
+    "build:watch": "tsc -w"
   },
   "dependencies": {
     "bind-deep": "^2.0.1",
@@ -42,17 +44,24 @@
     "midi": "^0.9.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.121",
+    "@types/node": "^11.9.5",
+    "@typescript-eslint/eslint-plugin": "^1.4.0",
+    "@typescript-eslint/parser": "^1.4.0",
     "chai": "^4.2.0",
     "chalk": "^2.4.2",
-    "eslint": "^5.12.1",
-    "eslint-plugin-mocha": "^5.2.1",
+    "eslint": "^5.14.1",
+    "eslint-plugin-mocha": "^5.3.0",
     "eslint-plugin-node": "^8.0.1",
-    "inquirer": "^6.2.1",
+    "inquirer": "^6.2.2",
+    "lerna": "^3.13.0",
     "markdown-table": "^1.1.2",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.1",
     "proxyquire": "^2.1.0",
-    "sinon": "^7.2.3",
-    "strip-ansi": "^5.0.0"
+    "sinon": "^7.2.4",
+    "strip-ansi": "^5.0.0",
+    "ts-essentials": "^2.0.0",
+    "typescript": "^3.3.3333"
   },
   "engines": {
     "node": ">=7.6.0"

@@ -8,3 +8,7 @@ node_modules/
 ## Debug
 #################
 debug.js
+
+\.vscode/
+
+lib/

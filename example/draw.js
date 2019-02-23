@@ -7,7 +7,7 @@
 	Module dependencies
 */
 const _ = require("lodash");
-const rocket = require("../lib/index.js");
+const rocketry = require("../lib/index.js");
 
 
 /*
@@ -189,7 +189,7 @@ const paint = function(deltaTime, message) {
 	Setup
 */
 const launchpad = (
-	new rocket.Launchpad()
+	new rocketry.Launchpad()
 );
 const xRange = _.range(...launchpad.getConfig("buttons.pad.range.x"));
 const yRange = _.range(...launchpad.getConfig("buttons.pad.range.y"));

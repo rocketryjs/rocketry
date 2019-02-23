@@ -1,5 +1,5 @@
 /*
-	Module: Index - Rocket
+	Module: Index - Rocketry
 	Description: Assembly of the individual modules, methods for constructing devices
 */
 /*
@@ -199,9 +199,9 @@ const methods = {
 
 
 /*
-	Rocket - All together now!
+	Rocketry - All together now!
 */
-const rocket = Object.assign(
+const rocketry = Object.assign(
 	constructor,
 	methods,
 	{
@@ -214,7 +214,7 @@ const rocket = Object.assign(
 /*
 	Properties - regex getter
 */
-Object.defineProperty(rocket, "regex", {
+Object.defineProperty(rocketry, "regex", {
 	get() {
 		// Get all type names, or regex strings that get a type
 		const types = [];
@@ -233,13 +233,13 @@ Object.defineProperty(rocket, "regex", {
 
 
 /*
-	Export Rocket
+	Export Rocketry
 */
-module.exports = rocket;
+module.exports = rocketry;
 
 
 /*
 	Devices
 */
 const LaunchpadMk2 = require("./launchpad/launchpad-mk2.js");
-rocket.devices[LaunchpadMk2.type] = LaunchpadMk2;
+rocketry.devices[LaunchpadMk2.type] = LaunchpadMk2;

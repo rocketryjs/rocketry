@@ -175,7 +175,7 @@ LaunchpadMk2.sysex = {
 /*
 	Device type
 */
-// Device type name, key for `rocket.devices`, etc
+// Device type name, key for `rocketry.devices`, etc
 LaunchpadMk2.type = "Launchpad MK2";
 
 

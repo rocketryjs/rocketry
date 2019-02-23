@@ -1,31 +1,20 @@
 /*
 	Manual integration tests for devices
 	Description: Shows and checks your debug information about your connected devices
-	Compatibility: All Rocket supported devices, other MIDI devices
+	Compatibility: All Rocketry supported devices, other MIDI devices
 
 	Tested - functions that are tested fully or partially in this document - found in `describe()`
 */
 
 
-/*
-	Module dependencies
-*/
-// Assertion library
 const expect = require("chai").expect;
-// Questioning the user
 const inquirer = require("inquirer");
-// Console text coloring
 const chalk = require("chalk");
-// Markdown table creator
 const table = require("markdown-table");
-// Strip ANSI
 const strip = require("strip-ansi");
-// lodash
 const _ = require("lodash");
-// MIDI
 const midi = require("midi");
-// Rocket
-const rocket = require("../../lib/index.js");
+const rocketry = require("../../lib/index.js");
 
 
 // MIDI I/O
@@ -36,7 +25,7 @@ const output = new midi.output();
 // TODO: add API features for these and then use them in here
 const getDeviceInfo = function(port, portName) {
 	// Get names of ports
-	const names = rocket.core.getAllPortNames(port);
+	const names = rocketry.core.getAllPortNames(port);
 
 	// For all ports in input/output
 	for (let i = 0; i < names.length; i++) {
@@ -45,7 +34,7 @@ const getDeviceInfo = function(port, portName) {
 			"port": portName === "output" ? chalk.yellow("output") : chalk.cyan("input"),
 			"number": chalk.gray(i),
 			"name": names[i],
-			"supported": names[i].match(rocket.support.regex) ? chalk.green("true") : chalk.red("false")
+			"supported": names[i].match(rocketry.support.regex) ? chalk.green("true") : chalk.red("false")
 		});
 	}
 };

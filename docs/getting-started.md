@@ -2,18 +2,18 @@
 
 <!-- Also change /README.md -->
 
-1. [Install Rocket](installation.md)
+1. [Install Rocketry](installation.md)
 
 ```bash
-npm install launchpad-rocket
+npm install @rocketry/core
 ```
 
 2. Create a new `.js` file
 3. `require()` the package in your new JavaScript file
 
 ```js
-// Require Rocket
-const rocket = require("launchpad-rocket");
+// Require Rocketry
+const rocketry = require("@rocketry/core");
 ```
 
 4. Create a new device instance
@@ -21,7 +21,7 @@ const rocket = require("launchpad-rocket");
 ```js
 // Make a new device instance
 // This method will automatically pick a supported device and its class
-const launchpad = new rocket();
+const launchpad = new rocketry();
 ```
 
 5. Crete a Button instance
@@ -36,7 +36,7 @@ const button = launchpad.query.by.coordinates(0, 0);
 
 ```js
 // Set its color to pink
-// Rocket supports standard RGB, full RGB, and bi-color values or their names
+// Rocketry supports standard RGB, full RGB, and bi-color values or their names
 button.light("pink");
 ```
 
@@ -44,7 +44,7 @@ button.light("pink");
 
 ```js
 // Log to console on press of the bottom-left button
-// Rocket passes helpful values into your function, but let's not use them now
+// Rocketry passes helpful values into your function, but let's not use them now
 button.on("press", function() {
     console.log("3... 2... 1... Blast off!");
 });
@@ -72,23 +72,23 @@ launchpad.query.by.name("mixer").on("release", function() {
 ###### index.js
 
 ```js
-// Require Rocket
-const rocket = require("launchpad-rocket");
+// Require Rocketry
+const rocketry = require("@rocketry/core");
 
 // Make a new device instance
 // This method will automatically pick a supported device and its class
-const launchpad = new rocket();
+const launchpad = new rocketry();
 
 // Get a button instance on the Launchpad at bottom-left button
 // There are many other ways to get buttons like column, row, quadrant, etc.
 const button = launchpad.query.by.coordinates(0, 0);
 
 // Set its color to pink
-// Rocket supports standard RGB, full RGB, and bi-color values or their names
+// Rocketry supports standard RGB, full RGB, and bi-color values or their names
 button.light("pink");
 
 // Log to console on press of the bottom-left button
-// Rocket passes helpful values into your function, but let's not use them now
+// Rocketry passes helpful values into your function, but let's not use them now
 button.on("press", function() {
     console.log("3... 2... 1... Blast off!");
 });

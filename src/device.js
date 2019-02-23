@@ -6,7 +6,7 @@
 	Module dependencies
 */
 const EventEmitter = require("events");
-const rocket = require("./index.js");
+const rocketry = require("./index.js");
 const send = require("./send.js");
 const bindDeep = require("bind-deep");
 
@@ -129,7 +129,7 @@ class Device extends EventEmitter {
 	open() {
 		// Create MIDI I/O when re-opening after closing
 		if (!this.input || !this.output) {
-			Object.assign(this, rocket.createMidiIO());
+			Object.assign(this, rocketry.createMidiIO());
 		}
 
 		try {
@@ -137,8 +137,8 @@ class Device extends EventEmitter {
 			this.input.openPort(this.portNums.input);
 			this.output.openPort(this.portNums.output);
 
-			// Register ports with Rocket
-			rocket.opened.set(this, this.portNums);
+			// Register ports with Rocketry
+			rocketry.opened.set(this, this.portNums);
 
 
 			// Set array for Buttons (which are emitters) that are listeneing to events
@@ -173,8 +173,8 @@ class Device extends EventEmitter {
 			this.input.closePort();
 			this.output.closePort();
 
-			// Un-register ports with Rocket
-			rocket.opened.delete(this);
+			// Un-register ports with Rocketry
+			rocketry.opened.delete(this);
 
 			// Delete ports so new ones can be created in its place if reopened
 			delete this.input;

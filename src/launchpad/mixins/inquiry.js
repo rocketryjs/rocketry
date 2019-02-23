@@ -6,7 +6,7 @@
 	Module dependencies
 */
 const _ = require("lodash");
-const rocket = require("../../index.js");
+const rocketry = require("../../index.js");
 const {methods, properties, events} = require("../../mixin.js");
 
 
@@ -59,7 +59,7 @@ module.exports = function() {
 			// Device id (1 - 16, set in bootloader, subtracting 1 for zero indexing)
 			"deviceId": {
 				get() {
-					const deviceName = rocket.getDeviceName(
+					const deviceName = rocketry.getDeviceName(
 						this.input,
 						this.output,
 						this.portNums.input,

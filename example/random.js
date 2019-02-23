@@ -8,11 +8,11 @@
 	Module dependencies
 */
 const _ = require("lodash");
-const rocket = require("../lib/index.js");
+const rocketry = require("../lib/index.js");
 
 
 // Create new launchpad
-const launchpad = new rocket();
+const launchpad = new rocketry();
 
 // Light each button using lodash's simple random function
 const lightRandom = function() {

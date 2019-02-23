@@ -13,19 +13,19 @@ npm -v
 
 ## Installing the Module
 
-npm may warn you about using a Node.js version that's too low for Rocket. The suggested version of Node.js set in the `package.json` is set rather high because of the use of `async`/`await` in tests. If you don't intend to run tests, it will most likely work on `v6.x.x`, but it's not supported at this time.
+npm may warn you about using a Node.js version that's too low for Rocketry. The suggested version of Node.js set in the `package.json` is set rather high because of the use of `async`/`await` in tests. If you don't intend to run tests, it will most likely work on `v6.x.x`, but it's not supported at this time.
 
 ### From npm
 
 ```bash
-npm install launchpad-rocket
+npm install @rocketry/core
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/evelynhathaway/launchpad-rocket
-cd launchpad-rocket/
+git clone https://github.com/evelynhathaway/rocketry
+cd rocketry/
 npm install
 ```
 

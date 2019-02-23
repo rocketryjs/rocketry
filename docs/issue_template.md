@@ -26,5 +26,5 @@
 <!-- I installed this... -->
 <!-- How to find: `node -v` -->
 - Node.js:
-<!-- How to find: `npm list launchpad-rocket` or in in package.json -->
-- Rocket:
+<!-- How to find: `npm list @rocketry/core` or in in package.json -->
+- Rocketry:

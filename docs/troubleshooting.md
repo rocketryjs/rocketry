@@ -4,10 +4,10 @@
 | Symptom                                                   | Link                                                                                                                                                         | Probable Reason                                                 |
 |-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------|
 | Rainbow colored ripples                                   | [Connecting Your Launchpad](#connecting-your-launchpad)                                                                                                      | Not plugged in or missing drivers                               |
-| Rainbow colored ripples while computer is off or sleeping | [Google: turn off USB power when computer off](https://www.google.com/search?q=turn+off+usb+power+when+computer+off&oq=turn+off+USB+power+when+computer+off) | Not related to Rocket, the device is powered but not connected  |
+| Rainbow colored ripples while computer is off or sleeping | [Google: turn off USB power when computer off](https://www.google.com/search?q=turn+off+usb+power+when+computer+off&oq=turn+off+USB+power+when+computer+off) | Not related to Rocketry, the device is powered but not connected  |
 | Repeating ripples and rainbow gradients                   | [Connecting Your Launchpad](#connecting-your-launchpad)                                                                                                      | Loose connection to the computer or drivers are being installed |
 | Errors while installing or building                       | [Installation](#installation)                                                                                                                                | Lacking build tools                                             |
-| Errors while using Rocket                                 | [By Error](#by-error)                                                                                                                                        | One of us did something wrong...                                |
+| Errors while using Rocketry                                 | [By Error](#by-error)                                                                                                                                        | One of us did something wrong...                                |
 
 
 ## *By Error*
@@ -15,10 +15,10 @@
 | Error                                                                             | Code | Module  | Link                                                                                       | Probable Reason                                                                     |
 |-----------------------------------------------------------------------------------|------|---------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | Failed to find a supported device. Check your port and connection to your device. |      | new.js  | [Connecting Your Launchpad](#connecting-your-launchpad)                                    | Not plugged in or missing drivers                                                   |
-| Your device's output port's name doesn't match your input port's name.            |      | core.js | [Checking Device Information](#checking-device-information)                                | Ports given to or created by Rocket matched two separate devices                    |
-| Invalid port type.                                                                |      | core.js |                                                                                            | Ports given to Rocket weren't a valid type                                          |
-| Invalid port type in array or object of ports.                                    |      | core.js |                                                                                            | Ports given to Rocket inside the object or array weren't numbers                    |
-| Couldn't create MIDI I/O.                                                         |      | core.js | [Checking Device Information](#checking-device-information), [Installation](#installation) | Ports given to Rocket didn't match a device or node-midi wasn't correctly installed |
+| Your device's output port's name doesn't match your input port's name.            |      | core.js | [Checking Device Information](#checking-device-information)                                | Ports given to or created by Rocketry matched two separate devices                    |
+| Invalid port type.                                                                |      | core.js |                                                                                            | Ports given to Rocketry weren't a valid type                                          |
+| Invalid port type in array or object of ports.                                    |      | core.js |                                                                                            | Ports given to Rocketry inside the object or array weren't numbers                    |
+| Couldn't create MIDI I/O.                                                         |      | core.js | [Checking Device Information](#checking-device-information), [Installation](#installation) | Ports given to Rocketry didn't match a device or node-midi wasn't correctly installed |
 | Failed to find a matching port.                                                   |      | core.js |                                                                                            |  remove                                                                        |
 
 ---
@@ -56,11 +56,11 @@ Probably caused by an upgrade of Node.js or you ran `nvm use [another version]`.
 - Make sure your Launchpad is plugged in
 - Make sure your computer installed the drivers automatically or [install them manually](https://us.novationmusic.com/support/product-downloads?product=Launchpad)
 	- On Windows, check for your device in Device Manager. I have two devices in Device Manager under *Software Devices* (one for input and one for output, if someone made me guess) and one in *Sound, video and game controllers* for my single Launchpad MK2.
-- Make sure Rocket and `node-midi` sees your device by [Checking Device Information](#checking-device-information)
+- Make sure Rocketry and `node-midi` sees your device by [Checking Device Information](#checking-device-information)
 
 
 ## Checking Device Information
-To see your device's name, port numbers, if it's supported, or if Rocket and `node-midi` sees it — You can run a manual integration test to output all of this information and prompt you for things to look at.
+To see your device's name, port numbers, if it's supported, or if Rocketry and `node-midi` sees it — You can run a manual integration test to output all of this information and prompt you for things to look at.
 
 This test is made for making sure the code doesn't break before publishing updates so it uses some dev dependencies. If you only have the production packages installed, also install the dev dependencies.
 ###### Install Development Dependencies
@@ -97,6 +97,6 @@ Current Devices:
 
 
 ## Constructing Your Launchpad
-- Try adding port numbers to your device's construction in case Rocket doesn't recognize your device or it mistakenly recognizes another
+- Try adding port numbers to your device's construction in case Rocketry doesn't recognize your device or it mistakenly recognizes another
 - Check if your device is supported by [Checking Device Information](#checking-device-information)
 	- Check for updates or if it's unsupported

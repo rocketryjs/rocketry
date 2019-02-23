@@ -1,5 +1,5 @@
 # Support
-If you're having an issue with Rocket, check the [troubleshooting guide](troubleshooting.md) then [create an issue](https://github.com/evelynhathaway/launchpad-rocket/issues/new) or contact me.
+If you're having an issue with Rocketry, check the [troubleshooting guide](troubleshooting.md) then [create an issue](https://github.com/evelynhathaway/rocketry/issues/new) or contact me.
 
 
 ### Contact

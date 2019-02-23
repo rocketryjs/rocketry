@@ -4,7 +4,7 @@ Paint with your Launchpad! A fun example project that uses many different intera
 
 
 ## Starting
-- [Install Rocket](../installation.md)
+- [Install Rocketry](../installation.md)
 - Run in your terminal using the correct path
 ```bash
 $ node ./example/draw.js

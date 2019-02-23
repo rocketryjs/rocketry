@@ -4,23 +4,13 @@
 */
 
 
-/*
-	Module dependencies
-*/
-// Questioning the user
 const inquirer = require("inquirer");
-// Console text coloring
 const chalk = require("chalk");
-// Markdown table creator
 const table = require("markdown-table");
-// Strip ANSI
 const strip = require("strip-ansi");
-// lodash
 const _ = require("lodash");
-// MIDI
 const midi = require("midi");
-// Rocket
-const rocket = require("../../../lib/index.js");
+const rocketry = require("../../../lib/index.js");
 
 
 // Setup and reset
@@ -59,7 +49,7 @@ module.exports = {
 	// TODO: add API features for getPorts and getDevices
 	getPorts(port, portName) {
 		// Get names of ports
-		const names = rocket.core.getAllPortNames(port);
+		const names = rocketry.core.getAllPortNames(port);
 		const results = [];
 
 		// For all ports in input/output
@@ -69,7 +59,7 @@ module.exports = {
 				"port": portName === "output" ? chalk.yellow("output") : chalk.cyan("input"),
 				"number": chalk.gray(i),
 				"name": names[i],
-				"supported": names[i].match(rocket.support.regex) ? chalk.green("true") : chalk.red("false")
+				"supported": names[i].match(rocketry.support.regex) ? chalk.green("true") : chalk.red("false")
 			});
 		}
 
@@ -137,7 +127,7 @@ module.exports = {
 
 	// Get a device to test on
 	get device() {
-		return this._device ? this._device : this._device = new rocket();
+		return this._device ? this._device : this._device = new rocketry();
 	},
 
 
