@@ -1,6 +1,6 @@
 <div align="center">
 
-![Rocketry cover image](docs/images/cover.png)
+![Rocketry cover image](https://github.com/rocketryjs/assets/raw/master/cover/cover.png)
 
 [![npm organization: @rocketry](https://badgen.net/badge/npm/%40rocketry/fb3e44?icon=npm)](https://www.npmjs.com/org/rocketry)
 [![build status](https://badgen.net/travis/rocketryjs/rocketry/master?icon=travis)](https://travis-ci.com/rocketryjs/rocketry)
