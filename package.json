@@ -16,6 +16,7 @@
     "novation",
     "pro"
   ],
+  "homepage": "https://github.com/rocketryjs/rocketry#readme",
   "bugs": {
     "url": "https://github.com/rocketryjs/rocketry/issues"
   },
@@ -33,15 +34,14 @@
     "test": "./test"
   },
   "scripts": {
-    "test": "mocha test",
-    "lint": "eslint **/*.js",
     "build": "tsc",
-    "build:watch": "tsc -w"
+    "build:watch": "tsc -w",
+    "lint": "eslint **/*.js",
+    "test": "mocha test"
   },
   "dependencies": {
     "bind-deep": "^2.0.1",
-    "lodash": "^4.17.11",
-    "midi": "^0.9.5"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.121",
@@ -54,7 +54,6 @@
     "eslint-plugin-mocha": "^5.3.0",
     "eslint-plugin-node": "^8.0.1",
     "inquirer": "^6.2.2",
-    "lerna": "^3.13.0",
     "markdown-table": "^1.1.2",
     "mocha": "^6.0.1",
     "proxyquire": "^2.1.0",
@@ -64,6 +63,6 @@
     "typescript": "^3.3.3333"
   },
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.0.0"
   }
 }

@@ -2,13 +2,10 @@
 	Module: Device base
 	Description: The basic code all devices have in class form to be extended
 */
-/*
-	Module dependencies
-*/
-const EventEmitter = require("events");
-const rocketry = require("./index.js");
-const send = require("./send.js");
-const bindDeep = require("bind-deep");
+import EventEmitter from "events";
+import bindDeep from "bind-deep";
+import rocketry from "./index";
+import send from "./send";
 
 
 /*
@@ -108,7 +105,7 @@ const matchBytes = function(bytes, states) {
 /*
 	Device class
 */
-class Device extends EventEmitter {
+export default class Device extends EventEmitter {
 	constructor(input, output, portNums) {
 		// EventEmitter
 		super();
@@ -268,6 +265,3 @@ class Device extends EventEmitter {
 		return object instanceof this;
 	}
 }
-
-
-module.exports = Device;

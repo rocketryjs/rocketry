@@ -2,11 +2,18 @@
 	Module: Index - Rocketry
 	Description: Assembly of the individual modules, methods for constructing devices
 */
-/*
-	Module dependencies
-*/
-const _ = require("lodash");
-const midi = require("midi");
+import _ from "lodash";
+
+export const init = (options: {plugins: Array<any>}) => {
+
+};
+const rocketry = {init};
+export default rocketry;
+
+
+
+
+
 
 
 const constructor = function(...portNums) {
@@ -235,7 +242,7 @@ Object.defineProperty(rocketry, "regex", {
 /*
 	Export Rocketry
 */
-module.exports = rocketry;
+export default rocketry;
 
 
 /*
