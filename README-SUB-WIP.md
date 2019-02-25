@@ -21,4 +21,4 @@ See [Documentation > Installation](docs/installation.md) for more information.
 
 ## License
 
-Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/rocketry/blob/master/LICENSE)
+Copyright Evelyn Hathaway, [MIT License](https://github.com/rocketryjs/rocketry/blob/master/LICENSE)

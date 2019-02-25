@@ -3,9 +3,9 @@
 ![Rocketry cover image](docs/images/cover.png)
 
 [![npm organization: @rocketry](https://badgen.net/badge/npm/%40rocketry/fb3e44?icon=npm)](https://www.npmjs.com/org/rocketry)
-[![build status](https://badgen.net/travis/evelynhathaway/rocketry/master?icon=travis)](https://travis-ci.com/evelynhathaway/rocketry)
+[![build status](https://badgen.net/travis/rocketryjs/rocketry/master?icon=travis)](https://travis-ci.com/rocketryjs/rocketry)
 [![maintained with lerna](https://badgen.net/badge/maintained%20with/lerna/cc00ff)](https://github.com/lerna/lerna)
-[![dependencies: 3](https://badgen.net/badge/dependencies/3/blue)](https://github.com/evelynhathaway/rocketry/network/dependencies)
+[![dependencies: 3](https://badgen.net/badge/dependencies/3/blue)](https://github.com/rocketryjs/rocketry/network/dependencies)
 [![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 [![documentation](https://badgen.net/badge/docs/github/blue)](docs)
 
@@ -115,10 +115,10 @@ Currently only the Launchpad MK2 is supported, but and support for the Launchpad
 
 ## Contributing
 
-If you find any bugs or would like to suggest features, [make an issue](https://github.com/evelynhathaway/rocketry/issues/new) for it being as descriptive as possible and I'll do my best to address it.
+If you find any bugs or would like to suggest features, [make an issue](https://github.com/rocketryjs/rocketry/issues/new) for it being as descriptive as possible and I'll do my best to address it.
 
 If you have a device that's not supported, have ideas for new features, or just want to fix it up a bit; pull requests are highly appreciated.
 
 ## License
 
-Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/rocketry/blob/master/LICENSE)
+Copyright Evelyn Hathaway, [MIT License](https://github.com/rocketryjs/rocketry/blob/master/LICENSE)

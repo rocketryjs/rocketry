@@ -24,7 +24,7 @@ npm install @rocketry/core
 ### From source
 
 ```bash
-git clone https://github.com/evelynhathaway/rocketry
+git clone https://github.com/rocketryjs/rocketry
 cd rocketry/
 npm install
 ```
