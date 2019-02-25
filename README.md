@@ -6,7 +6,7 @@
 [![build status](https://badgen.net/travis/rocketryjs/rocketry/master?icon=travis)](https://travis-ci.com/rocketryjs/rocketry)
 [![dependencies: 3](https://badgen.net/badge/dependencies/3/blue)](https://github.com/rocketryjs/rocketry/network/dependencies)
 [![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
-[![documentation](https://badgen.net/badge/docs/github/blue)](docs)
+[![documentation](https://badgen.net/badge/docs/rocketryjs%2Fdocs/)](https://github.com/rocketryjs/docs)
 
 </div>
 
@@ -39,7 +39,7 @@ Rocketry is an interface for the Novation Launchpad product line written in Java
 	- Events trigger an array when any button inside fires
 	- Lighting of buttons is quicker in a group
 - Inquire for information about the device
-- [And more...](docs/interaction.md)
+- [And more...](https://github.com/rocketryjs/docs/interaction.md)
 
 
 ## Installation
@@ -48,7 +48,7 @@ Rocketry is an interface for the Novation Launchpad product line written in Java
 npm install @rocketry/core
 ```
 
-See [Documentation > Installation](docs/installation.md) for more information.
+See [Documentation > Installation](https://github.com/rocketryjs/docs/installation.md) for more information.
 
 ---
 
@@ -56,15 +56,15 @@ See [Documentation > Installation](docs/installation.md) for more information.
 
 1. Plug in your Launchpad
 2. Make sure your computer installed the drivers or [install them manually](https://us.novationmusic.com/support/product-downloads?product=Launchpad)
-3. [Install Rocketry](docs/installation.md)
-4. [Try the "Getting Started" example](docs/getting-started.md)
+3. [Install Rocketry](https://github.com/rocketryjs/docs/installation.md)
+4. [Try the "Getting Started" example](https://github.com/rocketryjs/docs/getting-started.md)
 5. Create a new `.js` file
 6. `require()` or `import` the package
-7. Browse the [documentation](docs)
+7. Browse the [documentation](https://github.com/rocketryjs/docs)
 
 ### Example
 
-<!-- Also change /doc/getting-started.md -->
+<!-- Also change /rocketryjs/docs/getting-started.md -->
 
 ```js
 // Require Rocketry

@@ -29,7 +29,7 @@
   "directories": {
     "lib": "./lib",
     "doc": "./docs",
-    "example": "./example",
+    "examples": "./examples",
     "test": "./test"
   },
   "scripts": {
