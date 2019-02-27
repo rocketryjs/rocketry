@@ -7,7 +7,7 @@ node_modules/
 #################
 ## Debug
 #################
-debug.js
+debug.?s
 
 \.vscode/
 

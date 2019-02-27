@@ -6,6 +6,7 @@ import EventEmitter from "events";
 import bindDeep from "bind-deep";
 import rocketry from "./index";
 import send from "./send";
+import {PortsType} from "./types";
 
 
 /*
@@ -118,44 +119,19 @@ export default class Device extends EventEmitter {
 		this.output = output;
 		this.portNums = portNums;
 
+		this.send = bindDeep(this, send);
+
 		// Open connection with device
 		this.open();
 	}
 
+	// Set array for Buttons (which are emitters) that are listeneing to events
+	emitters = [];
+	open(portNums?: PortsType, options?: MIDIOptions) {
+		rocketry.midi.connect(this, portNums, options);
 
-	open() {
-		// Create MIDI I/O when re-opening after closing
-		if (!this.input || !this.output) {
-			Object.assign(this, rocketry.createMidiIO());
-		}
-
-		try {
-			// Open ports
-			this.input.openPort(this.portNums.input);
-			this.output.openPort(this.portNums.output);
-
-			// Register ports with Rocketry
-			rocketry.opened.set(this, this.portNums);
-
-
-			// Set array for Buttons (which are emitters) that are listeneing to events
-			if (!this.emitters) {
-				this.emitters = [];
-			}
-
-			// Receiving
-			// Allow responses of SysEx and MIDI beat clock messages
-			this.input.ignoreTypes(false, false, false);
-			// Start receiving MIDI messages for this Launchpad and relay them to Buttons through receive()
-			this.input.on("message", (deltaTime, message) => {
-				this.receive(deltaTime, message);
-			});
-
-			// Notify device open
-			this.emit("open");
-		} catch (error) {
-			throw new Error("Failed to open a MIDI port. Check your port and connection to your Launchpad.\n\n" + error);
-		}
+		// Notify that the device is open
+		this.emit("open");
 
 		// Method chaining
 		return this;
@@ -183,14 +159,6 @@ export default class Device extends EventEmitter {
 		// Method chaining
 		return this;
 	}
-
-
-	get send() {
-		return Object.defineProperty(this, "send", {
-			"value": bindDeep(this, send)
-		}).send;
-	}
-
 
 	// Relay MIDI messages to listeners
 	receive(deltaTime, message) {

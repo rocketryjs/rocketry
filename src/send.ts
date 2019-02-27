@@ -2,30 +2,9 @@
 	Module: Send
 	Description: Methods to send arrays of MIDI bytes
 */
+import rocketry from "./index";
 import {betweenInclusive} from "./util";
-
-
-type ChannelType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
-type MessageType = Array<number>;
-
-interface SendBasicType<T> {
-	(this: T, message: MessageType): T;
-}
-interface SendHelperType<T> {
-	(this: T, message: MessageType, channel?: ChannelType): T;
-}
-interface SendType<T> extends SendBasicType<T> {
-	noteoff: SendHelperType<T>;
-	noteon: SendHelperType<T>;
-	polykeypressure: SendHelperType<T>;
-	controlchange: SendHelperType<T>;
-	programchange: SendHelperType<T>;
-	monokeypressure: SendHelperType<T>;
-	channelpressure: SendHelperType<T>;
-	pitchbend: SendHelperType<T>;
-	systemexclusive: SendBasicType<T>;
-	sysex: SendBasicType<T>;
-};
+import {ChannelType, MessageType, SendType} from "./types";
 
 
 /*
@@ -46,7 +25,7 @@ const addStatusByte = function (message: MessageType, start: number, channel: Ch
 /*
 	Send arrays of MIDI bytes
 */
-const send: SendType<T> = function (this: T, message: MessageType) {
+const send: SendType<void> = function<T> (this: T, message: MessageType): T {
 	// Check if all bytes are numbers and in range
 	if (!message.every((value: number) => betweenInclusive(value, 0, 255))) {
 		throw new RangeError("The message to be sent to the device contained a byte that was out of range.");
@@ -54,7 +33,7 @@ const send: SendType<T> = function (this: T, message: MessageType) {
 
 	// Send it via node-midi's output class instance associated with this device
 	try {
-		this.output.sendMessage(message);
+		rocketry.midi.send(this, message);
 	} catch (error) {
 		throw new Error(`Failed to send ${message} via MIDI.\n\n${error}`);
 	}
