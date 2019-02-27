@@ -2,13 +2,10 @@
 	Module: Sub emitter class
 	Description: Class for emitters that rely on willEmit rather than emitting themselves
 */
-/*
-	Module dependencies
-*/
-const EventEmitter = require("events");
-const _ = require("lodash");
+import EventEmitter from "events";
+import _ from "lodash";
 
-class SubEmitter extends EventEmitter {
+export default class SubEmitter extends EventEmitter {
 	constructor() {
 		super();
 	}
@@ -84,6 +81,3 @@ class SubEmitter extends EventEmitter {
 		}
 	}
 }
-
-
-module.exports = SubEmitter;

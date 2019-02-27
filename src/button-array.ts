@@ -2,11 +2,8 @@
 	Module: Button array
 	Description: The button array constructor that makes an array with instance methods
 */
-/*
-	Module dependencies
-*/
-const SubEmitter = require("./sub-emitter.js");
-const mixin = require("../mixin.js");
+import SubEmitter from "./sub-emitter";
+import mixin from "../mixin";
 
 
 /*
@@ -112,4 +109,4 @@ mixin(ButtonArray, "./launchpad/mixins/query.js");
 /*
 	Export class
 */
-module.exports = ButtonArray;
+export default ButtonArray;

@@ -2,10 +2,7 @@
 	Module: Button base
 	Description: The basic code all buttons have in class form to be extended
 */
-/*
-	Module dependencies
-*/
-const SubEmitter = require("./sub-emitter.js");
+import SubEmitter from "./sub-emitter";
 
 
 // lodash's `isMatch` and `isEqual` don't work well with proxies
@@ -25,7 +22,7 @@ const matchDeep = function(object, source) {
 };
 
 
-class Button extends SubEmitter {
+export default class Button extends SubEmitter {
 	constructor(device, object) {
 		// EventEmitter
 		super();
@@ -55,6 +52,3 @@ class Button extends SubEmitter {
 		return object instanceof this;
 	}
 }
-
-
-module.exports = Button;
