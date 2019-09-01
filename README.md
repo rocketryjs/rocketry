@@ -1,8 +1,8 @@
 <div align="center">
 
-![Rocketry cover image](https://github.com/rocketryjs/assets/raw/master/cover/cover.png)
+![Rocketry - JavaScript Launchpad Interface](https://github.com/rocketryjs/assets/raw/master/cover/cover.png)
 
-[![npm organization: @rocketry](https://badgen.net/badge/npm/%40rocketry/fb3e44?icon=npm)](https://www.npmjs.com/org/rocketry)
+[![npm organization: @rocketry](https://badgen.net/badge/npm/@rocketry/fb3e44?icon=npm)](https://www.npmjs.com/org/rocketry)
 [![build status](https://badgen.net/travis/rocketryjs/rocketry/master?icon=travis)](https://travis-ci.com/rocketryjs/rocketry)
 [![dependencies: 3](https://badgen.net/badge/dependencies/3/blue)](https://github.com/rocketryjs/rocketry/network/dependencies)
 [![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)

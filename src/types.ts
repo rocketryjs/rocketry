@@ -73,6 +73,6 @@ export interface RocketryType {
 	registerDevice(this: RocketryType, device: DeviceAPI): void;
 	devices: {[index: string]: DeviceAPI};
 	midi: MidiLayerAPI;
-	opened: Map<TODO>;
+	opened: Map<DeviceInstaceAPI>;
 	regex: RegExp;
 }

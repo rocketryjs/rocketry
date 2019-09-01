@@ -25,7 +25,7 @@
     "url": "https://github.com/rocketryjs/rocketry.git"
   },
   "license": "MIT",
-  "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
+  "author": "Evelyn Hathaway <npm@evelyn.dev> (https://evelyn.dev)",
   "main": "./lib/index.js",
   "directories": {
     "lib": "./lib",

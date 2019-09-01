@@ -15,7 +15,7 @@ const rocketry: RocketryType = {
 	// Device classes
 	devices: {},
 	// MIDI layer (default to throwing errors on access)
-	midi: new Proxy({}, {get(target: object, property: string) {throw Error(`No MIDI plugin is registered with Rocketry and property: ${property} was attempted to be retrived.`)}}) as MidiLayerAPI,
+	midi: new Proxy({}, {get(target: object, property: string) {throw Error(`No MIDI plugin is registered with Rocketry and property: ${property} was attempted to be retrieved.`)}}) as MidiLayerAPI,
 	// Opened device instances TODO: remove as the need for registering the next device may be removed if you have to construct from the device plugin
 	opened: new Map(),
 	// Get all type names, or regex strings that get a type
