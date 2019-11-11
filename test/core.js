@@ -21,9 +21,8 @@
 /* eslint-disable object-shorthand, no-undef, node/no-unpublished-require */
 
 
-/*
-	Module dependencies
-*/
+
+
 const expect = require("chai").expect;
 const sinon = require("sinon");
 const proxyquire = require("proxyquire");

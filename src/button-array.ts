@@ -2,6 +2,7 @@
 	Module: Button array
 	Description: The button array constructor that makes an array with instance methods
 */
+
 import SubEmitter from "./sub-emitter";
 import mixin from "../mixin";
 

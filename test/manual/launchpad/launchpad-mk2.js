@@ -9,9 +9,8 @@
 */
 
 
-/*
-	Module dependencies
-*/
+
+
 // Assertion library
 const expect = require("chai").expect;
 // Manual test helpers
