@@ -41,6 +41,7 @@ const rocketry: RocketryType = {
 // Default export
 export default rocketry;
 // Destructured
-export const {registerMidiLayer, registerDevice} = rocketry;
+// Properties accessed on `rocketry` from exported methods must also be exported
+export const {registerMidiLayer, registerDevice, devices} = rocketry;
 // Sub-modules
 export {default as Device} from "./device";
