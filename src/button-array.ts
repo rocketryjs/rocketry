@@ -4,7 +4,6 @@
 */
 
 import SubEmitter from "./sub-emitter";
-import mixin from "../mixin";
 
 
 /*
@@ -17,6 +16,7 @@ const ButtonArray = function(parent, ...values) {
 		buttons.push(...parent.get(value));
 	}
 	// Return empty array if it didn't match anything
+	// TODO: doesn't have prototype? Why did I do this?
 	if (buttons.length === 0) {
 		return buttons;
 	}
@@ -29,6 +29,9 @@ const ButtonArray = function(parent, ...values) {
 		}
 	);
 
+	// Call the initializers defined from mixins
+	ButtonArray.inits.forEach(init => init.call(this));
+
 	// Return array with prototyping
 	return Object.setPrototypeOf(
 		// this => array of `Button`s
@@ -38,6 +41,7 @@ const ButtonArray = function(parent, ...values) {
 	);
 };
 
+ButtonArray.inits = new Set();
 
 /*
 	Prototype
@@ -104,7 +108,8 @@ Object.setPrototypeOf(
 /*
 	Mixins
 */
-mixin(ButtonArray, "./launchpad/mixins/query.js");
+// TODO: HIGH PRIORITY: Fix button array by using a better design pattern, not depending on device code and hacky prototyping, add back querying
+// mixin(ButtonArray, "./launchpad/mixins/query.js");
 
 
 /*

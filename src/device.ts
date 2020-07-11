@@ -113,6 +113,7 @@ export default class Device extends EventEmitter {
 
 		// Properties
 		if (!input || !output || !portNums) {
+			// TODO replace with auto connection from MIDI layer
 			throw new Error("Missing argument when creating a new device.");
 		}
 		this.input = input;
@@ -261,7 +262,31 @@ export default class Device extends EventEmitter {
 		return this._inits;
 	}
 
-	static is(object) {
-		return object instanceof this;
+	/*
+		Get the events defined on the subclass (e.x. from mixins)
+
+		- Is used to add event datatypes from mixins
+		- Intentionally doesn't impelement a method for inheritance
+			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
+			- May change in the future as device support grows
+	*/
+	static get events() {
+		// Throw if called on raw `Device` class
+		// - Is to prevent mixins for subclasses from accidentally polluting the parent class
+		// - May be dropped if there's a need for `Device`-level events
+		if (this === Device) {
+			throw Error("You cannot get the events of the Device parent class.");
+		}
+
+		// If the subclass doesn't have its own `_events`
+		if (!Object.prototype.hasOwnProperty.call(this, "_events")) {
+			// Make an events `Map` on the subclass
+			Object.defineProperty(this, "_events", {
+				value: new Map(),
+			});
+		}
+
+		// Return the events
+		return this._events;
 	}
 }
