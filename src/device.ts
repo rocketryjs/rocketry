@@ -4,8 +4,8 @@
 */
 import {EventEmitter} from "events";
 import bindDeep from "bind-deep";
-import rocketry, {send, PortNumbers} from ".";
-import {MIDILayerAPI, SendType, DeviceAPI} from "./types";
+import rocketry, {send, PortNumbers, RegisteredMIDILayer} from ".";
+import {MIDILayerAPI, Send, DeviceAPIClass} from "./types";
 
 
 /*
@@ -107,11 +107,13 @@ const matchBytes = function(bytes: Array<number>, states) {
 */
 export interface Device {
 	// Constructor ain't just a function, it also is the base class and the device API
-	constructor: typeof Device & DeviceAPI;
+	constructor: typeof Device & DeviceAPIClass;
 }
 export abstract class Device extends EventEmitter {
-	midi: MIDILayerAPI;
-	send: SendType<Device>;
+	midi: InstanceType<RegisteredMIDILayer>;
+	send: Send<Device, void>;
+	static type: string;
+	static regex?: RegExp;
 	private static _inits;
 	private static _events;
 

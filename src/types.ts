@@ -1,4 +1,3 @@
-import {EventEmitter} from "events";
 import {Device} from "./device";
 
 
@@ -7,25 +6,25 @@ import {Device} from "./device";
 */
 export type Channel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 export type Message = Array<number>;
-export interface SendBasicType<T extends Device> {
-	(this: T, message: Message): T;
+export interface SendBasic<R extends Device, T extends Device | void = R> {
+	(this: T, message: Message): R;
 }
-export interface SendHelperType<T extends Device> {
-	(this: T, message: Message, channel?: Channel): T;
+export interface SendHelper<R extends Device, T extends Device | void = R> {
+	(this: T, message: Message, channel?: Channel): R;
 }
-export interface SendType<T extends Device> extends SendBasicType<T> {
-	noteOff: SendHelperType<T>;
-	noteOn: SendHelperType<T>;
-	polyKeyPressure: SendHelperType<T>;
-	controlChange: SendHelperType<T>;
-	programChange: SendHelperType<T>;
-	monoKeyPressure: SendHelperType<T>;
-	channelPressure: SendHelperType<T>;
-	pitchBend: SendHelperType<T>;
+export interface Send<Return extends Device, This extends Device | void = Return> extends SendBasic<Return, This> {
+	noteOff: SendHelper<Return, This>;
+	noteOn: SendHelper<Return, This>;
+	polyKeyPressure: SendHelper<Return, This>;
+	controlChange: SendHelper<Return, This>;
+	programChange: SendHelper<Return, This>;
+	monoKeyPressure: SendHelper<Return, This>;
+	channelPressure: SendHelper<Return, This>;
+	pitchBend: SendHelper<Return, This>;
 	// SysEx Aliases
-	systemExclusive: SendBasicType<T>;
-	sysEx: SendBasicType<T>;
-	sysex: SendBasicType<T>;
+	systemExclusive: SendBasic<Return, This>;
+	sysEx: SendBasic<Return, This>;
+	sysex: SendBasic<Return, This>;
 };
 
 
@@ -58,8 +57,7 @@ export interface MIDILayerAPIClass {
 /*
 	Device
 */
-export interface DeviceAPI {
-	(ports?: PortNumbers): Device;
-	type: string;
+export interface DeviceAPIClass<D extends Device = Device> {
+	new (ports?: PortNumbers): D;
 	regex?: RegExp;
 }
