@@ -76,3 +76,4 @@ send.systemExclusive = function<T extends Device> (this: T, message: Message) {
 	return this.send([240, ...message, 247]);
 };
 send.sysEx = send.systemExclusive;
+send.sysex = send.systemExclusive;

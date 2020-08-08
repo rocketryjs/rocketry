@@ -7,13 +7,13 @@ import {Device} from "./device";
 */
 export type Channel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 export type Message = Array<number>;
-export interface SendBasicType<T extends DeviceInstaceAPI> {
+export interface SendBasicType<T extends Device> {
 	(this: T, message: Message): T;
 }
-export interface SendHelperType<T extends DeviceInstaceAPI> {
+export interface SendHelperType<T extends Device> {
 	(this: T, message: Message, channel?: Channel): T;
 }
-export interface SendType<T extends DeviceInstaceAPI> extends SendBasicType<T> {
+export interface SendType<T extends Device> extends SendBasicType<T> {
 	noteOff: SendHelperType<T>;
 	noteOn: SendHelperType<T>;
 	polyKeyPressure: SendHelperType<T>;
@@ -22,8 +22,10 @@ export interface SendType<T extends DeviceInstaceAPI> extends SendBasicType<T> {
 	monoKeyPressure: SendHelperType<T>;
 	channelPressure: SendHelperType<T>;
 	pitchBend: SendHelperType<T>;
+	// SysEx Aliases
 	systemExclusive: SendBasicType<T>;
 	sysEx: SendBasicType<T>;
+	sysex: SendBasicType<T>;
 };
 
 
