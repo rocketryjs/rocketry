@@ -1,78 +1,63 @@
-import EventEmitter from "events";
+import {EventEmitter} from "events";
+import {Device} from "./device";
 
 
 /*
 	Send
 */
-export type ChannelType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
-export type MessageType = Array<number>;
-interface SendBasicType<T> {
-	(this: T, message: MessageType): T;
+export type Channel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
+export type Message = Array<number>;
+export interface SendBasicType<T extends DeviceInstaceAPI> {
+	(this: T, message: Message): T;
 }
-interface SendHelperType<T> {
-	(this: T, message: MessageType, channel?: ChannelType): T;
+export interface SendHelperType<T extends DeviceInstaceAPI> {
+	(this: T, message: Message, channel?: Channel): T;
 }
-export interface SendType<T> extends SendBasicType<T> {
-	noteoff: SendHelperType<T>;
-	noteon: SendHelperType<T>;
-	polykeypressure: SendHelperType<T>;
-	controlchange: SendHelperType<T>;
-	programchange: SendHelperType<T>;
-	monokeypressure: SendHelperType<T>;
-	channelpressure: SendHelperType<T>;
-	pitchbend: SendHelperType<T>;
-	systemexclusive: SendBasicType<T>;
-	sysex: SendBasicType<T>;
+export interface SendType<T extends DeviceInstaceAPI> extends SendBasicType<T> {
+	noteOff: SendHelperType<T>;
+	noteOn: SendHelperType<T>;
+	polyKeyPressure: SendHelperType<T>;
+	controlChange: SendHelperType<T>;
+	programChange: SendHelperType<T>;
+	monoKeyPressure: SendHelperType<T>;
+	channelPressure: SendHelperType<T>;
+	pitchBend: SendHelperType<T>;
+	systemExclusive: SendBasicType<T>;
+	sysEx: SendBasicType<T>;
 };
 
 
 /*
 	MIDI
 */
-export interface InputAPI {
-
-}
-export interface OutputAPI {
-
-}
-export interface PortsType {
+export interface PortNumbers {
 	input: number;
 	output: number;
 }
-export interface MidiLayerAPI {
-	createMidiIO(): {input: InputAPI, output: OutputAPI};
-	sysexEnabled?: boolean;
+export interface DevicePort {
+	name: string;
+	number: number;
+};
+export interface MIDIOptions {
+	sysex: boolean;
+	[key: string]: unknown;
+}
+export interface MIDILayerAPI {
+	options: MIDIOptions;
+	send(message: Array<number>): void;
+	connect(portNums: PortNumbers): void;
+	disconnect(): void;
+	getAllPortNumbers(regex?: RegExp): {input: Array<DevicePort>, output: Array<DevicePort>};
+}
+export interface MIDILayerAPIClass {
+	new (options?: Partial<MIDIOptions>): MIDILayerAPI;
 }
 
 /*
 	Device
 */
-export interface DeviceInstaceAPI extends EventEmitter {
-	open(): DeviceInstaceAPI;
-	close(): DeviceInstaceAPI;
-	receive(): DeviceInstaceAPI;
-	promiseOnce(): DeviceInstaceAPI;
-	input: InputAPI;
-	output: OutputAPI;
-	portNums: PortsType;
-	send: SendType<DeviceInstaceAPI>;
-}
-export interface DeviceType {
-	(ports?: PortsType): DeviceInstaceAPI;
-}
-export interface DeviceAPI extends DeviceType {
+export interface DeviceAPI {
+	(ports?: PortNumbers): Device;
 	type: string;
 	regex?: RegExp;
-}
-
-/*
-	Rocketry
-*/
-export interface RocketryType {
-	registerMidiLayer(this: RocketryType, midiLayer: MidiLayerAPI): void;
-	registerDevice(this: RocketryType, device: DeviceAPI): void;
-	devices: {[index: string]: DeviceAPI};
-	midi: MidiLayerAPI;
-	opened: Map<DeviceInstaceAPI>;
-	regex: RegExp;
 }

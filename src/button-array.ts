@@ -3,13 +3,13 @@
 	Description: The button array constructor that makes an array with instance methods
 */
 
-import SubEmitter from "./sub-emitter";
+import {SubEmitter} from "./sub-emitter";
 
 
 /*
 	ButtonArray
 */
-const ButtonArray = function(parent, ...values) {
+export const ButtonArray = function(parent, ...values) {
 	// Run constructor
 	const buttons = [];
 	for (const value of values) {
@@ -110,9 +110,3 @@ Object.setPrototypeOf(
 */
 // TODO: HIGH PRIORITY: Fix button array by using a better design pattern, not depending on device code and hacky prototyping, add back querying
 // mixin(ButtonArray, "./launchpad/mixins/query.js");
-
-
-/*
-	Export class
-*/
-export default ButtonArray;

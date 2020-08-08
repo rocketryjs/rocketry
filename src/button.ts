@@ -2,7 +2,7 @@
 	Module: Button base
 	Description: The basic code all buttons have in class form to be extended
 */
-import SubEmitter from "./sub-emitter";
+import {SubEmitter} from "./sub-emitter";
 
 
 // lodash's `isMatch` and `isEqual` don't work well with proxies
@@ -22,7 +22,7 @@ const matchDeep = function(object, source) {
 };
 
 
-export default class Button extends SubEmitter {
+export class Button extends SubEmitter {
 	constructor(device, assignProps, defineProps) {
 		// EventEmitter
 		super();
@@ -34,7 +34,7 @@ export default class Button extends SubEmitter {
 		// Dynamic and other properties that must be defined
 		Object.defineProperties(this, defineProps);
 
-		// Call the initializers defined on the subclass (e.x. from mixins)
+		// Call the initializers defined on the subclass (e.g. from mixins)
 		this.constructor.inits.forEach(init => init.call(this));
 	}
 

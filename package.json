@@ -40,12 +40,12 @@
     "test": "mocha test"
   },
   "dependencies": {
-    "bind-deep": "^2.0.1",
-    "lodash": "^4.17.13"
+    "bind-deep": "^2.1.0",
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.121",
-    "@types/node": "^11.9.5",
+    "@types/lodash": "^4.14.157",
+    "@types/node": "^14.0.22",
     "@typescript-eslint/eslint-plugin": "^1.4.0",
     "@typescript-eslint/parser": "^1.4.0",
     "chai": "^4.2.0",
@@ -60,7 +60,7 @@
     "sinon": "^7.2.4",
     "strip-ansi": "^5.0.0",
     "ts-essentials": "^2.0.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.9.6"
   },
   "engines": {
     "node": ">=8.0.0"

@@ -2,17 +2,16 @@
 	Module: Device base
 	Description: The basic code all devices have in class form to be extended
 */
-import EventEmitter from "events";
+import {EventEmitter} from "events";
 import bindDeep from "bind-deep";
-import rocketry from "./index";
-import send from "./send";
-import {PortsType} from "./types";
+import rocketry, {send, PortNumbers} from ".";
+import {MIDILayerAPI, SendType, DeviceAPI} from "./types";
 
 
 /*
 	Functions
 */
-const doesByteMatch = function(byte, capture, state) {
+const doesByteMatch = function(byte: number, capture, state) {
 	// Validity
 	// If the function exists, execute it. Fallback on true.
 	const isValid = typeof state.validate === "function" ? state.validate.call(this, byte, capture) : true;
@@ -22,7 +21,7 @@ const doesByteMatch = function(byte, capture, state) {
 
 	return isValid && doesMatch;
 };
-const matchBytes = function(bytes, states) {
+const matchBytes = function(bytes: Array<number>, states) {
 	// Where the captures will be stored
 	const captures = {};
 
@@ -106,33 +105,52 @@ const matchBytes = function(bytes, states) {
 /*
 	Device class
 */
-export default class Device extends EventEmitter {
-	constructor(input, output, portNums) {
+export interface Device {
+	// Constructor ain't just a function, it also is the base class and the device API
+	constructor: typeof Device & DeviceAPI;
+}
+export abstract class Device extends EventEmitter {
+	midi: MIDILayerAPI;
+	send: SendType<Device>;
+	private static _inits;
+	private static _events;
+
+	constructor (portNums: PortNumbers) {
 		// EventEmitter
 		super();
 
-		// Properties
-		if (!input || !output || !portNums) {
-			// TODO replace with auto connection from MIDI layer
-			throw new Error("Missing argument when creating a new device.");
+		if (!rocketry.midi) {
+			throw new Error("No MIDI layer initialized.");
 		}
-		this.input = input;
-		this.output = output;
-		this.portNums = portNums;
 
-		this.send = bindDeep(this, send);
+		this.midi = new rocketry.midi();
+
+		// Properties
+		if (!portNums) {
+			const {input, output} = this.midi.getAllPortNumbers(this.constructor.regex);
+			if (input.length && output.length) {
+				portNums = {
+					input: input[0].number,
+					output: output[0].number,
+				};
+			} else {
+				throw new Error("No supported device found, try supplying port numbers when creating the device.");
+			}
+		}
+
+		this.send = bindDeep(send, this);
 
 		// Call the initializers defined on the subclass (e.x. from mixins)
 		this.constructor.inits.forEach(init => init.call(this));
 
 		// Open connection with device
-		this.open();
+		this.open(portNums);
 	}
 
 	// Set array for Buttons (which are emitters) that are listeneing to events
 	emitters = [];
-	open(portNums?: PortsType, options?: MIDIOptions) {
-		rocketry.midi.connect(this, portNums, options);
+	open (portNums: PortNumbers) {
+		this.midi.connect(portNums);
 
 		// Notify that the device is open
 		this.emit("open");
@@ -142,30 +160,17 @@ export default class Device extends EventEmitter {
 	}
 
 	close() {
-		try {
-			// Notify closure
-			this.emit("close");
+		// Notify closure
+		this.emit("close");
 
-			// Close ports
-			this.input.closePort();
-			this.output.closePort();
-
-			// Un-register ports with Rocketry
-			rocketry.opened.delete(this);
-
-			// Delete ports so new ones can be created in its place if reopened
-			delete this.input;
-			delete this.output;
-		} catch (error) {
-			throw new Error("Couldn't close MIDI I/O.\n\n" + error);
-		}
+		this.midi.disconnect();
 
 		// Method chaining
 		return this;
 	}
 
 	// Relay MIDI messages to listeners
-	receive(deltaTime, message) {
+	receive(deltaTime: number, message: Array<number>) {
 		let event;
 		let captures;
 
@@ -207,7 +212,7 @@ export default class Device extends EventEmitter {
 	) {
 		return new Promise((resolve, reject) => {
 			// Hoist timeout
-			let timeoutObj;
+			let timeoutObj: NodeJS.Timeout;
 
 			// Listen for event
 			const listener = (message) => {
@@ -220,7 +225,7 @@ export default class Device extends EventEmitter {
 
 			// Timeout if not a falsy value
 			if (timeout) {
-				timeoutObj = setTimeout(() => {
+			timeoutObj = setTimeout(() => {
 					// If still listening
 					if (this.listeners(event).includes(listener)) {
 						// Remove the listener and reject the promise
@@ -234,7 +239,7 @@ export default class Device extends EventEmitter {
 
 
 	/*
-		Get the initializers defined on the subclass (e.x. from mixins)
+		Get the initializers defined on the subclass (e.g. from mixins)
 
 		- Is used to run code from mixins when a new instance of any subclass of `Device` is created
 			- Esentially extending the `constructor()`
