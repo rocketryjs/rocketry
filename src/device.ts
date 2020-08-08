@@ -244,8 +244,8 @@ export abstract class Device extends EventEmitter {
 		Get the initializers defined on the subclass (e.g. from mixins)
 
 		- Is used to run code from mixins when a new instance of any subclass of `Device` is created
-			- Esentially extending the `constructor()`
-		- Intentionally doesn't impelement a method for inheritance
+			- Essentially extending the `constructor()`
+		- Intentionally doesn't implement a method for inheritance
 			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
 			- May change in the future as device support grows
 	*/
@@ -273,7 +273,7 @@ export abstract class Device extends EventEmitter {
 		Get the events defined on the subclass (e.x. from mixins)
 
 		- Is used to add event datatypes from mixins
-		- Intentionally doesn't impelement a method for inheritance
+		- Intentionally doesn't implement a method for inheritance
 			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
 			- May change in the future as device support grows
 	*/

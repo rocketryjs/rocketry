@@ -3,10 +3,11 @@
 	Description: The basic code all buttons have in class form to be extended
 */
 import {SubEmitter} from "./sub-emitter";
+import {Device} from "./device";
 
 
 // lodash's `isMatch` and `isEqual` don't work well with proxies
-const matchDeep = function(object, source) {
+const matchDeep = function(object: unknown, source: unknown) {
 	if (typeof source === "object" || typeof source === "function") {
 		for (const key in source) {
 			const keyMatched = matchDeep(object[key], source[key]);
@@ -21,9 +22,15 @@ const matchDeep = function(object, source) {
 	}
 };
 
-
+export interface Button {
+	constructor: typeof Button;
+}
 export class Button extends SubEmitter {
-	constructor(device, assignProps, defineProps) {
+	device: Device;
+	private static _inits;
+	private static _events;
+
+	constructor (device: Device, assignProps: unknown, defineProps: PropertyDescriptorMap) {
 		// EventEmitter
 		super();
 
@@ -39,14 +46,14 @@ export class Button extends SubEmitter {
 	}
 
 
-	test(object) {
+	test(object: unknown) {
 		// Match properties
 		return matchDeep(this, object);
 	}
 
 
 	// Determine if the emitter should emit
-	willEmit(event, message) {
+	willEmit(event: string, message) {
 		if (event === "press" || event === "release") {
 			return this === message.target;
 		}
@@ -59,8 +66,8 @@ export class Button extends SubEmitter {
 		TODO: Make this reusable across classes
 
 		- Is used to run code from mixins when a new instance of any subclass of `Button` is created
-			- Esentially extending the `constructor()`
-		- Intentionally doesn't impelement a method for inheritance
+			- Essentially extending the `constructor()`
+		- Intentionally doesn't implement a method for inheritance
 			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
 			- May change in the future as device support grows
 	*/
