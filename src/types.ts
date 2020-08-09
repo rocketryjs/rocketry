@@ -40,18 +40,20 @@ export interface DevicePort {
 	number: number;
 };
 export interface MIDIOptions {
-	sysex: boolean;
+	sysEx: boolean;
 	[key: string]: unknown;
 }
 export interface MIDILayerAPI {
 	options: MIDIOptions;
-	send(message: Array<number>): void;
-	connect(portNums: PortNumbers): void;
-	disconnect(): void;
-	getAllPortNumbers(regex?: RegExp): {input: Array<DevicePort>, output: Array<DevicePort>};
+	send (message: Array<number>): void;
+	connect (portNumbers: PortNumbers): void;
+	disconnect (): void;
+	getAllPortNumbers (regex?: RegExp): {input: Array<DevicePort>, output: Array<DevicePort>};
+	addListeners (): void;
+	removeListeners (): void;
 }
 export interface MIDILayerAPIClass {
-	new (options?: Partial<MIDIOptions>): MIDILayerAPI;
+	new (device: Device, options?: Partial<MIDIOptions>): MIDILayerAPI;
 }
 
 /*
@@ -59,5 +61,6 @@ export interface MIDILayerAPIClass {
 */
 export interface DeviceAPIClass<D extends Device = Device> {
 	new (ports?: PortNumbers): D;
-	regex?: RegExp;
+	regex: RegExp;
+	events?: Map<string, validate>;
 }

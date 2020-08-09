@@ -5,7 +5,7 @@
 import {EventEmitter} from "events";
 import bindDeep from "bind-deep";
 import rocketry, {send, PortNumbers, RegisteredMIDILayer} from ".";
-import {MIDILayerAPI, Send, DeviceAPIClass} from "./types";
+import {MIDILayerAPI, Send, DeviceAPIClass, Message} from "./types";
 
 
 /*
@@ -111,27 +111,28 @@ export interface Device {
 }
 export abstract class Device extends EventEmitter {
 	midi: InstanceType<RegisteredMIDILayer>;
-	send: Send<Device, void>;
+	send = bindDeep(send, this);
+	// Set array for Buttons (which are emitters) that are listening to events
+	emitters = [];
 	static type: string;
 	static regex?: RegExp;
 	private static _inits;
 	private static _events;
 
-	constructor (portNums: PortNumbers) {
+	constructor (portNumbers: PortNumbers) {
 		// EventEmitter
 		super();
 
 		if (!rocketry.midi) {
 			throw new Error("No MIDI layer initialized.");
 		}
-
-		this.midi = new rocketry.midi();
+		this.midi = new rocketry.midi(this);
 
 		// Properties
-		if (!portNums) {
+		if (!portNumbers) {
 			const {input, output} = this.midi.getAllPortNumbers(this.constructor.regex);
 			if (input.length && output.length) {
-				portNums = {
+				portNumbers = {
 					input: input[0].number,
 					output: output[0].number,
 				};
@@ -140,19 +141,13 @@ export abstract class Device extends EventEmitter {
 			}
 		}
 
-		this.send = bindDeep(send, this);
-
-		// Call the initializers defined on the subclass (e.x. from mixins)
-		this.constructor.inits.forEach(init => init.call(this));
-
 		// Open connection with device
-		this.open(portNums);
+		this.open(portNumbers);
 	}
 
-	// Set array for Buttons (which are emitters) that are listeneing to events
-	emitters = [];
-	open (portNums: PortNumbers) {
-		this.midi.connect(portNums);
+	open (portNumbers: PortNumbers) {
+		this.midi.connect(portNumbers);
+		this.midi.addListeners();
 
 		// Notify that the device is open
 		this.emit("open");
@@ -161,10 +156,11 @@ export abstract class Device extends EventEmitter {
 		return this;
 	}
 
-	close() {
+	close () {
 		// Notify closure
 		this.emit("close");
 
+		this.midi.removeListeners();
 		this.midi.disconnect();
 
 		// Method chaining
@@ -172,7 +168,7 @@ export abstract class Device extends EventEmitter {
 	}
 
 	// Relay MIDI messages to listeners
-	receive(deltaTime: number, message: Array<number>) {
+	receive (deltaTime: number, message: Message) {
 		let event;
 		let captures;
 
@@ -240,60 +236,10 @@ export abstract class Device extends EventEmitter {
 	}
 
 
-	/*
-		Get the initializers defined on the subclass (e.g. from mixins)
-
-		- Is used to run code from mixins when a new instance of any subclass of `Device` is created
-			- Essentially extending the `constructor()`
-		- Intentionally doesn't implement a method for inheritance
-			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
-			- May change in the future as device support grows
-	*/
-	static get inits() {
-		// Throw if called on raw `Device` class
-		// - Is to prevent mixins for subclasses from accidentally polluting the parent class
-		// - May be dropped if there's a need for inits in plugins
-		if (this === Device) {
-			throw Error("You cannot get the initializers of the Device parent class.");
+	static registerEvent (deviceClass: DeviceAPIClass, event: string, validate) {
+		if (!deviceClass.events) {
+			deviceClass.events = new Map();
 		}
-
-		// If the subclass doesn't have its own `_inits`
-		if (!Object.prototype.hasOwnProperty.call(this, "_inits")) {
-			// Make an init `Set` on the subclass
-			Object.defineProperty(this, "_inits", {
-				value: new Set(),
-			});
-		}
-
-		// Return the inits
-		return this._inits;
-	}
-
-	/*
-		Get the events defined on the subclass (e.x. from mixins)
-
-		- Is used to add event datatypes from mixins
-		- Intentionally doesn't implement a method for inheritance
-			- Would be too complicated of an API to traverse the prototype for what would disincentivize properly using mixins
-			- May change in the future as device support grows
-	*/
-	static get events() {
-		// Throw if called on raw `Device` class
-		// - Is to prevent mixins for subclasses from accidentally polluting the parent class
-		// - May be dropped if there's a need for `Device`-level events
-		if (this === Device) {
-			throw Error("You cannot get the events of the Device parent class.");
-		}
-
-		// If the subclass doesn't have its own `_events`
-		if (!Object.prototype.hasOwnProperty.call(this, "_events")) {
-			// Make an events `Map` on the subclass
-			Object.defineProperty(this, "_events", {
-				value: new Map(),
-			});
-		}
-
-		// Return the events
-		return this._events;
+		deviceClass.events.set(event, validate);
 	}
 }

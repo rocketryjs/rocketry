@@ -11,7 +11,7 @@ import type {Device} from "./device";
 	Add status byte corresponding to the channel
 */
 const addStatusByte = function (message: Message, start: number, channel: Channel): Message {
-	if (betweenInclusive(channel, 1, 16)) {
+	if (!betweenInclusive(channel, 1, 16)) {
 		throw new RangeError(`The MIDI channel ${channel}, is not between 1 and 16 (inclusive).`);
 	}
 
@@ -28,7 +28,7 @@ const addStatusByte = function (message: Message, start: number, channel: Channe
 export const send: Send<Device> = function<T extends Device> (this: T, message: Message): T {
 	// Check if all bytes are numbers and in range
 	if (!message.every((value: number) => betweenInclusive(value, 0, 255))) {
-		throw new RangeError("The message to be sent to the device contained a byte that was out of range.");
+		throw new RangeError(`The message to be sent to the device contained a byte that was out of range. Message: (${message})`);
 	}
 
 	// Send it via node-midi's output class instance associated with this device
