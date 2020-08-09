@@ -59,8 +59,19 @@ export interface MIDILayerAPIClass {
 /*
 	Device
 */
+export interface State {
+	min?: number;
+	max?: number;
+	matches?: Message;
+	validate?(value: number): boolean;
+	mutate?(message: any): any;
+}
+export interface States {
+	[name: string]: State;
+}
 export interface DeviceAPIClass<D extends Device = Device> {
 	new (ports?: PortNumbers): D;
 	regex: RegExp;
-	events?: Map<string, validate>;
+	sysex: {manufacturer: Message, model: Message, prefix: Message};
+	events?: Map<string, States>;
 }

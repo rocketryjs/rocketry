@@ -5,7 +5,7 @@
 import {EventEmitter} from "events";
 import bindDeep from "bind-deep";
 import rocketry, {send, PortNumbers, RegisteredMIDILayer} from ".";
-import {MIDILayerAPI, Send, DeviceAPIClass, Message} from "./types";
+import {MIDILayerAPI, Send, DeviceAPIClass, Message, States} from "./types";
 
 
 /*
@@ -21,7 +21,7 @@ const doesByteMatch = function(byte: number, capture, state) {
 
 	return isValid && doesMatch;
 };
-const matchBytes = function(bytes: Array<number>, states) {
+const matchBytes = function(bytes: Array<number>, states: States) {
 	// Where the captures will be stored
 	const captures = {};
 
@@ -114,10 +114,8 @@ export abstract class Device extends EventEmitter {
 	send = bindDeep(send, this);
 	// Set array for Buttons (which are emitters) that are listening to events
 	emitters = [];
-	static type: string;
 	static regex?: RegExp;
-	private static _inits;
-	private static _events;
+	static events?: Map<string, States>;
 
 	constructor (portNumbers: PortNumbers) {
 		// EventEmitter
@@ -173,8 +171,8 @@ export abstract class Device extends EventEmitter {
 		let captures;
 
 		// Get capture groups and matching event from events object and message
-		for (const key in this.constructor.events) {
-			captures = matchBytes.call(this, message, this.constructor.events[key]);
+		for (const [key, value] of this.constructor.events.entries()) {
+			captures = matchBytes.call(this, message, value);
 			if (captures) {
 				// It matches, use this event
 				event = key;
@@ -213,7 +211,7 @@ export abstract class Device extends EventEmitter {
 			let timeoutObj: NodeJS.Timeout;
 
 			// Listen for event
-			const listener = (message) => {
+			const listener = (message: Message) => {
 				// Clear timeout
 				clearTimeout(timeoutObj);
 				// Resolve message args
@@ -236,10 +234,10 @@ export abstract class Device extends EventEmitter {
 	}
 
 
-	static registerEvent (deviceClass: DeviceAPIClass, event: string, validate) {
-		if (!deviceClass.events) {
-			deviceClass.events = new Map();
+	static registerEvent (event: string, states: States) {
+		if (!this.events) {
+			this.events = new Map();
 		}
-		deviceClass.events.set(event, validate);
+		this.events.set(event, states);
 	}
 }

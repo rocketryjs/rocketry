@@ -29,9 +29,6 @@ export const ButtonArray = function(parent, ...values) {
 		}
 	);
 
-	// Call the initializers defined from mixins
-	ButtonArray.inits.forEach(init => init.call(this));
-
 	// Return array with prototyping
 	return Object.setPrototypeOf(
 		// this => array of `Button`s
@@ -40,8 +37,6 @@ export const ButtonArray = function(parent, ...values) {
 		ButtonArray.prototype
 	);
 };
-
-ButtonArray.inits = new Set();
 
 /*
 	Prototype
