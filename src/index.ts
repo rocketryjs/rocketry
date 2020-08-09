@@ -1,5 +1,3 @@
-import rocketry from "./rocketry";
-
 export {rocketry as default} from "./rocketry";
 export * from "./rocketry";
 

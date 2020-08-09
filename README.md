@@ -4,7 +4,6 @@
 
 [![npm organization: @rocketry](https://badgen.net/badge/npm/@rocketry/fb3e44?icon=npm)](https://www.npmjs.com/org/rocketry)
 [![build status](https://badgen.net/travis/rocketryjs/rocketry/master?icon=travis)](https://travis-ci.com/rocketryjs/rocketry)
-[![dependencies: 3](https://badgen.net/badge/dependencies/3/blue)](https://github.com/rocketryjs/rocketry/network/dependencies)
 [![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 [![documentation](https://badgen.net/badge/docs/rocketryjs%2Fdocs/)](https://github.com/rocketryjs/docs)
 

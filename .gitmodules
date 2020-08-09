@@ -1,8 +1,0 @@
-[submodule "docs"]
-	path = docs
-	url = https://github.com/rocketryjs/docs
-	branch = master
-[submodule "examples"]
-	path = examples
-	url = https://github.com/rocketryjs/examples
-	branch = master
