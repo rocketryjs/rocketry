@@ -9,7 +9,7 @@ import {SubEmitter} from "./sub-emitter";
 /*
 	ButtonArray
 */
-export const ButtonArray = function(parent, ...values) {
+export const ButtonArray = function (parent, ...values) {
 	// Run constructor
 	const buttons = [];
 	for (const value of values) {
@@ -25,7 +25,7 @@ export const ButtonArray = function(parent, ...values) {
 		buttons,
 		"device",
 		{
-			"value": parent.device || parent
+			"value": parent.device || parent,
 		}
 	);
 
@@ -45,7 +45,7 @@ export const ButtonArray = function(parent, ...values) {
 */
 ButtonArray.prototype = {
 	// Determine if the emitter should emit
-	willEmit() {
+	willEmit () {
 		const willEmitSome = this.each.willEmit(...arguments).some(value => (value));
 		if (willEmitSome) {
 			return true;
@@ -55,11 +55,11 @@ ButtonArray.prototype = {
 	},
 
 	// Proxy for each.method and each.property
-	get each() {
+	get each () {
 		return Object.defineProperty(this, "each", {
 			"value": new Proxy(this, {
-				get(target, property) {
-					return function() {
+				get (target, property) {
+					return function () {
 						const result = [];
 
 						for (const button of target.buttons) {
@@ -72,25 +72,25 @@ ButtonArray.prototype = {
 
 						return result;
 					};
-				}
-			})
+				},
+			}),
 		}).each;
 	},
 
 
 	// Get buttons for generator
-	get buttons() {
+	get buttons () {
 		return [...this];
 	},
 
 
 	// Iterator for use in for loops and spread syntax
-	* [Symbol.iterator]() {
+	* [Symbol.iterator] () {
 		// Get all keys
 		for (let i = 0; i < this.length; i++) {
 			yield this[i];
 		}
-	}
+	},
 };
 Object.setPrototypeOf(
 	// Methods

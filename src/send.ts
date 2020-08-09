@@ -2,9 +2,9 @@
 	Module: Send
 	Description: Methods to send arrays of MIDI bytes
 */
-import {betweenInclusive} from "./util";
-import type {Channel, Message, Send} from "./types";
 import type {Device} from "./device";
+import type {Channel, Message, Send} from "./types";
+import {betweenInclusive} from "./util";
 
 
 /*
@@ -28,14 +28,14 @@ const addStatusByte = function (message: Message, start: number, channel: Channe
 export const send: Send<Device> = function<T extends Device> (this: T, message: Message): T {
 	// Check if all bytes are numbers and in range
 	if (!message.every((value: number) => betweenInclusive(value, 0, 255))) {
-		throw new RangeError(`The message to be sent to the device contained a byte that was out of range. Message: (${message})`);
+		throw new RangeError(`The message to be sent to the device contained a byte that was out of range.\nMessage: ${message.toString()}`);
 	}
 
 	// Send it via node-midi's output class instance associated with this device
 	try {
 		this.midi.send(message);
 	} catch (error) {
-		throw new Error(`Failed to send ${message} via MIDI.\n\n${error}`);
+		throw new Error(`Failed to send ${message.toString()} via MIDI.\n\n${(error as Error).toString()}`);
 	}
 
 	// Method chaining

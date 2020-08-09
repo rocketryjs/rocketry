@@ -25,7 +25,7 @@ export interface Send<Return extends Device, This extends Device | void = Return
 	systemExclusive: SendBasic<Return, This>;
 	sysEx: SendBasic<Return, This>;
 	sysex: SendBasic<Return, This>;
-};
+}
 
 
 /*
@@ -38,13 +38,17 @@ export interface PortNumbers {
 export interface DevicePort {
 	name: string;
 	number: number;
-};
-export interface MIDIOptions {
-	sysEx: boolean;
-	[key: string]: unknown;
 }
-export interface MIDILayerAPI {
-	options: MIDIOptions;
+export interface DevicePorts {
+	input: Array<DevicePort>;
+	output: Array<DevicePort>;
+}
+export interface MIDIOptions {
+	[key: string]: unknown;
+	sysEx: boolean;
+}
+export interface MIDILayerAPI<O extends MIDIOptions = MIDIOptions> {
+	options: O;
 	send (message: Array<number>): void;
 	connect (portNumbers: PortNumbers): void;
 	disconnect (): void;
@@ -52,8 +56,8 @@ export interface MIDILayerAPI {
 	addListeners (): void;
 	removeListeners (): void;
 }
-export interface MIDILayerAPIClass {
-	new (device: Device, options?: Partial<MIDIOptions>): MIDILayerAPI;
+export interface MIDILayerAPIClass<O extends MIDIOptions = MIDIOptions, R extends MIDILayerAPI = MIDILayerAPI<O>> {
+	new (device: Device, options?: Partial<O>): R;
 }
 
 /*
@@ -69,9 +73,14 @@ export interface State {
 export interface States {
 	[name: string]: State;
 }
+export interface SysEx {
+	manufacturer: Message;
+	model: Message;
+	prefix: Message;
+}
 export interface DeviceAPIClass<D extends Device = Device> {
-	new (ports?: PortNumbers): D;
 	regex: RegExp;
-	sysex: {manufacturer: Message, model: Message, prefix: Message};
+	sysex: SysEx;
 	events?: Map<string, States>;
+	new (ports?: PortNumbers): D;
 }

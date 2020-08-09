@@ -2,12 +2,12 @@
 	Module: Button base
 	Description: The basic code all buttons have in class form to be extended
 */
-import {SubEmitter} from "./sub-emitter";
 import {Device} from "./device";
+import {SubEmitter} from "./sub-emitter";
 
 
 // lodash's `isMatch` and `isEqual` don't work well with proxies
-const matchDeep = function(object: unknown, source: unknown) {
+const matchDeep = function (object: unknown, source: unknown) {
 	if (typeof source === "object" || typeof source === "function") {
 		for (const key in source) {
 			const keyMatched = matchDeep(object[key], source[key]);
@@ -31,13 +31,13 @@ export class Button extends SubEmitter {
 		super(device);
 	}
 
-	test(object: unknown) {
+	test (object: unknown) {
 		// Match properties
 		return matchDeep(this, object);
 	}
 
 	// Determine if the emitter should emit
-	willEmit(event: string, message) {
+	willEmit (event: string, message) {
 		if (event === "press" || event === "release") {
 			return this === message.target;
 		}

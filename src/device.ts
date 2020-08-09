@@ -4,14 +4,14 @@
 */
 import {EventEmitter} from "events";
 import bindDeep from "bind-deep";
-import rocketry, {send, PortNumbers, RegisteredMIDILayer} from ".";
-import {MIDILayerAPI, Send, DeviceAPIClass, Message, States} from "./types";
+import {DeviceAPIClass, Message, States, State} from "./types";
+import {rocketry, send, PortNumbers, RegisteredMIDILayer} from ".";
 
 
 /*
 	Functions
 */
-const doesByteMatch = function(byte: number, capture, state) {
+const doesByteMatch = function (byte: number, capture, state: State) {
 	// Validity
 	// If the function exists, execute it. Fallback on true.
 	const isValid = typeof state.validate === "function" ? state.validate.call(this, byte, capture) : true;
@@ -21,7 +21,7 @@ const doesByteMatch = function(byte: number, capture, state) {
 
 	return isValid && doesMatch;
 };
-const matchBytes = function(bytes: Array<number>, states: States) {
+const matchBytes = function (bytes: Array<number>, states: States) {
 	// Where the captures will be stored
 	const captures = {};
 
@@ -90,7 +90,7 @@ const matchBytes = function(bytes: Array<number>, states: States) {
 
 	// Mutate the match
 	for (const key in states) {
-		const mutate = states[key].mutate;
+		const {mutate} = states[key];
 
 		if (typeof mutate === "function") {
 			mutate.call(this, captures);
@@ -110,12 +110,16 @@ export interface Device {
 	constructor: typeof Device & DeviceAPIClass;
 }
 export abstract class Device extends EventEmitter {
+	static regex?: RegExp;
+	static events?: Map<string, States>;
 	midi: InstanceType<RegisteredMIDILayer>;
 	send = bindDeep(send, this);
 	// Set array for Buttons (which are emitters) that are listening to events
-	emitters = [];
-	static regex?: RegExp;
-	static events?: Map<string, States>;
+	emitters: Array<{
+		willEmit (event: string, message: Message, deltaTime: number): boolean;
+		emit (event: string, message: Message, deltaTime: number): void;
+		updateListeners(): void;
+	}> = [];
 
 	constructor (portNumbers: PortNumbers) {
 		// EventEmitter
@@ -143,7 +147,14 @@ export abstract class Device extends EventEmitter {
 		this.open(portNumbers);
 	}
 
-	open (portNumbers: PortNumbers) {
+	static registerEvent (event: string, states: States): void {
+		if (!this.events) {
+			this.events = new Map();
+		}
+		this.events.set(event, states);
+	}
+
+	open (portNumbers: PortNumbers): this {
 		this.midi.connect(portNumbers);
 		this.midi.addListeners();
 
@@ -154,7 +165,7 @@ export abstract class Device extends EventEmitter {
 		return this;
 	}
 
-	close () {
+	close (): this {
 		// Notify closure
 		this.emit("close");
 
@@ -166,20 +177,22 @@ export abstract class Device extends EventEmitter {
 	}
 
 	// Relay MIDI messages to listeners
-	receive (deltaTime: number, message: Message) {
-		let event;
+	receive (deltaTime: number, message: Message): void {
+		let event = "message";
 		let captures;
 
 		// Get capture groups and matching event from events object and message
-		for (const [key, value] of this.constructor.events.entries()) {
-			captures = matchBytes.call(this, message, value);
-			if (captures) {
-				// It matches, use this event
-				event = key;
+		if (this.constructor.events) {
+			for (const [key, value] of this.constructor.events.entries()) {
+				captures = matchBytes.call(this, message, value);
+				if (captures) {
+					// It matches, use this event
+					event = key;
 
-				// Assign the matching capture groups
-				Object.assign(message, captures);
-				break;
+					// Assign the matching capture groups
+					Object.assign(message, captures);
+					break;
+				}
 			}
 		}
 
@@ -195,17 +208,19 @@ export abstract class Device extends EventEmitter {
 
 		// To this device
 		this.emit("message", message, deltaTime);
-		this.emit(event, message, deltaTime);
+		if (event !== "message") {
+			this.emit(event, message, deltaTime);
+		}
 	}
 
 
 	// Return a promise that resolves for an event
-	promiseOnce(
+	promiseOnce (
 		// Event to listen for
 		event = "message",
 		// Timeout in ms
 		timeout = 1000
-	) {
+	): Promise<Message> {
 		return new Promise((resolve, reject) => {
 			// Hoist timeout
 			let timeoutObj: NodeJS.Timeout;
@@ -221,7 +236,7 @@ export abstract class Device extends EventEmitter {
 
 			// Timeout if not a falsy value
 			if (timeout) {
-			timeoutObj = setTimeout(() => {
+				timeoutObj = setTimeout(() => {
 					// If still listening
 					if (this.listeners(event).includes(listener)) {
 						// Remove the listener and reject the promise
@@ -231,13 +246,5 @@ export abstract class Device extends EventEmitter {
 				}, timeout);
 			}
 		});
-	}
-
-
-	static registerEvent (event: string, states: States) {
-		if (!this.events) {
-			this.events = new Map();
-		}
-		this.events.set(event, states);
 	}
 }
