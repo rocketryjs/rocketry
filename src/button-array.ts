@@ -2,23 +2,21 @@
 	Module: Button array
 	Description: The button array constructor that makes an array with instance methods
 */
-/*
-	Module dependencies
-*/
-const SubEmitter = require("./sub-emitter.js");
-const mixin = require("../mixin.js");
+
+import {SubEmitter} from "./sub-emitter";
 
 
 /*
 	ButtonArray
 */
-const ButtonArray = function(parent, ...values) {
+export const ButtonArray = function(parent, ...values) {
 	// Run constructor
 	const buttons = [];
 	for (const value of values) {
 		buttons.push(...parent.get(value));
 	}
 	// Return empty array if it didn't match anything
+	// TODO: doesn't have prototype? Why did I do this?
 	if (buttons.length === 0) {
 		return buttons;
 	}
@@ -39,7 +37,6 @@ const ButtonArray = function(parent, ...values) {
 		ButtonArray.prototype
 	);
 };
-
 
 /*
 	Prototype
@@ -106,10 +103,5 @@ Object.setPrototypeOf(
 /*
 	Mixins
 */
-mixin(ButtonArray, "./launchpad/mixins/query.js");
-
-
-/*
-	Export class
-*/
-module.exports = ButtonArray;
+// TODO: HIGH PRIORITY: Fix button array by using a better design pattern, not depending on device code and hacky prototyping, add back querying
+// mixin(ButtonArray, "./launchpad/mixins/query.js");

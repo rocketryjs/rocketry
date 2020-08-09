@@ -2,19 +2,16 @@
 	Module: Device base
 	Description: The basic code all devices have in class form to be extended
 */
-/*
-	Module dependencies
-*/
-const EventEmitter = require("events");
-const rocket = require("./index.js");
-const send = require("./send.js");
-const bindDeep = require("bind-deep");
+import {EventEmitter} from "events";
+import bindDeep from "bind-deep";
+import rocketry, {send, PortNumbers, RegisteredMIDILayer} from ".";
+import {MIDILayerAPI, Send, DeviceAPIClass, Message, States} from "./types";
 
 
 /*
 	Functions
 */
-const doesByteMatch = function(byte, capture, state) {
+const doesByteMatch = function(byte: number, capture, state) {
 	// Validity
 	// If the function exists, execute it. Fallback on true.
 	const isValid = typeof state.validate === "function" ? state.validate.call(this, byte, capture) : true;
@@ -24,7 +21,7 @@ const doesByteMatch = function(byte, capture, state) {
 
 	return isValid && doesMatch;
 };
-const matchBytes = function(bytes, states) {
+const matchBytes = function(bytes: Array<number>, states: States) {
 	// Where the captures will be stored
 	const captures = {};
 
@@ -108,101 +105,74 @@ const matchBytes = function(bytes, states) {
 /*
 	Device class
 */
-class Device extends EventEmitter {
-	constructor(input, output, portNums) {
+export interface Device {
+	// Constructor ain't just a function, it also is the base class and the device API
+	constructor: typeof Device & DeviceAPIClass;
+}
+export abstract class Device extends EventEmitter {
+	midi: InstanceType<RegisteredMIDILayer>;
+	send = bindDeep(send, this);
+	// Set array for Buttons (which are emitters) that are listening to events
+	emitters = [];
+	static regex?: RegExp;
+	static events?: Map<string, States>;
+
+	constructor (portNumbers: PortNumbers) {
 		// EventEmitter
 		super();
 
-		// Properties
-		if (!input || !output || !portNums) {
-			throw new Error("Missing argument when creating a new device.");
+		if (!rocketry.midi) {
+			throw new Error("No MIDI layer initialized.");
 		}
-		this.input = input;
-		this.output = output;
-		this.portNums = portNums;
+		this.midi = new rocketry.midi(this);
+
+		// Properties
+		if (!portNumbers) {
+			const {input, output} = this.midi.getAllPortNumbers(this.constructor.regex);
+			if (input.length && output.length) {
+				portNumbers = {
+					input: input[0].number,
+					output: output[0].number,
+				};
+			} else {
+				throw new Error("No supported device found, try supplying port numbers when creating the device.");
+			}
+		}
 
 		// Open connection with device
-		this.open();
+		this.open(portNumbers);
 	}
 
+	open (portNumbers: PortNumbers) {
+		this.midi.connect(portNumbers);
+		this.midi.addListeners();
 
-	open() {
-		// Create MIDI I/O when re-opening after closing
-		if (!this.input || !this.output) {
-			Object.assign(this, rocket.createMidiIO());
-		}
-
-		try {
-			// Open ports
-			this.input.openPort(this.portNums.input);
-			this.output.openPort(this.portNums.output);
-
-			// Register ports with Rocket
-			rocket.opened.set(this, this.portNums);
-
-
-			// Set array for Buttons (which are emitters) that are listeneing to events
-			if (!this.emitters) {
-				this.emitters = [];
-			}
-
-			// Receiving
-			// Allow responses of SysEx and MIDI beat clock messages
-			this.input.ignoreTypes(false, false, false);
-			// Start receiving MIDI messages for this Launchpad and relay them to Buttons through receive()
-			this.input.on("message", (deltaTime, message) => {
-				this.receive(deltaTime, message);
-			});
-
-			// Notify device open
-			this.emit("open");
-		} catch (error) {
-			throw new Error("Failed to open a MIDI port. Check your port and connection to your Launchpad.\n\n" + error);
-		}
+		// Notify that the device is open
+		this.emit("open");
 
 		// Method chaining
 		return this;
 	}
 
-	close() {
-		try {
-			// Notify closure
-			this.emit("close");
+	close () {
+		// Notify closure
+		this.emit("close");
 
-			// Close ports
-			this.input.closePort();
-			this.output.closePort();
-
-			// Un-register ports with Rocket
-			rocket.opened.delete(this);
-
-			// Delete ports so new ones can be created in its place if reopened
-			delete this.input;
-			delete this.output;
-		} catch (error) {
-			throw new Error("Couldn't close MIDI I/O.\n\n" + error);
-		}
+		this.midi.removeListeners();
+		this.midi.disconnect();
 
 		// Method chaining
 		return this;
 	}
-
-
-	get send() {
-		return Object.defineProperty(this, "send", {
-			"value": bindDeep(this, send)
-		}).send;
-	}
-
 
 	// Relay MIDI messages to listeners
-	receive(deltaTime, message) {
+	receive (deltaTime: number, message: Message) {
 		let event;
 		let captures;
 
 		// Get capture groups and matching event from events object and message
-		for (const key in this.constructor.events) {
-			captures = matchBytes.call(this, message, this.constructor.events[key]);
+		for (const [key, value] of this.constructor.events.entries()) {
+			captures = matchBytes.call(this, message, value);
 			if (captures) {
 				// It matches, use this event
 				event = key;
@@ -238,10 +208,10 @@ class Device extends EventEmitter {
 	) {
 		return new Promise((resolve, reject) => {
 			// Hoist timeout
-			let timeoutObj;
+			let timeoutObj: NodeJS.Timeout;
 
 			// Listen for event
-			const listener = (message) => {
+			const listener = (message: Message) => {
 				// Clear timeout
 				clearTimeout(timeoutObj);
 				// Resolve message args
@@ -251,7 +221,7 @@ class Device extends EventEmitter {
 
 			// Timeout if not a falsy value
 			if (timeout) {
-				timeoutObj = setTimeout(() => {
+			timeoutObj = setTimeout(() => {
 					// If still listening
 					if (this.listeners(event).includes(listener)) {
 						// Remove the listener and reject the promise
@@ -264,10 +234,10 @@ class Device extends EventEmitter {
 	}
 
 
-	static is(object) {
-		return object instanceof this;
+	static registerEvent (event: string, states: States) {
+		if (!this.events) {
+			this.events = new Map();
+		}
+		this.events.set(event, states);
 	}
 }
-
-
-module.exports = Device;
