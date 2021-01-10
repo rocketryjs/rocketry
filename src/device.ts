@@ -3,9 +3,8 @@
 	Description: The basic code all devices have in class form to be extended
 */
 import {EventEmitter} from "events";
-import bindDeep from "bind-deep";
-import {DeviceAPIClass, Message, States, State} from "./types";
-import {rocketry, send, PortNumbers, RegisteredMIDILayer} from ".";
+import {Message, States, State, Send, DeviceAPI} from "./types";
+import {rocketry, send, PortNumbers, RegisteredMIDILayer, makeSend} from ".";
 
 
 /*
@@ -105,15 +104,20 @@ const matchBytes = function (bytes: Array<number>, states: States) {
 /*
 	Device class
 */
-export interface Device {
-	// Constructor ain't just a function, it also is the base class and the device API
-	constructor: typeof Device & DeviceAPIClass;
+export type DeviceConstructor<SubClass extends Device<SubClass> | void, SubClassType = unknown> = SubClass extends void ? (
+	DeviceAPI & Device<void>
+) : (
+	DeviceAPI & SubClass & SubClassType
+);
+export interface Device<SubClass extends Device<SubClass> | void, SubClassType = unknown> {
+	// Constructor ain't just a function, it also is the base class, the device API, and the subclass
+	constructor: DeviceConstructor<SubClass, SubClassType>;
 }
-export abstract class Device extends EventEmitter {
+export abstract class Device<SubClass extends Device<SubClass> | void, SubClassType = unknown> extends EventEmitter {
 	static regex?: RegExp;
 	static events?: Map<string, States>;
 	midi: InstanceType<RegisteredMIDILayer>;
-	send = bindDeep(send, this);
+	send: Send<void, SubClass>;
 	// Set array for Buttons (which are emitters) that are listening to events
 	emitters: Array<{
 		willEmit (event: string, message: Message, deltaTime: number): boolean;
@@ -121,7 +125,7 @@ export abstract class Device extends EventEmitter {
 		updateListeners(): void;
 	}> = [];
 
-	constructor (portNumbers: PortNumbers) {
+	constructor (portNumbers?: PortNumbers) {
 		// EventEmitter
 		super();
 
@@ -129,6 +133,7 @@ export abstract class Device extends EventEmitter {
 			throw new Error("No MIDI layer initialized.");
 		}
 		this.midi = new rocketry.midi(this);
+		this.send = makeSend(this as unknown as SubClass);
 
 		// Properties
 		if (!portNumbers) {

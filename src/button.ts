@@ -22,24 +22,25 @@ const matchDeep = function (object: unknown, source: unknown) {
 	}
 };
 
-export interface Button {
-	constructor: typeof Button;
+export interface Button<D extends Device<D>, B extends Button<D, B>> {
+	constructor: B;
 }
-export class Button extends SubEmitter {
-	constructor (device: Device) {
+export class Button<D extends Device<D>, B extends Button<D, B>> extends SubEmitter<D> {
+	constructor (device: D) {
 		// EventEmitter
 		super(device);
 	}
 
-	test (object: unknown) {
+	test (object: unknown): boolean {
 		// Match properties
 		return matchDeep(this, object);
 	}
 
 	// Determine if the emitter should emit
-	willEmit (event: string, message) {
+	willEmit (event: string, message: any): boolean {
 		if (event === "press" || event === "release") {
 			return this === message.target;
 		}
+		return false;
 	}
 }

@@ -7,10 +7,10 @@ import {pull} from "lodash";
 import {Device} from "./device";
 
 
-export class SubEmitter extends EventEmitter {
-	device: Device;
+export class SubEmitter<D extends Device<D>> extends EventEmitter {
+	device: D;
 
-	constructor (device: Device) {
+	constructor (device: D) {
 		super();
 		this.device = device;
 	}
@@ -72,5 +72,11 @@ export class SubEmitter extends EventEmitter {
 		}
 
 		return this;
+	}
+
+	// Default will emit hook for fallback
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	willEmit (event: string, message: any): boolean {
+		return true;
 	}
 }

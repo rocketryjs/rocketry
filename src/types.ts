@@ -6,25 +6,25 @@ import {Device} from "./device";
 */
 export type Channel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 export type Message = Array<number>;
-export interface SendBasic<R extends Device, T extends Device | void = R> {
+export interface SendBasic<T extends Device<T> | void, R extends Device<R> | void = T> {
 	(this: T, message: Message): R;
 }
-export interface SendHelper<R extends Device, T extends Device | void = R> {
+export interface SendHelper<T extends Device<T> | void, R extends Device<R> | void = T> {
 	(this: T, message: Message, channel?: Channel): R;
 }
-export interface Send<Return extends Device, This extends Device | void = Return> extends SendBasic<Return, This> {
-	noteOff: SendHelper<Return, This>;
-	noteOn: SendHelper<Return, This>;
-	polyKeyPressure: SendHelper<Return, This>;
-	controlChange: SendHelper<Return, This>;
-	programChange: SendHelper<Return, This>;
-	monoKeyPressure: SendHelper<Return, This>;
-	channelPressure: SendHelper<Return, This>;
-	pitchBend: SendHelper<Return, This>;
+export interface Send<T extends Device<T> | void, R extends Device<R> | void = T> extends SendBasic<T, R> {
+	noteOff: SendHelper<T, R>;
+	noteOn: SendHelper<T, R>;
+	polyKeyPressure: SendHelper<T, R>;
+	controlChange: SendHelper<T, R>;
+	programChange: SendHelper<T, R>;
+	monoKeyPressure: SendHelper<T, R>;
+	channelPressure: SendHelper<T, R>;
+	pitchBend: SendHelper<T, R>;
 	// SysEx Aliases
-	systemExclusive: SendBasic<Return, This>;
-	sysEx: SendBasic<Return, This>;
-	sysex: SendBasic<Return, This>;
+	systemExclusive: SendBasic<T, R>;
+	sysEx: SendBasic<T, R>;
+	sysex: SendBasic<T, R>;
 }
 
 
@@ -57,7 +57,7 @@ export interface MIDILayerAPI<O extends MIDIOptions = MIDIOptions> {
 	removeListeners (): void;
 }
 export interface MIDILayerAPIClass<O extends MIDIOptions = MIDIOptions, R extends MIDILayerAPI = MIDILayerAPI<O>> {
-	new (device: Device, options?: Partial<O>): R;
+	new (device: Device<any>, options?: Partial<O>): R;
 }
 
 /*
@@ -78,9 +78,11 @@ export interface SysEx {
 	model: Message;
 	prefix: Message;
 }
-export interface DeviceAPIClass<D extends Device = Device> {
+export interface DeviceAPI {
 	regex: RegExp;
 	sysex: SysEx;
 	events?: Map<string, States>;
+}
+export interface DeviceAPIClass<D extends Device<D>> extends DeviceAPI {
 	new (ports?: PortNumbers): D;
 }
