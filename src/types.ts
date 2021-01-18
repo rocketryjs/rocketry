@@ -6,6 +6,7 @@ import {Device} from "./device";
 */
 export type Channel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 export type Message = Array<number>;
+export type Status = "noteOff" | "noteOn" | "polyKeyPressure" | "controlChange" | "programChange" | "monoKeyPressure" | "channelPressure" | "pitchBend" | "systemExclusive" | "sysEx" | "sysex";
 export interface SendBasic<T extends Device<T> | void, R extends Device<R> | void = T> {
 	(this: T, message: Message): R;
 }
@@ -57,21 +58,28 @@ export interface MIDILayerAPI<O extends MIDIOptions = MIDIOptions> {
 	removeListeners (): void;
 }
 export interface MIDILayerAPIClass<O extends MIDIOptions = MIDIOptions, R extends MIDILayerAPI = MIDILayerAPI<O>> {
-	new (device: Device<any>, options?: Partial<O>): R;
+	new (listener: (deltaTime: number, message: Array<number>) => void, options?: Partial<O>): R;
 }
 
 /*
 	Device
 */
-export interface State {
-	min?: number;
-	max?: number;
-	matches?: Message;
-	validate?(value: number): boolean;
-	mutate?(message: any): any;
+export type Captures = Record<string, Array<number>>;
+export type Meta = {
+	[key: string]: unknown;
+};
+export type Validate = (match: Message, captures: Captures) => boolean;
+export type GetMetaData = (message: Message, captures: Captures) => Meta;
+export interface CaptureGroup {
+	minBytes?: number;
+	maxBytes?: number;
+	matchBytes?: Message;
 }
-export interface States {
-	[name: string]: State;
+export type Pattern = Record<string, CaptureGroup>;
+export interface EventDetails {
+	pattern: Pattern;
+	validate?: Validate;
+	getMetaData?: GetMetaData;
 }
 export interface SysEx {
 	manufacturer: Message;
@@ -81,7 +89,7 @@ export interface SysEx {
 export interface DeviceAPI {
 	regex: RegExp;
 	sysex: SysEx;
-	events?: Map<string, States>;
+	events?: Map<string, EventDetails>;
 }
 export interface DeviceAPIClass<D extends Device<D>> extends DeviceAPI {
 	new (ports?: PortNumbers): D;

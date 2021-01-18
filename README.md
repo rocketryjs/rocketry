@@ -31,7 +31,6 @@ Rocketry is an interface for the Novation Launchpad product line written in Java
 
 - Events for press and release of buttons
 - Light, flash, or pulse buttons
-- Change the layout
 - Scroll ASCII characters across the device
 - Arrays of buttons can run commands for each button
 	- You can use less for loops

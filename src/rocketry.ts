@@ -1,7 +1,3 @@
-/*
-	Module: Rocketry
-	Description: Assembly of the individual modules, methods for constructing devices
-*/
 import type {MIDILayerAPIClass, DeviceAPIClass} from "./types";
 
 
@@ -9,6 +5,7 @@ export interface RocketryType {
 	midi?: RegisteredMIDILayer;
 	devices: RegisteredDevices;
 	registerMIDILayer<T extends MIDILayerAPIClass>(midiLayer: T): void;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	registerDevice<T extends DeviceAPIClass<any>>(device: T): void;
 }
 // Merge your MIDI layer class or methods into this interface to add static types
@@ -16,6 +13,7 @@ export interface RocketryType {
 export interface RegisteredMIDILayer extends MIDILayerAPIClass {}
 // Merge your device class into this interface to add static types
 export interface RegisteredDevices {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[index: string]: DeviceAPIClass<any>;
 }
 

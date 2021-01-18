@@ -1,10 +1,7 @@
-/*
-	Module: Sub emitter class
-	Description: Class for emitters that rely on willEmit rather than emitting themselves
-*/
 import {EventEmitter} from "events";
 import {pull} from "lodash";
 import {Device} from "./device";
+import {Captures, Message, Meta} from "./types";
 
 
 export class SubEmitter<D extends Device<D>> extends EventEmitter {
@@ -76,7 +73,7 @@ export class SubEmitter<D extends Device<D>> extends EventEmitter {
 
 	// Default will emit hook for fallback
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	willEmit (event: string, message: any): boolean {
+	willEmit (event: string, message: Message, captures: Captures, meta: Meta): boolean {
 		return true;
 	}
 }

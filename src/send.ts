@@ -1,7 +1,3 @@
-/*
-	Module: Send
-	Description: Methods to send arrays of MIDI bytes
-*/
 import bindDeep from "bind-deep";
 import type {Device} from "./device";
 import type {Channel, Message, Send} from "./types";
